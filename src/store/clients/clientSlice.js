@@ -20,6 +20,7 @@ export const clientSlice = createSlice({
       state.activeClient = payload;
     },
 
+    //Filtrar cliente
     onSetFilter: (state, action) => {
       state.filter = action.payload;
       const q = state.filter.trim().toLowerCase();

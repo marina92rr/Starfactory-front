@@ -36,21 +36,11 @@ export const ClientPage = () => {
           <p className="me-2">Etiquetas</p>
           <button className="btn btn-outline-primary">Etiquetas</button>
         </div>
-        <div className="d-flex justify-content-start mt-3">
+        <div className="d-flex justify-content-end mt-3">
           <button className="btn btn-primary me-3">Nueva Venta</button>
-          <div className="dropdown">
-            <button
-              className="btn btn-secondary dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Opciones
-            </button>
-            <ul className="dropdown-menu">
-              <li><button className="dropdown-item" type="button">Action</button></li>
-            </ul>
-          </div>
+          <button className="btn btn-danger me-3 "type="button">Dar baja</button> 
+          <button className="btn btn-warning "type="button">Programar baja</button> 
+
         </div>
 
         <MenuClient/>

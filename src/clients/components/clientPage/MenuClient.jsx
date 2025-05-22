@@ -7,6 +7,8 @@ export const MenuClient = () => {
   // PATHS relativos, NUNCA empiezan por '/'.
   const links = [
     { name: 'Vista general', path: 'overview' },       // ruta índice: /clients/:dni
+    { name: 'Reservas', path: 'reservations' },
+    { name: 'Ventas', path: 'sales' },
     { name: 'Perfil',        path: 'profile' } // /clients/:dni/profile
   ];
 

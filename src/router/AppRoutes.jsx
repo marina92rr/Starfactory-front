@@ -1,6 +1,5 @@
-import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { OverviewClient, ProfileClient } from '../clients/components/clientPage'
+import { OverviewClient, ReservationsClient, SalesClient, ProfileClient} from '../clients/components/clientPage'
 import { ClientPage, ClientsPage, ServicesPage, StorePage } from '../clients/pages'
 
 
@@ -14,9 +13,13 @@ export const AppRoutes = () => {
         <Route path=":dni" element={<ClientPage />}>
           {/* Ruta índice: /clients/:dni */}
           <Route index element={<OverviewClient />} />
-          {/* overview */}
+          {/* Vista general */}
           <Route path="overview" element={<OverviewClient />} />
-          {/* profile */}
+          {/* Reservas */}
+          <Route path="reservations" element={<ReservationsClient/>} />
+          {/* Ventas */}
+          <Route path="sales" element={<SalesClient/>} />
+          {/* Perfil */}
           <Route path="profile" element={<ProfileClient />} />
         </Route>
 
