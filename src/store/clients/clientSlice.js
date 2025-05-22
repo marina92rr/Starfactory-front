@@ -1,54 +1,51 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 
-//const tempClient ={
-//  name: 'Marina',
-//  lastName: 'Ramos Ruiz',
-//  dni: '45944278F',
-//  email: 'marina92.rr@gmail.com',
-//  mainPhone: '695090351',
-//  optionalPhone: '567453209',
-//  isTeacher: true
-//}
-
 export const clientSlice = createSlice({
   name: 'client',
   initialState:{
-    isLoadingClients: true,
-    clients: [
-      //tempClient
-    ],
-    activeClient: null
+    isLoadingClients: false,
+    clients: [],
+    activeClient: null,
+    filter: '',
+    filteredList: [],
+    error: null
   },
   reducers: {
     
     //--------------Funciones cliente-----------------
+
     //Seleccion de cliente
     onSetActiveClient :(state, {payload}) =>{
       state.activeClient = payload;
     },
 
+    onSetFilter: (state, action) => {
+      state.filter = action.payload;
+      const q = state.filter.trim().toLowerCase();
+      state.filteredList = state.clients.filter(c => {
+        const full = `${c.name} ${c.lastname}`.toLowerCase();
+        return full.includes(q);
+      });
+    },
+
     //Añadir cliente
-    onAddNewClient : (state, {payload}) =>{
-      state.clients.push(payload);
+    onAddNewClient: (state, action) => {
+      state.clients.push(action.payload);
       state.activeClient = null;
     },
 
 
-    // Modificar cliente
+    // Modificar cliente por dni
     onUpdateClient:(state, {payload})=>{
-      state.clients = state.clients.map( client =>{
-        if( client.id === payload.id){
-          return payload;
-        }
-        return client;
-      })
+      const update = payload;
+      state.clients = state.clients.map( client => client.dni === update.dni ? update : client);  //Si el id existe entonces update sino nuevo client
     },
 //
-    //eliminar cliente
+    //eliminar cliente por dni
     onDeleteClient : (state) =>{
       if(state.activeClient){
-        state.clients = state.clients.filter( client => client.id !== state.activeClient.id);
+        state.clients = state.clients.filter( client => client.dni !== state.activeClient.dni);
         state.activeClient = null;
       }
     },
@@ -60,20 +57,37 @@ export const clientSlice = createSlice({
       state.clients = payload;
 
       payload.forEach( client =>{
-        const exists = state.clients.some( dbClient => dbClient.id === client.id);
+        const exists = state.clients.some( dbClient => dbClient.dni === client.dni);
         if( !exists){
           state.clients.push(client)
         }
       })
-    
+    },
+
+    //Lectura Cliente
+    onLoadClientByDNI : (state, {payload}) =>{
+      state.activeClient = payload;
+      state.error = null;
     }
+   
+  },
+
+  
+  setError: (state, action) => {
+    state.error = action.payload;
   },
 })
 export const {
   onSetActiveClient,
+  onSetFilter,
+  onFilterClient,
   onAddNewClient,
   onUpdateClient,
   onDeleteClient,
-  onLoadClients
+  onLoadClients,
+  onLoadClientByDNI,
+  setError,
+  
+  
 
  } = clientSlice.actions; //accion

@@ -1,26 +1,28 @@
 import { useDispatch, useSelector } from "react-redux"
-import { onAddNewClient, onLoadClients, onSetActiveClient, onUpdateClient } from "../store/clients/clientSlice";
+import { onAddNewClient, onLoadClientByDNI, onLoadClients, onSetActiveClient, onSetFilter, onUpdateClient, setError } from "../store/clients/clientSlice";
 import { clientsApi } from "../api";
+import { useParams } from "react-router-dom";
 
 
 
 export const useClientsStore = () => {
   
     const dispatch = useDispatch();
-    const {clients, activeClient} = useSelector( state => state.client);
+    const {clients, activeClient, filter, filteredList} = useSelector( state => state.client);
+    const {dni}= useParams();
 
 
+    //Activar cliente
     const setActiveClient = (clientsData) => {
         dispatch(onSetActiveClient(clientsData))
     }
 
-    // Nuevo/actualizar cliente 
+    // Nuevo cliente 
     const startSavingClient = async(clientSave) =>{
-
         try {
         
             const {data} = await clientsApi.post('/clients', clientSave);
-            dispatch( onAddNewClient({...clientSave, id: data.client.id}));
+            dispatch( onAddNewClient(data));
 
         } catch (error) {
             console.log(error);
@@ -29,14 +31,12 @@ export const useClientsStore = () => {
     }
 
 
-
-
     //Lectura de clientes
     const starLoadingClients = async() =>{
 
         try {
             //const {data} = await axios.get('http://localhost:4001/api/clients');
-            const {data} = await clientsApi.get('/clients');
+            const {data} = await clientsApi.get('clients');
             const client = data.clients;
 
             dispatch(onLoadClients(client));
@@ -48,15 +48,37 @@ export const useClientsStore = () => {
         }
     }
 
+    //Lectura de cliente
+    const starLoadingClientByDNI = async() =>{
+        try {
+            const {data} = await clientsApi.get(`/clients/${dni}`);
+            const client = data.client;
+            dispatch(onLoadClientByDNI(client));
+            
+        } catch (error) {
+            console.error('Error al cargar el cliente:', error);
+        }
+    }
+
+    //Filtrar 
+    // Filtrar clientes en frontend
+    const startFilteringClients = (searchTerm) => (dispatch) => {
+      dispatch(onSetFilter(searchTerm));
+    };
+    
     return{
         //*propiedades
         clients,
         activeClient,
+        filter,
+        filteredList,
 
         //*Metodos
         setActiveClient,
         starLoadingClients,
-        startSavingClient
+        starLoadingClientByDNI,
+        startSavingClient,
+        startFilteringClients
     }
     
 }

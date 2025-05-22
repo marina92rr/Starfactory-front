@@ -6,75 +6,67 @@ import { useClientsStore } from '../../hooks/useClientsStore';
 import Modal from 'react-modal';        //Popup 
 import { useForm } from '../../hooks/useForm';
 
+Modal.setAppElement('#root');
 
 const customStyles = {
   content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-20%',
-      transform: 'translate(-50%, -50%)',
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    transform: 'translate(-50%, -50%)',
   },
 };
 
-Modal.setAppElement('#root');
-
 export const ClientModal = () => {
+  const { isModalOpen, closeModal } = useUiStore();
+  const { activeClient, startSavingClient, starLoadingClients } = useClientsStore();
 
-  const {isModalOpen, closeModal} = useUiStore();
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const { activeClient, startSavingClient} = useClientsStore();
-
-  const { onInputChange, onResetForm, handleChange} = useForm();
-
-  //Valor inicial
   const [formValues, setFormValues] = useState({
-    name:'',
+    name: '',
     lastName: '',
     dni: '',
     email: '',
     mainPhone: '',
     optionalPhone: '',
-    isTeacher: true
+    isTeacher: true,
   });
-
-  const titleClass = useMemo(() =>{
-    if( !formSubmitted) return '';
-    return (formValues.name.length > 0)
-    ? 'is-valid'
-    : 'is-invalid'
-  }, [formValues.name, formSubmitted]);
-
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   useEffect(() => {
-    
-   if(activeClient !== null){
-    setFormValues({...activeClient});
-   }
+    if (activeClient) {
+      setFormValues({ ...activeClient });
+    }
   }, [activeClient]);
 
-  //Cambiar valor imput
-  const onInputchanged = ({target}) =>{
+  const titleClass = useMemo(() => {
+    if (!formSubmitted) return '';
+    return formValues.name.trim().length > 0 ? 'is-valid' : 'is-invalid';
+  }, [formValues.name, formSubmitted]);
+
+  const onInputChange = ({ target }) => {
+    const { name, type, checked, value } = target;
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setFormSubmitted(true);
+
+    if (formValues.name.trim().length === 0) return;
+
+    await startSavingClient(formValues);
+    closeModal();
+    await starLoadingClients();
+    setFormSubmitted(false);
     setFormValues({
-      ...formValues,
-      [target.name]: target.value
-    })
-  }
-
-
-  //Subida formulario
-const onSubmit = async(client) =>{
-  client.prevenDefault();
-  setFormSubmitted(true);
-
-  if(formValues.title.length <=0) return;
-    console.log(formValues)
-
-    await startSavingClient(formValues);         //await: primero se graba el evento y se cierra
-    //closeModal();       //Se cierra el evento
-    setFormSubmitted(false);        //Quitar lo errores
-}
+      name: '', lastName: '', dni: '', email: '',
+      mainPhone: '', optionalPhone: '', isTeacher: true,
+    });
+  };
 
   return (
    <Modal
@@ -94,7 +86,7 @@ const onSubmit = async(client) =>{
             name='name'
             type="text"
             value={formValues.name}
-            onChange={onInputchanged} 
+            onChange={onInputChange} 
         />
       </div>
 
@@ -105,7 +97,7 @@ const onSubmit = async(client) =>{
             name='lastName'
             type="text"
             value={formValues.lastName}
-            onChange={onInputchanged} 
+            onChange={onInputChange} 
         />
       </div>
 
@@ -116,7 +108,7 @@ const onSubmit = async(client) =>{
             name='dni'
             type="text"
             value={formValues.dni}
-            onChange={onInputchanged} 
+            onChange={onInputChange} 
         />
       </div>
 
@@ -127,7 +119,7 @@ const onSubmit = async(client) =>{
             name='email'
             type="text"
             value={formSubmitted.email}
-            onChange={onInputchanged} 
+            onChange={onInputChange} 
         />
       </div>
       <div className='d-flex gap-2 mb-3' >
@@ -138,7 +130,7 @@ const onSubmit = async(client) =>{
             name='mainPhone'
             type="text"
             value={formValues.mainPhone}
-            onChange={onInputchanged} 
+            onChange={onInputChange} 
         />
         </div>
         <div>
@@ -148,12 +140,22 @@ const onSubmit = async(client) =>{
             name='optionalPhone'
             type="text"
             value={formValues.optionalPhone}
-            onChange={onInputchanged} 
+            onChange={onInputChange} 
         />
         </div>
       </div>
       <div className='d-flex gap-3'>
-        <label  className="form-label"> ¿Es profesor?</label>
+      <input
+    className="form-check-input"
+    type="checkbox"
+    name="isTeacher"
+    id="isTeacherCheckbox"
+    checked={formValues.isTeacher}
+    onChange={onInputChange}
+  />
+  <label className="form-check-label" htmlFor="isTeacherCheckbox">
+    Es profesor
+  </label>
         
         </div>
         <button type='submit' className='btn btn-primary btn-block'>Guardar</button>

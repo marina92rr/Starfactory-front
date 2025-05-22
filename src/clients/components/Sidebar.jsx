@@ -1,21 +1,42 @@
 
-import React from 'react'
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+
+const links = [
+  { name: 'Clientes', path: '/' },
+  { name: 'Tienda', path: '/store' },
+  { name: 'Servicios', path: '/services' },
+]
 
 export const Sidebar = () => {
   return (
-       
+
     <div
-      className="col-2 bg-light pt-5 m-0  "
-      style={{ minHeight: '100vh', borderRight: '1px solid #ccc' }}
+      className="col-1 bg-light pt-5 px-0  "
+      style={{ left: '0', position: 'fixed', minHeight: '100vh', borderRight: '1px solid #ccc' }}
     >
-          <ul className="nav flex-column">
-            <li className="nav-item"><a className="" href="#">Dashboard</a></li>
-            <li className="nav-item"><a className="nav-link" href="#">Perfil</a></li>
-            <li className="nav-item"><a className="nav-link" href="#">Ajustes</a></li>
-          </ul>
-       
+      <h4 className='p-3'>Star Factory</h4>
+      <nav>
+        {links.map(link => (
+          <NavLink
+            key={link.path}
+            to={link.path}
+            style={{ textDecoration: 'none' }}
+          >
+            {({ isActive }) => (
+              <div className='p-3' style={{ background: isActive ? '#007bff' : 'none', color: isActive ? '#ffffff' : '#000000' }}>
+                {/* Nombre siempre visible; activo en azul */}
+                <span>
+                  {link.name}
+                </span>
+              </div>
+            )}
+          </NavLink>
+        ))}
+      </nav>
+
     </div>
-    
-    
+
+
   )
 }

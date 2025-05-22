@@ -1,9 +1,10 @@
 
-//Acceder a las variables de entorno de ENV
+//Desestructurar Variables de entorno .ENV
 export const getEnvVariables = () =>{
-    import.meta.env;
+
+    import.meta.env;        //Variables de entorno
 
     return {
-        ...import.meta.env
+        ...import.meta.env     
     }
 }

@@ -2,32 +2,26 @@ import { useClientsStore } from "../../hooks/useClientsStore";
 import { useUiStore } from "../../hooks/useUiStore"
 
 
-export const ClientAddNew = () => {
+export const LabelAddNew = () => {
 
     const {openModal} = useUiStore();   //Abrir modal
     const {setActiveClient} = useClientsStore();
 
     const handleClickNew = () =>{
         setActiveClient({
-            name: '',
-            lastName:'',
-            dni: '',
-            email: '',
-            mainPhone: '',
-            optionalPhone: '',
-            isTeacher: false
+            nameLabel: '',
+            Description:'',
+            color: '',
+      
         })
-
         openModal();
     }
-
 
   return (
     <button
         className="btn btn-primary mx-auto"
         onClick={handleClickNew}>
-        Nuevo cliente
+        Etiqueta
     </button>
   )
 }
-
