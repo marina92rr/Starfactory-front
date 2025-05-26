@@ -78,14 +78,11 @@ export const ClientsPage = () => {
           </ul>
         )}
           </div>
-          <LabelAddNew />
+          
         </div>
       </div>
       <div className="border rounded-top br-3 d-flex align-items-center p-3 bg-light">
-        <input className="form-check-input ms-3" type="checkbox" id="selectAll" />
-        <label className="form-check-label ms-2" htmlFor="selectAll">
-          Seleccionar
-        </label>
+        
       </div>
 
       <div className="d-flex flex-column">
@@ -93,9 +90,12 @@ export const ClientsPage = () => {
           const fullName = `${client.name} ${client.lastName}`.toUpperCase();
           return (
             <div key={i} className="border p-3 text-start">
-              <div className="form-check mb-1">
-                <input className="form-check-input" type="checkbox" id={`client-${i}`} />
-                <label className="form-check-label fw-bold ms-2" htmlFor={`client-${i}`}>
+              <div className="form">
+                <ul className="form-input" type="text" id={`client-${i}`} />
+                <label
+                key={client.dni}
+                onMouseDown={() => handleSelect(client.dni)}
+                className="form-label-label fw-bold ms-2" style={{cursor:"pointer"}} htmlFor={`client-${i}`}>
                   {fullName}
                 </label>
               </div>

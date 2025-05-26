@@ -9,7 +9,8 @@ export const clientSlice = createSlice({
     activeClient: null,
     filter: '',
     filteredList: [],
-    error: null
+    error: null,
+    isLoadingLabelsClient: false
   },
   reducers: {
     
@@ -65,6 +66,7 @@ export const clientSlice = createSlice({
       })
     },
 
+
     //Lectura Cliente
     onLoadClientByDNI : (state, {payload}) =>{
       state.activeClient = payload;
@@ -73,12 +75,30 @@ export const clientSlice = createSlice({
    
   },
 
-  
   setError: (state, action) => {
     state.error = action.payload;
   },
+
+  //LABELS
+  onSetActiveLabel :(state) =>{
+    state.isLoadingLabelsClient = true;
+  },
+
+  onLoadingLabelsClient: (state, {payload: {dni, labels}}) =>{
+    state.isLoadingLabelsClient = false;
+
+    const client = state.clients.find(c => c.dni === dni)
+      if (client) {
+        client.labels = labels
+      }
+
+  }
+  
+
+
 })
 export const {
+  //*Client
   onSetActiveClient,
   onSetFilter,
   onFilterClient,
@@ -88,7 +108,9 @@ export const {
   onLoadClients,
   onLoadClientByDNI,
   setError,
-  
+  //*Labels
+ onSetActiveLabel,
+ onLoadingLabelsClient
   
 
  } = clientSlice.actions; //accion
