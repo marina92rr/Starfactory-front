@@ -3,8 +3,7 @@ import { useClientsStore } from '../../hooks/useClientsStore'
 import { ClientAddNew, ClientModal } from '../components';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { LabelClient } from '../components/clientPage/labelClient';
-
+import { LabelClient } from '../components/clientPage/LabelClient';
 
 
 export const ClientsPage = () => {
