@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useClientsStore } from '../../hooks/useClientsStore'
 import { ClientAddNew, ClientModal } from '../components';
-import { LabelAddNew } from '../components/LabelAddNew';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { LabelClient } from '../components/clientPage/labelClient';
+
 
 
 export const ClientsPage = () => {
@@ -18,6 +19,7 @@ export const ClientsPage = () => {
   //LCarga de clientes
   useEffect(() => {
     starLoadingClients();
+       
   }, []);
 
   //Filtrar clientes
@@ -97,6 +99,7 @@ export const ClientsPage = () => {
                 onMouseDown={() => handleSelect(client.dni)}
                 className="form-label-label fw-bold ms-2" style={{cursor:"pointer"}} htmlFor={`client-${i}`}>
                   {fullName}
+                  <LabelClient dni={client.dni}/>
                 </label>
               </div>
               <div className='d-flex'>

@@ -3,30 +3,26 @@ import { Outlet, useParams } from 'react-router-dom';
 import { useClientsStore } from '../../hooks/useClientsStore';
 import { MenuClient } from '../components/clientPage/MenuClient';
 
-import { LabelClient } from '../components/clientPage/labelClient';
 import { LabelModal } from '../components/label/LabelModal';
 import { useLabelsStore } from '../../hooks/useLabelsStore';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { LabelClient } from '../components/clientPage/LabelClient';
 
 
 
 export const ClientPage = () => {
   //Modal etiquetas
   const [showModal, setShowModal] = useState(false);
-  const { startAddLabel, labels, createLabelAndAssign } = useLabelsStore();
-
+  const { createLabelAndAssign } = useLabelsStore();
+  const [refreshKey, setRefreshKey]   = useState(0);            // <-- nuevo
 
   const { dni } = useParams();
-  const {
-    starLoadingClientByDNI,
-    activeClient,
-  } = useClientsStore();
+  const {starLoadingClientByDNI,activeClient,} = useClientsStore();
 
 
   useEffect(() => {
     if (dni) {
       starLoadingClientByDNI(dni);
-
     }
   }, [dni, starLoadingClientByDNI]);
 
@@ -36,12 +32,13 @@ export const ClientPage = () => {
 
 
 
-  const handleCreate = (label) => {
+  const handleCreate = async(label) => {
     createLabelAndAssign({
       ...label,               // name, description, color
       dni: activeClient.dni   // debes tenerlo en contexto
     });
     setShowModal(false);
+    setRefreshKey(k => k + 1);    // <-- incrementamos al crear
   };
 
 
@@ -64,7 +61,7 @@ export const ClientPage = () => {
 
         {/* IZQUIERDA: Etiquetas */}
         <div className="d-flex flex-wrap align-items-center gap-2" style={{ minHeight: '42px' }}>
-          <LabelClient dni={dni} />
+          <LabelClient dni={dni} refreshKey={refreshKey}/>
 
           <button
             className="btn btn-outline-dark btn-sm py-0"

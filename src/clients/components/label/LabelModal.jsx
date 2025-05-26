@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react'
 
+
 //Colores por defecto:
 const colors = [
   '#4B0082', '#800080', '#FF1493', '#FF4500', '#FFD700',
@@ -10,6 +11,7 @@ const colors = [
 ];
 
 export const LabelModal = ({ onCreate, onClose }) => {
+
 
      const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -31,8 +33,9 @@ export const LabelModal = ({ onCreate, onClose }) => {
   };
 
 //enviar form
-   const handleSubmit = () => {
-    onCreate({ name, description, color: selectedColor });
+   const handleSubmit = async() => {
+    await onCreate({ name, description, color: selectedColor })
+    
   };
 
 

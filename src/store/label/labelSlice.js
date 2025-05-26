@@ -30,6 +30,11 @@ export const labelSlice = createSlice({
       state.labels = []
       state.status = 'idle'
       state.error = null
+    },
+    LoadLabelsForDni: (state, action) => {
+      delete state.byDni[action.payload]
+      delete state.loading[action.payload]
+      delete state.error[action.payload]
     }
   }
 })
@@ -38,5 +43,6 @@ export const {
     loadLabelsRequest,
     loadLabelsSuccess,
     loadLabelsFailure,
-    clearLabels
+    clearLabels,
+    LoadLabelsForDni
  } = labelSlice.actions; //accion
