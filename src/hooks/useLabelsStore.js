@@ -1,13 +1,13 @@
 
 import { useDispatch, useSelector } from "react-redux";
-import { addLabel } from "../store/label/labelSlice";
+import { addLabel, onSetFilterLabel } from "../store/label/labelSlice";
 import { clientsApi } from "../api";
 
 
 
 export const useLabelsStore = () => {
   const dispatch = useDispatch();
-  const { labels } = useSelector(state => state.labels);
+  const { labels, filter, filteredList } = useSelector(state => state.labels);
 
   const startAddLabel = (label) => {
     dispatch(addLabel(label));
@@ -22,11 +22,23 @@ export const useLabelsStore = () => {
     }
   };
 
+  //Filtrar labels
+  const startFilteringLabels = (searchTerm) => (dispatch) =>{
+    dispatch(onSetFilterLabel(searchTerm));
+  }
+
+
+
   
 
    return {
+    //*Propiedades
     labels,
+    filter,
+    filteredList,
+    //*Metodos
     startAddLabel,
-    createLabelAndAssign 
+    createLabelAndAssign ,
+    startFilteringLabels
   };
 };

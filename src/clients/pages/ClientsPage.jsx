@@ -4,6 +4,8 @@ import { ClientAddNew, ClientModal } from '../components';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { LabelClient } from '../components/clientPage/LabelClient';
+import {FindClient} from '../components/FindClient'
+
 
 
 export const ClientsPage = () => {
@@ -21,64 +23,22 @@ export const ClientsPage = () => {
        
   }, []);
 
-  //Filtrar clientes
-  const handleFilterChange = (client) => {
-        const value = client.target.value;
-        dispath(startFilteringClients(value));
-        setShowDropdown(value.trim().length > 0 && filteredList.length > 0);
-  };
-
-
-  const handleBlur = () => {
-    setTimeout(() => setShowDropdown(false), 100);
-  };
-
-    const handleFocus = () => {
-    setShowDropdown(filter.trim().length > 0 && filteredList.length > 0);
-  };
-
-
   // Cuando seleccionas un cliente, navegamos a /clients/:dni
   const handleSelect = dni => {
     navigate(`${dni}`);
     setShowDropdown(false);
   };
-
   return (
 
-    <div className='container-fluid col-9 mt-5' >
-      <div className='py-5 d-flex'>
-        <h1>Clientes</h1>
+    <div className='container-fluid col-7 mt-5' >
+      <div className='py-5 d-flex justify-content-between align-items-center'>
+        <h1 className='col-9 m-0'>Clientes</h1>
         <ClientAddNew />
       </div>
       <ClientModal />
       <div className='d-flex'>
         <div className='form-floating p-0 mb-2 d-flex'>
-          <div className="mb-3 col-10 position-relative">
-            <input
-              type="text"
-              placeholder="Buscar..."
-              className="form-control"
-              value={filter}
-              onChange={handleFilterChange}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-            />
-
-          {showDropdown && (
-          <ul className="dropdown-menu show pl-3">
-            {filteredList.map(client => (
-              <li
-                key={client.dni}
-                className="dropdown-item"
-                onMouseDown={() => handleSelect(client.dni)}
-              >
-                {client.name} {client.lastName}
-              </li>
-            ))}
-          </ul>
-        )}
-          </div>
+          <FindClient/>
           
         </div>
       </div>

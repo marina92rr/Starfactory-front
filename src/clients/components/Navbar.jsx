@@ -1,3 +1,4 @@
+import { FindClient } from "./FindClient"
 
 
 export const Navbar = () => {
@@ -11,13 +12,7 @@ export const Navbar = () => {
           User
         </span>
 
-        <input
-          className='rounded-1 bg-dark-subtle p-1 m-1'
-          style={{ border: 'none', outline: 'none' }}
-          type="text"
-          id="foundName"
-          placeholder='Buscar...'
-        />
+        <FindClient/>
 
         <button className="btn btn-outline-danger ms-auto me-5">
           <i className="fas fa-sign-out-alt"></i>

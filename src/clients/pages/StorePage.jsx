@@ -4,7 +4,7 @@ import { StoreAddProduct } from '../components/storePage/StoreAddProduct'
 
 export const StorePage = () => {
   return (
-     <div className="container-fluid col-9 mt-5 pt-5">
+     <div className="container-fluid col-7 mt-5 pt-5">
         <h1>Tienda</h1>
 
         <div className='d-flex'>

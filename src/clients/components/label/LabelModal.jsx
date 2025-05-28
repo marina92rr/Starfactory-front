@@ -41,13 +41,13 @@ export const LabelModal = ({ onCreate, onClose }) => {
 
   return (
     <div className="modal d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-      <div className="modal-dialog modal-sm">
+      <div className="modal-dialog ">
         <div className="modal-content p-3">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <h5 className="modal-title">Nueva etiqueta</h5>
             <button className="btn-close" onClick={onClose}></button>
           </div>
-
+          <label  className="form-label"> Nombre</label>
           <input
             type="text"
             className="form-control mb-2"
@@ -55,6 +55,7 @@ export const LabelModal = ({ onCreate, onClose }) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
+           <label  className="form-label"> Descripción</label>
           <input
             type="text"
             className="form-control mb-2"
@@ -63,14 +64,14 @@ export const LabelModal = ({ onCreate, onClose }) => {
             onChange={(e) => setDescription(e.target.value)}
           />
 
-          <label className="mb-1 fw-bold">Color</label>
+          <label className="form-label">Color</label>
           <div style={{ position: 'relative' }} className="mb-2">
             <div
               onClick={() => setShowPalette(!showPalette)}
               style={{
                 backgroundColor: selectedColor,
-                width: '40px',
-                height: '40px',
+                width: '50px',
+                height: '50px',
                 borderRadius: '5px',
                 border: '1px solid #ccc',
                 cursor: 'pointer'

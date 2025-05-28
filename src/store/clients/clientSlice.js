@@ -91,11 +91,8 @@ export const clientSlice = createSlice({
       if (client) {
         client.labels = labels
       }
-
   }
   
-
-
 })
 export const {
   //*Client

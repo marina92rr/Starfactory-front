@@ -133,7 +133,7 @@ export const ClientModal = () => {
             onChange={onInputChange} 
         />
         </div>
-        <div>
+        <div className=' gap-2'>
         <label  className="form-label"> 2º Teléfono</label>
         <input 
             className='form-control'
@@ -144,15 +144,15 @@ export const ClientModal = () => {
         />
         </div>
       </div>
-      <div className='d-flex gap-3'>
+      <div className='d-flex gap-3 mb-3'>
       <input
-    className="form-check-input"
-    type="checkbox"
-    name="isTeacher"
-    id="isTeacherCheckbox"
-    checked={formValues.isTeacher}
-    onChange={onInputChange}
-  />
+        className="form-check-input"
+        type="checkbox"
+        name="isTeacher"
+        id="isTeacherCheckbox"
+        checked={formValues.isTeacher}
+        onChange={onInputChange}
+      />
   <label className="form-check-label" htmlFor="isTeacherCheckbox">
     Es profesor
   </label>

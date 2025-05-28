@@ -14,10 +14,10 @@ export const ClientPage = () => {
   //Modal etiquetas
   const [showModal, setShowModal] = useState(false);
   const { createLabelAndAssign } = useLabelsStore();
-  const [refreshKey, setRefreshKey]   = useState(0);            // <-- nuevo
+  const [refreshKey, setRefreshKey] = useState(0);            // <-- nuevo
 
   const { dni } = useParams();
-  const {starLoadingClientByDNI,activeClient,} = useClientsStore();
+  const { starLoadingClientByDNI, activeClient, } = useClientsStore();
 
 
   useEffect(() => {
@@ -30,9 +30,7 @@ export const ClientPage = () => {
     return <p>Cliente no encontrado</p>;
   }
 
-
-
-  const handleCreate = async(label) => {
+  const handleCreate = async (label) => {
     createLabelAndAssign({
       ...label,               // name, description, color
       dni: activeClient.dni   // debes tenerlo en contexto
@@ -43,25 +41,33 @@ export const ClientPage = () => {
 
 
   return (
-    <div className="container-fluid col-9 mt-5 pt-5">
+    <div className="container-fluid col-7 mt-5 pt-5">
       <div className="d-flex">
         <h1 className="me-3">
-          {activeClient.name} {activeClient.lastName}
+          {activeClient.name.toUpperCase()} {activeClient.lastName.toUpperCase()}
         </h1>
         <div>{activeClient.idClient}</div>
       </div>
-      <div className="d-flex justify-content-start mt-3">
-        <i className="bi bi-envelope-fill me-2"></i>
+      <div className="d-flex align-items-center gap-3 mt-3">
+        <div className="d-flex align-items-center">
+          <i className="bi bi-envelope-fill me-2 "></i>
+          <button type="button" className="btn btn-link p-0 m-0 text-decoration-none">
+            {activeClient.email}
+          </button>
+        </div>
 
-        <button type='button' className="btn btn-link">{activeClient.email}</button>
-        <i className="bi bi-telephone-fill me-2" ></i>
-        <button type='button' className="btn btn-link">{activeClient.mainPhone}</button>
+        <div className="d-flex align-items-center">
+          <i className="bi bi-telephone-fill me-2"></i>
+          <button type="button" className="btn btn-link p-0 m-0 text-decoration-none">
+            {activeClient.mainPhone}
+          </button>
+        </div>
       </div>
       <div className="d-flex justify-content-between align-items-start flex-wrap mt-2">
 
         {/* IZQUIERDA: Etiquetas */}
         <div className="d-flex flex-wrap align-items-center gap-2" style={{ minHeight: '42px' }}>
-          <LabelClient dni={dni} refreshKey={refreshKey}/>
+          <LabelClient dni={dni} refreshKey={refreshKey} />
 
           <button
             className="btn btn-outline-dark btn-sm py-0"
