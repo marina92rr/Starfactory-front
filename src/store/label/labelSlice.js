@@ -7,6 +7,7 @@ export const labelSlice = createSlice({
   name: 'labels',
   initialState:{
     labels: [],
+     activeLabel: null,
     status: 'idle',    // 'idle' | 'loading' | 'succeeded' | 'failed'
     error: null,
     filter: '',
@@ -15,6 +16,12 @@ export const labelSlice = createSlice({
   
   },
   reducers: {
+
+     //Seleccion de cliente
+    onSetActiveLabel :(state, {payload}) =>{
+      state.activeLabel = payload;
+    },
+
     addLabel: (state, action) => {
       state.labels.push(action.payload);
     },
@@ -53,12 +60,13 @@ export const labelSlice = createSlice({
   }
 })
 export const { 
+  onSetActiveLabel,
   addLabel,
-    loadLabelsRequest,
-    loadLabelsSuccess,
-    loadLabelsFailure,
-    clearLabels,
-    LoadLabelsForDni,
-    onSetFilterLabel,
-    onLoadLabels
- } = labelSlice.actions; //accion
+  loadLabelsRequest,
+  loadLabelsSuccess,
+  loadLabelsFailure,
+  clearLabels,
+  LoadLabelsForDni,
+  onSetFilterLabel,
+  onLoadLabels
+} = labelSlice.actions; //accion

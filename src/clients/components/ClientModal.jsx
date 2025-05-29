@@ -1,10 +1,9 @@
 
 //Formulario Modal Cliente
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useUiStore } from '../../hooks/useUiStore';
 import { useClientsStore } from '../../hooks/useClientsStore';
 import Modal from 'react-modal';        //Popup 
-import { useForm } from '../../hooks/useForm';
 
 Modal.setAppElement('#root');
 

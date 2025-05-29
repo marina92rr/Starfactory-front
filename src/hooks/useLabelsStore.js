@@ -1,13 +1,18 @@
 
 import { useDispatch, useSelector } from "react-redux";
-import { addLabel, onLoadLabels, onSetFilterLabel } from "../store/label/labelSlice";
+import { addLabel, onLoadLabels, onSetActiveLabel, onSetFilterLabel } from "../store/label/labelSlice";
 import { clientsApi } from "../api";
 
 
 
 export const useLabelsStore = () => {
   const dispatch = useDispatch();
-  const { labels, filter, filteredList } = useSelector(state => state.labels);
+  const { labels, filter, filteredList, activeLabel } = useSelector(state => state.labels);
+
+     //Activar cliente
+      const setActiveLabel = (labelData) => {
+          dispatch(onSetActiveLabel(labelData))
+      }
 
   const startAddLabel = (label) => {
     dispatch(addLabel(label));
@@ -41,21 +46,17 @@ export const useLabelsStore = () => {
     dispatch(onSetFilterLabel(searchTerm));
   }
 
-
-
-
-
-  
-
    return {
     //*Propiedades
     labels,
     filter,
     filteredList,
+    activeLabel,
     //*Metodos
     startAddLabel,
     createLabelAndAssign ,
     startFilteringLabels,
-    starLoadingLabels
+    starLoadingLabels,
+    setActiveLabel
   };
 };

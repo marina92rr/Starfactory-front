@@ -8,6 +8,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { LabelClient } from '../components/clientPage/LabelClient';
 import { CreateLabelModal } from '../components/label/CreateLabelModal';
 import {LabelsModal} from '../components/label/LabelsModal'
+import { LabelAddNew } from '../components/LabelAddNew';
 
 
 export const ClientPage = () => {
@@ -78,6 +79,8 @@ export const ClientPage = () => {
             <i className="bi bi-pencil-square me-2"></i>
             Etiquetas
           </button>
+          <LabelAddNew/>
+          <LabelsModal/>
 
           {showModal && (
             <CreateLabelModal
