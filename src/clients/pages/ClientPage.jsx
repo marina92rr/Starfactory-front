@@ -6,9 +6,8 @@ import { MenuClient } from '../components/clientPage/MenuClient';
 import { useLabelsStore } from '../../hooks/useLabelsStore';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { LabelClient } from '../components/clientPage/LabelClient';
-import { LabelsModal } from '../components/label/LabelsModal';
 import { CreateLabelModal } from '../components/label/CreateLabelModal';
-
+import {LabelsModal} from '../components/label/LabelsModal'
 
 
 export const ClientPage = () => {

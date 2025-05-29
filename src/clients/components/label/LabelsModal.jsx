@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLabelsStore } from '../../../hooks/useLabelsStore';
 
-export const DropdownLabel = () => {
+export const LabelsModal = () => {
 
   
 const [isOpen, setIsOpen] = useState(false);
