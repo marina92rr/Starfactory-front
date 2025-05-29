@@ -3,10 +3,11 @@ import { Outlet, useParams } from 'react-router-dom';
 import { useClientsStore } from '../../hooks/useClientsStore';
 import { MenuClient } from '../components/clientPage/MenuClient';
 
-import { LabelModal } from '../components/label/LabelModal';
 import { useLabelsStore } from '../../hooks/useLabelsStore';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { LabelClient } from '../components/clientPage/LabelClient';
+import { LabelsModal } from '../components/label/LabelsModal';
+import { CreateLabelModal } from '../components/label/CreateLabelModal';
 
 
 
@@ -65,6 +66,7 @@ export const ClientPage = () => {
       </div>
       <div className="d-flex justify-content-between align-items-start flex-wrap mt-2">
 
+    <LabelsModal/>
         {/* IZQUIERDA: Etiquetas */}
         <div className="d-flex flex-wrap align-items-center gap-2" style={{ minHeight: '42px' }}>
           <LabelClient dni={dni} refreshKey={refreshKey} />
@@ -79,7 +81,7 @@ export const ClientPage = () => {
           </button>
 
           {showModal && (
-            <LabelModal
+            <CreateLabelModal
               onCreate={handleCreate}
               onClose={() => setShowModal(false)}
             />

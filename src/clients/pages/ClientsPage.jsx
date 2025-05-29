@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useClientsStore } from '../../hooks/useClientsStore'
 import { ClientAddNew, ClientModal } from '../components';
-import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { LabelClient } from '../components/clientPage/LabelClient';
 import {FindClient} from '../components/FindClient'
 
@@ -10,11 +9,9 @@ import {FindClient} from '../components/FindClient'
 
 export const ClientsPage = () => {
 
-  const dispath = useDispatch();
   const navigate = useNavigate();
 
-  const { clients, starLoadingClients, startFilteringClients, filter, filteredList } = useClientsStore();
-  const [showDropdown, setShowDropdown] = useState(false);
+  const { clients, starLoadingClients } = useClientsStore();
 
   
   //LCarga de clientes
@@ -26,7 +23,6 @@ export const ClientsPage = () => {
   // Cuando seleccionas un cliente, navegamos a /clients/:dni
   const handleSelect = dni => {
     navigate(`${dni}`);
-    setShowDropdown(false);
   };
   return (
 

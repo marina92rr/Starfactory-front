@@ -1,6 +1,6 @@
 
 import { useDispatch, useSelector } from "react-redux";
-import { addLabel, onSetFilterLabel } from "../store/label/labelSlice";
+import { addLabel, onLoadLabels, onSetFilterLabel } from "../store/label/labelSlice";
 import { clientsApi } from "../api";
 
 
@@ -12,6 +12,20 @@ export const useLabelsStore = () => {
   const startAddLabel = (label) => {
     dispatch(addLabel(label));
   };
+
+
+  const starLoadingLabels = async() =>{
+   try {
+     const {data} = await clientsApi.get('labels');
+    const label = data.labels;
+
+    dispatch(onLoadLabels(label));
+    
+   } catch (error) {
+    console.log('Error al cargar las etiquetas');
+    console.log(error);
+   }
+  }
 
   const createLabelAndAssign = async (labelData) => {
     try {
@@ -29,6 +43,8 @@ export const useLabelsStore = () => {
 
 
 
+
+
   
 
    return {
@@ -39,6 +55,7 @@ export const useLabelsStore = () => {
     //*Metodos
     startAddLabel,
     createLabelAndAssign ,
-    startFilteringLabels
+    startFilteringLabels,
+    starLoadingLabels
   };
 };

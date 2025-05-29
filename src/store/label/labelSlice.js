@@ -11,6 +11,7 @@ export const labelSlice = createSlice({
     error: null,
     filter: '',
     filteredList :[],
+    isLoadingLabels: false
   
   },
   reducers: {
@@ -39,12 +40,14 @@ export const labelSlice = createSlice({
       delete state.loading[action.payload]
       delete state.error[action.payload]
     },
-    onSetFilterLabel : (state, {payload}) =>{
-      state.filter = payload;
-      const q = state.filter.trim().toUpperCase();
-      state.filteredList = state.labels.filter(l =>{
-        const full = `${l.name}`.toLocaleUpperCase();
-        return full.includes(q);
+    onLoadLabels: (state, {payload}) =>{
+      state.isLoadingLabels = false;
+      state.labels = payload;
+      payload.forEach( label =>{
+        const exist = state.labels.some( dbLabel => dbLabel.id === label.id);
+        if(!exist){
+          state.labels.push(label)
+        }
       })
     }
   }
@@ -56,5 +59,6 @@ export const {
     loadLabelsFailure,
     clearLabels,
     LoadLabelsForDni,
-    onSetFilterLabel
+    onSetFilterLabel,
+    onLoadLabels
  } = labelSlice.actions; //accion

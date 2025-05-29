@@ -2,7 +2,6 @@
 // src/components/clientPage/LabelClient.jsx
 import React, { useState, useEffect } from 'react'
 import { clientsApi } from '../../../api'
-import { clearLabels } from '../../../store/label/labelSlice'
 
 export const LabelClient = ({ dni, refreshKey  }) => {
   const [labels, setLabels] = useState([])

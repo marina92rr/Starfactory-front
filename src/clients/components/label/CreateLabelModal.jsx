@@ -10,7 +10,7 @@ const colors = [
   '#087990', '#00FF7F', '#F0E68C', '#ADD8E6', '#B0C4DE'
 ];
 
-export const LabelModal = ({ onCreate, onClose }) => {
+export const CreateLabelModal = ({ onCreate, onClose }) => {
 
 
      const [name, setName] = useState('');
