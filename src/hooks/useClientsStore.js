@@ -2,9 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { onAddNewClient, 
          onLoadClientByDNI, 
          onLoadClients, 
-         onLoadingLabelsClient, 
          onSetActiveClient, 
-         onSetActiveLabel, 
          onSetFilter,
         } from "../store/clients/clientSlice";
 
@@ -62,7 +60,7 @@ export const useClientsStore = () => {
             const {data} = await clientsApi.get(`/clients/${dni}`);
             const client = data.client;
             dispatch(onLoadClientByDNI(client));
-            dispatch(onSetActiveClient(client));
+           // dispatch(onSetActiveClient(client));
             
         } catch (error) {
             console.error('Error al cargar el cliente:', error);
@@ -74,26 +72,8 @@ export const useClientsStore = () => {
     const startFilteringClients = (searchTerm) => (dispatch) => {
       dispatch(onSetFilter(searchTerm));
     };
-
-    //LABELS
-    const startLoadingLabelsClient = async() =>{
-
-        dispatch(onSetActiveLabel());
-        if(!activeClient) return
-        try {
-                const { data } = await clientsApi.get(`/clients/${activeClient.dni}/labels`);
-                dispatch(onLoadingLabelsClient({
-                    dni: activeClient.dni,
-                    labels: data.labels
-                }))
-
-        } catch (error) {
-             console.error('Error cargando etiquetas:', error)
-        }
-    }
    
 
-    
     return{
         //*propiedades
         clients,
@@ -111,7 +91,6 @@ export const useClientsStore = () => {
         startFilteringClients,
 
         //Label
-        startLoadingLabelsClient
     }
     
 }

@@ -1,45 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import { useClientsStore } from '../../hooks/useClientsStore';
 import { MenuClient } from '../components/clientPage/MenuClient';
 
-import { useLabelsStore } from '../../hooks/useLabelsStore';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { LabelClient } from '../components/clientPage/LabelClient';
-import { CreateLabelModal } from '../components/label/CreateLabelModal';
 import {LabelsModal} from '../components/label/LabelsModal'
 import { LabelAddNew } from '../components/LabelAddNew';
 
 
 export const ClientPage = () => {
-  //Modal etiquetas
-  const [showModal, setShowModal] = useState(false);
-  const { createLabelAndAssign } = useLabelsStore();
-  const [refreshKey, setRefreshKey] = useState(0);            // <-- nuevo
+
 
   const { dni } = useParams();
-  const { starLoadingClientByDNI, activeClient, } = useClientsStore();
+  const { starLoadingClientByDNI, activeClient} = useClientsStore();
 
 
   useEffect(() => {
-    if (dni) {
-      starLoadingClientByDNI(dni);
-    }
-  }, [dni, starLoadingClientByDNI]);
+    starLoadingClientByDNI(); 
+  }, []);
 
   if (!activeClient) {
     return <p>Cliente no encontrado</p>;
   }
-
-  const handleCreate = async (label) => {
-    createLabelAndAssign({
-      ...label,               // name, description, color
-      dni: activeClient.dni   // debes tenerlo en contexto
-    });
-    setShowModal(false);
-    setRefreshKey(k => k + 1);    // <-- incrementamos al crear
-  };
-
 
   return (
     <div className="container-fluid col-7 mt-5 pt-5">
@@ -69,25 +52,9 @@ export const ClientPage = () => {
     <LabelsModal/>
         {/* IZQUIERDA: Etiquetas */}
         <div className="d-flex flex-wrap align-items-center gap-2" style={{ minHeight: '42px' }}>
-          <LabelClient dni={dni} refreshKey={refreshKey} />
-
-          <button
-            className="btn btn-outline-dark btn-sm py-0"
-            style={{ borderRadius: '25px', fontSize: '1rem' }}
-            onClick={() => setShowModal(true)}
-          >
-            <i className="bi bi-pencil-square me-2"></i>
-            Etiquetas
-          </button>
+          <LabelClient dni={dni} />
           <LabelAddNew/>
-          <LabelsModal/>
 
-          {showModal && (
-            <CreateLabelModal
-              onCreate={handleCreate}
-              onClose={() => setShowModal(false)}
-            />
-          )}
         </div>
 
         {/* DERECHA: Botones de acción */}

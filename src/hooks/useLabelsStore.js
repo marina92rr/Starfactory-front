@@ -1,22 +1,23 @@
 
 import { useDispatch, useSelector } from "react-redux";
-import { addLabel, onLoadLabels, onSetActiveLabel, onSetFilterLabel } from "../store/label/labelSlice";
+import { addLabel, onLoadingLabels, onLoadLabels, onSetActiveLabel, onSetFilterLabel, onSetLabels } from "../store/label/labelSlice";
 import { clientsApi } from "../api";
+import { useClientsStore } from "./useClientsStore";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 
 
 export const useLabelsStore = () => {
   const dispatch = useDispatch();
-  const { labels, filter, filteredList, activeLabel } = useSelector(state => state.labels);
+  const { labels, filter, filteredList, activeLabel, isLoadingLabels } = useSelector(state => state.labels);
+  const {dni} = useParams();
 
-     //Activar cliente
-      const setActiveLabel = (labelData) => {
-          dispatch(onSetActiveLabel(labelData))
-      }
 
-  const startAddLabel = (label) => {
-    dispatch(addLabel(label));
-  };
+   //Activar cliente
+    const setActiveLabel = (labelData) => {
+      dispatch(onSetActiveLabel(labelData))
+    }
 
 
   const starLoadingLabels = async() =>{
@@ -41,11 +42,36 @@ export const useLabelsStore = () => {
     }
   };
 
-  //Filtrar labels
-  const startFilteringLabels = (searchTerm) => (dispatch) =>{
-    dispatch(onSetFilterLabel(searchTerm));
-  }
+  const startFilterLabels = async ({dni}) => {
+    if (!dni) return;
+    
+    try {
+      const { data } = await clientsApi.get(`/clients/${dni}/labels`);
+      dispatch(onSetLabels(data.labels || []));
+    } catch (error) {
+      console.error('Error al cargar labels:', error);
+    }
+  };
 
+  //const startFilterLabels = ({dni}) => {
+  // // src/components/clientPage/LabelClient.jsx
+//
+  //  const [labels, setLabels] = useState([])
+//
+  //     useEffect(() => {
+  //  if (!dni) return;
+//
+  //  clientsApi.get(`/clients/${dni}/labels`)
+  //    .then(({ data }) => {
+  //      setLabels(data.labels || []);
+  //    })
+  //    .catch(err => {
+  //      console.error('Error al cargar labels:', err);
+  //      setLabels([]);
+  //    });
+  //}, [dni]); // ✅ Solo se vuelve a ejecutar si cambia el dni
+  //  return labels;
+  //}
    return {
     //*Propiedades
     labels,
@@ -53,10 +79,10 @@ export const useLabelsStore = () => {
     filteredList,
     activeLabel,
     //*Metodos
-    startAddLabel,
+    
     createLabelAndAssign ,
-    startFilteringLabels,
     starLoadingLabels,
-    setActiveLabel
+    setActiveLabel,
+    startFilterLabels
   };
 };

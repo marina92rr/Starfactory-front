@@ -4,10 +4,10 @@ import React, { useState } from 'react'
 
 //Colores por defecto:
 const colors = [
-  '#4B0082', '#800080', '#FF1493', '#FF4500', '#FFD700',
-  '#9ACD32', '#00CED1', '#4682B4', '#2E8B57', '#A52A2A',
-  '#1E90FF', '#20B2AA', '#FF6347', '#D2B48C', '#708090',
-  '#087990', '#00FF7F', '#F0E68C', '#ADD8E6', '#B0C4DE'
+  '#EDE7F6', '#F3E5F5', '#FCE4EC', '#FEF3E0', '#FFFDE7',
+  '#F9FBE7', '#F1F8E9', '#E0F2F1', '#E8F5E9', '#EFEBE9',
+  '#FFEBEE', '#FFE0B2', '#FFECB3', '#FFF9C4', '#F0F4C3',
+  '#DCEDC8', '#B2EBF2', '#B3E5FC', '#BBDEFB', '#C5CAE9'
 ];
 
 export const CreateLabelModal = ({ onCreate, onClose }) => {
@@ -47,7 +47,7 @@ export const CreateLabelModal = ({ onCreate, onClose }) => {
             <h5 className="modal-title">Nueva etiqueta</h5>
             <button className="btn-close" onClick={onClose}></button>
           </div>
-          <label  className="form-label"> Nombre</label>
+          <label htmlFor='name' className="form-label"> Nombre</label>
           <input
             type="text"
             className="form-control mb-2"
@@ -55,7 +55,7 @@ export const CreateLabelModal = ({ onCreate, onClose }) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-           <label  className="form-label"> Descripción</label>
+           <label htmlFor='description'  className="form-label"> Descripción</label>
           <input
             type="text"
             className="form-control mb-2"
@@ -64,7 +64,7 @@ export const CreateLabelModal = ({ onCreate, onClose }) => {
             onChange={(e) => setDescription(e.target.value)}
           />
 
-          <label className="form-label">Color</label>
+          <label htmlFor='color' className="form-label">Color</label>
           <div style={{ position: 'relative' }} className="mb-2">
             <div
               onClick={() => setShowPalette(!showPalette)}

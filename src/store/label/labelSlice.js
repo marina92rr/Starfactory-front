@@ -17,36 +17,26 @@ export const labelSlice = createSlice({
   },
   reducers: {
 
-     //Seleccion de cliente
+     //Carga una etiqueta
     onSetActiveLabel :(state, {payload}) =>{
       state.activeLabel = payload;
+    },
+
+    //Carga de todos los labels
+    onSetLabels: (state, { payload }) => {
+      state.labels = payload;
+      state.isLoading = false;
+    },
+
+    onLoadingLabels: (state) => {
+      state.isLoading = true;
+      state.errorMessage = null;
     },
 
     addLabel: (state, action) => {
       state.labels.push(action.payload);
     },
-    loadLabelsRequest(state) {
-      state.status = 'loading'
-      state.error = null
-    },
-    loadLabelsSuccess(state, action) {
-      state.status = 'succeeded'
-      state.labels = action.payload
-    },
-    loadLabelsFailure(state, action) {
-      state.status = 'failed'
-      state.error = action.payload
-    },
-    clearLabels(state) {
-      state.labels = []
-      state.status = 'idle'
-      state.error = null
-    },
-    LoadLabelsForDni: (state, action) => {
-      delete state.byDni[action.payload]
-      delete state.loading[action.payload]
-      delete state.error[action.payload]
-    },
+ 
     onLoadLabels: (state, {payload}) =>{
       state.isLoadingLabels = false;
       state.labels = payload;
@@ -62,11 +52,9 @@ export const labelSlice = createSlice({
 export const { 
   onSetActiveLabel,
   addLabel,
-  loadLabelsRequest,
-  loadLabelsSuccess,
-  loadLabelsFailure,
-  clearLabels,
-  LoadLabelsForDni,
   onSetFilterLabel,
-  onLoadLabels
+  LoadLabelsForDni,
+  onSetLabels,
+  onLoadLabels,
+  onLoadingLabels
 } = labelSlice.actions; //accion

@@ -1,24 +1,22 @@
 
-// src/components/clientPage/LabelClient.jsx
-import React, { useState, useEffect } from 'react'
-import { clientsApi } from '../../../api'
+import { useEffect } from 'react';
+import { useLabelsStore } from '../../../hooks/useLabelsStore';
+import { useFilterLabels } from '../../../hooks/useFilterLabels';
 
-export const LabelClient = ({ dni, refreshKey  }) => {
-  const [labels, setLabels] = useState([])
 
-  useEffect(() => {
-    clientsApi
-      .get(`/clients/${dni}/labels`)
-      .then(({ data }) => {
-        setLabels(data.labels || [])
-      })
-      .catch(err => {
-        console.error('Error al cargar labels:', err)
-        setLabels([])
-      })
-  }, [dni, refreshKey])
+export const LabelClient = ({ dni  }) => {
 
-  if (labels.length === 0) return null
+  const {startFilterLabels} =useLabelsStore();
+  const labels = useFilterLabels({dni});
+
+  //useEffect(() => {
+  //  
+  //  startFilterLabels(dni)
+  //}, [dni]);
+   // const labels = startFilterLabels({dni});
+
+
+   if (!labels || labels.length === 0) return null;
 
   return (
     <div className="d-flex flex-wrap mt-1">

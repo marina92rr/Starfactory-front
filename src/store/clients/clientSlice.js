@@ -24,10 +24,9 @@ export const clientSlice = createSlice({
     //Filtrar cliente
     onSetFilter: (state, action) => {
       state.filter = action.payload;
-      const q = state.filter.trim().toLowerCase();
-      state.filteredList = state.clients.filter(c => {
-        const full = `${c.name} ${c.lastname}`.toLowerCase();
-        return full.includes(q);
+      const filter = state.filter.trim().toLowerCase();
+      state.filteredList = state.clients.filter(dbclient => {const full = `${dbclient.name} ${dbclient.lastname}`.toLowerCase();
+        return full.includes(filter);
       });
     },
 
@@ -55,9 +54,7 @@ export const clientSlice = createSlice({
     //Lectura clientes
     onLoadClients : (state, {payload = []}) =>{
       state.isLoadingClients = false,
-
       state.clients = payload;
-
       payload.forEach( client =>{
         const exists = state.clients.some( dbClient => dbClient.dni === client.dni);
         if( !exists){
@@ -66,33 +63,14 @@ export const clientSlice = createSlice({
       })
     },
 
-
     //Lectura Cliente
     onLoadClientByDNI : (state, {payload}) =>{
       state.activeClient = payload;
       state.error = null;
     }
-   
   },
 
-  setError: (state, action) => {
-    state.error = action.payload;
-  },
 
-  //LABELS
-  onSetActiveLabel :(state) =>{
-    state.isLoadingLabelsClient = true;
-  },
-
-  onLoadingLabelsClient: (state, {payload: {dni, labels}}) =>{
-    state.isLoadingLabelsClient = false;
-
-    const client = state.clients.find(c => c.dni === dni)
-      if (client) {
-        client.labels = labels
-      }
-  }
-  
 })
 export const {
   //*Client
@@ -104,10 +82,5 @@ export const {
   onDeleteClient,
   onLoadClients,
   onLoadClientByDNI,
-  setError,
-  //*Labels
- onSetActiveLabel,
- onLoadingLabelsClient
-  
 
- } = clientSlice.actions; //accion
+} = clientSlice.actions; //accion
