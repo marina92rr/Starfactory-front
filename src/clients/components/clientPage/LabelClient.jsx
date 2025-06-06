@@ -19,7 +19,7 @@ export const LabelClient = ({ dni  }) => {
    if (!labels || labels.length === 0) return null;
 
   return (
-    <div className="d-flex flex-wrap mt-1">
+    <div className="d-flex flex-wrap mt-1 ms-2">
       {labels.map((label, i) => (
         <span
           key={i}
