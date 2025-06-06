@@ -52,9 +52,9 @@ export const ClientsPage = () => {
                 <label
                 key={client.dni}
                 onMouseDown={() => handleSelect(client.dni)}
-                className="form-label-label fw-bold ms-2" style={{cursor:"pointer"}} htmlFor={`client-${i}`}>
-                  {fullName}
-                  <LabelClient dni={client.dni}/>
+                className="form-label-label fw-bold ms-2 d-flex" style={{cursor:"pointer"}} htmlFor={`client-${i}`}>
+                 <h5 className='me-3'>{fullName}</h5> 
+                  <LabelClient  dni={client.dni}/>
                 </label>
               </div>
               <div className='d-flex'>

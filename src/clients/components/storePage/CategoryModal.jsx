@@ -22,6 +22,7 @@ export const CategoryModal = () => {
     const {isModalOpen, closeModal} = useUiStore(); //Abrir y cerrar modal
     const { activeCategory, startSavingCategory, starLoadingCategories} = useCategoryStore();
 
+
     //Estado valor
     const [formValues, setFormValues] = useState({
         name: ''
@@ -42,25 +43,28 @@ export const CategoryModal = () => {
       }, [formValues.name, formSubmitted]);
     
       const onInputChange = ({ target }) => {
-        const { name, type, value } = target;
+        const { name, value } = target;
         setFormValues((prev) => ({
           ...prev,
-          [name]: type === value,
+          [name]: value,
         }));
       };
 
     const onSubmit = async (e) => {
-        e.preventDefault();
-        setFormSubmitted(true);
+  e.preventDefault();
+  setFormSubmitted(true);
 
-        if (formValues.name.trim().length === 0) return;
+  if (formValues.name.trim().length === 0) return;
 
-        await startSavingCategory(formValues);
-        closeModal();
-        await starLoadingCategories();
-        setFormSubmitted(false);
-        setFormValues({ name: '' });
-  };
+  await startSavingCategory(formValues);  // Guarda en la BBDD
+
+  closeModal();  // Debería cerrar el modal
+
+  await starLoadingCategories();  // Recarga desde backend
+
+  setFormValues({ name: '' });
+  setFormSubmitted(false);
+};
 
 
   return (

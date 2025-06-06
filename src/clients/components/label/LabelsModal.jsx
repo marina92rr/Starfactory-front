@@ -5,7 +5,6 @@ import Modal from 'react-modal';        //Popup
 import { useUiStore } from '../../../hooks/useUiStore';
 import { CreateLabelModal } from './CreateLabelModal';
 import { useClientsStore} from '../../../hooks/useClientsStore'
-import { useSelector } from 'react-redux';
 import { useFilterLabels } from '../../../hooks/useFilterLabels';
 
 Modal.setAppElement('#root');
@@ -38,7 +37,7 @@ export const LabelsModal = () => {
   
   //Abrir modal addNewLabel
   const {isModalOpen, closeModal} = useUiStore();             //Abrir/ cerrar modal
-  const { labels, starLoadingLabels, startFilterLabels} = useLabelsStore();      //Lectura todos los Labels
+  const { labels, starLoadingLabels} = useLabelsStore();      //Lectura todos los Labels
   const {activeClient} = useClientsStore();                   //Cliente activo en clientPage
 
 //Nada mas cargar la pag 

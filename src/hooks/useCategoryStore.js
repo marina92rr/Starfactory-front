@@ -19,12 +19,11 @@ const setActiveCategory = (categoryData) =>{
     const startSavingCategory = async(categorytSave) =>{
         try {
         
-            const {data} = await clientsApi.post('/store/category', categorytSave);
+            const {data} = await clientsApi.post('store/category', categorytSave);
             dispatch( onAddNewCategory(data));
 
         } catch (error) {
             console.log(error);
-            shallowEqual.dire('Error al guardar', error.response.data.msg, 'error');
         }
     }
 
@@ -32,12 +31,11 @@ const setActiveCategory = (categoryData) =>{
         const starLoadingCategories = async() =>{
     
             try {
-                //const {data} = await axios.get('http://localhost:4001/api/clients');
+                //const {data} = await axios.get('http://localhost:4001/api/store');
                 const {data} = await clientsApi.get('store/category');
                 const category = data.categories;
     
                 dispatch(onLoadCategory(category));
-                //console.log({client});
                 
             } catch (error) {
                 console.log('Error al cargar los eventos');
