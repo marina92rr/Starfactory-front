@@ -7,19 +7,19 @@ import { useDispatch } from 'react-redux';
 export const FindLabel = () => {
 
 
-  const dispath = useDispatch();
+  const dispatch  = useDispatch();
   const navigate = useNavigate();
 
-  const { clients, starLoadingClients, startFilteringClients, filter, filteredList } = useClientsStore();
+  const { startFilteringClients, filter, filteredList } = useClientsStore();
   const [showDropdown, setShowDropdown] = useState(false);
 
   
 
 
   //Filtrar clientes
-  const handleFilterChange = (client) => {
-        const value = client.target.value;
-        dispath(startFilteringClients(value));
+  const handleFilterChange = (e) => {
+        const value = e.target.value;
+        dispatch(startFilteringClients(value));
         setShowDropdown(value.trim().length > 0 && filteredList.length > 0);
   };
 
@@ -44,7 +44,7 @@ export const FindLabel = () => {
             <input
               type="text"
               placeholder="Buscar..."
-              className='rounded-3 bg-light-subtle p-1'
+              className='form-control rounded-3 bg-light-subtle p-1'
               style={{ outline: 'none', borderColor: 'gray' }}
               value={filter}
               onChange={handleFilterChange}
@@ -53,7 +53,7 @@ export const FindLabel = () => {
             />
 
           {showDropdown && (
-          <ul className="dropdown-menu show pl-3">
+          <ul className="dropdown-menu show position-absolute w-100 z-3">
             {filteredList.map(client => (
               <li
                 key={client.dni}

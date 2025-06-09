@@ -6,6 +6,7 @@ import { useUiStore } from '../../../hooks/useUiStore';
 import { CreateLabelModal } from './CreateLabelModal';
 import { useClientsStore} from '../../../hooks/useClientsStore'
 import { useFilterLabels } from '../../../hooks/useFilterLabels';
+import { clientsApi } from '../../../api';
 
 Modal.setAppElement('#root');
 
@@ -32,33 +33,56 @@ const customStyles = {
 
 export const LabelsModal = () => {
 
-  //Create modal
-  const [showModal, setShowModal] = useState(false);
+
   
   //Abrir modal addNewLabel
   const {isModalOpen, closeModal} = useUiStore();             //Abrir/ cerrar modal
   const { labels, starLoadingLabels} = useLabelsStore();      //Lectura todos los Labels
-  const {activeClient} = useClientsStore();                   //Cliente activo en clientPage
+  const {activeClient, starLoadingClientByDNI} = useClientsStore();                   //Cliente activo en clientPage
+  
+    //Create modal
+  const [showModal, setShowModal] = useState(false);
+  const [selectedLabels, setSelectedLabels] = useState([]);
+
+  const clientLabels = useFilterLabels({dni: activeClient?.dni});
 
 //Nada mas cargar la pag 
   useEffect(() =>{
     starLoadingLabels();    //Lectura allabel
   }, []);
 
-//Crear etiqueta
-  const handleCreate = async (label) => {
-    createLabelAndAssign({
-      ...label,               // name, description, color
-      dni: activeClient.dni   // debes tenerlo en contexto
-    });
-    setShowModal(false);
-    setRefresKey(k => k + 1);    // <-- incrementamos al crear
+  //Cargar etiquetas del cliente
+  useEffect(() => {
+    if(clientLabels && clientLabels.length > 0){
+      setSelectedLabels(clientLabels.map(label => label.idLabel));  //idLabel de label
+    }
+  }, [clientLabels]);
+
+    const handleToggle = (idLabel) => {
+    setSelectedLabels(prev =>
+      prev.includes(idLabel)
+        ? prev.filter(id => id !== idLabel)
+        : [...prev, idLabel]
+    );
   };
 
-  //Marcar labelClient
-  const [refresKey, setRefresKey] = useState();
-  //Etiquetas del client
-  const clientLabels = useFilterLabels({dni: activeClient.dni});
+//Guardar etiqueta
+ const handleSaveLabels = async () => {
+    try {
+       await clientsApi.put(`/labels/${activeClient.dni}`, {
+        ...activeClient,
+        idLabels: selectedLabels
+      });
+
+      closeModal();
+      await starLoadingClientByDNI(activeClient.dni); // recargar cliente si quieres
+
+    } catch (error) {
+      console.error('Error al guardar etiquetas del cliente', error);
+    }
+  };
+
+
   if (!labels || labels.length === 0) return null;
 
   return (
@@ -95,32 +119,35 @@ export const LabelsModal = () => {
             <hr />
           </div>
           {labels.map((label) => {
-            const isChecked = clientLabels.some(l => l.idLabel === label.idLabel); // marcar si el cliente ya tiene este label
-            
-            return (
-              <div className='d-flex' key={label.idLabel}>
-                <input type="checkbox"
-                checked={isChecked}
-                  />
-                <div 
-                  className='me-3 ms-3'
-                  style={{
-                    backgroundColor: `${label.color}`,
-                    width: '10px',
-                    height: '10px',
-                    borderRadius: '25px',
-                    border: '1px solid #ccc',
-                    cursor: 'pointer'
-                  }}
-                ></div>
-                <div style={{cursor: 'pointer'}}>{label.name.toUpperCase()}</div>
-                <hr />
-              </div>
-                            
-            )}
-          
-          )}
-         <button className='btn btn-success'>Guardar</button>
+            const isChecked = (selectedLabels || []).includes(label.idLabel);
+
+        return (
+          <div className="d-flex align-items-center mb-2" key={label.idLabel}>
+            <input
+              type="checkbox"
+              checked={isChecked}
+              onChange={() => handleToggle(label.idLabel)}
+            />
+            <div
+              className="me-3 ms-3"
+              style={{
+                backgroundColor: label.color,
+                width: '10px',
+                height: '10px',
+                borderRadius: '25px',
+                border: '1px solid #ccc',
+                cursor: 'pointer',
+              }}
+            ></div>
+            <div style={{ cursor: 'pointer' }}>{label.name.toUpperCase()}</div>
+          </div>
+        );
+      })}
+
+      <hr />
+      <button className="btn btn-success" onClick={handleSaveLabels}>
+        Guardar
+      </button>
      
     
     </Modal>
