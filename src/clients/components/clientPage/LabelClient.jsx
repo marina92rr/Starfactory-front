@@ -1,19 +1,11 @@
 
-import { useEffect } from 'react';
-import { useLabelsStore } from '../../../hooks/useLabelsStore';
+
 import { useFilterLabels } from '../../../hooks/useFilterLabels';
 
 
 export const LabelClient = ({ dni  }) => {
 
-  const {startFilterLabels} =useLabelsStore();
   const labels = useFilterLabels({dni});
-
-  //useEffect(() => {
-  //  
-  //  startFilterLabels(dni)
-  //}, [dni]);
-   // const labels = startFilterLabels({dni});
 
 
    if (!labels || labels.length === 0) return null;

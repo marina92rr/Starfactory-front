@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import { useClientsStore } from '../../hooks/useClientsStore';
 import { MenuClient } from '../components/clientPage/MenuClient';
@@ -49,10 +49,10 @@ export const ClientPage = () => {
       </div>
       <div className="d-flex justify-content-between align-items-start flex-wrap mt-2">
 
-    <LabelsModal/>
+    <LabelsModal dni={dni} />
         {/* IZQUIERDA: Etiquetas */}
         <div className="d-flex flex-wrap align-items-center gap-2" style={{ minHeight: '42px' }}>
-          <LabelClient dni={dni} />
+          <LabelClient dni={dni}  />
           <LabelAddNew/>
 
         </div>

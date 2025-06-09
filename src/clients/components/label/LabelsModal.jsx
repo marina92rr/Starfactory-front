@@ -31,7 +31,7 @@ const customStyles = {
 };
 
 
-export const LabelsModal = () => {
+export const LabelsModal = ({dni}) => {
 
 
   
@@ -44,7 +44,7 @@ export const LabelsModal = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedLabels, setSelectedLabels] = useState([]);
 
-  const clientLabels = useFilterLabels({dni: activeClient?.dni});
+  const clientLabels = useFilterLabels({dni});
 
 //Nada mas cargar la pag 
   useEffect(() =>{
@@ -74,8 +74,10 @@ export const LabelsModal = () => {
         idLabels: selectedLabels
       });
 
-      closeModal();
       await starLoadingClientByDNI(activeClient.dni); // recargar cliente si quieres
+      window.location.reload();
+            closeModal();
+
 
     } catch (error) {
       console.error('Error al guardar etiquetas del cliente', error);

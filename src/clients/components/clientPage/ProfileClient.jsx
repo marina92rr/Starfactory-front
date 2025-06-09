@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useClientsStore } from '../../../hooks/useClientsStore';
 import { useParams } from 'react-router-dom';
+import { ClientModal } from '../ClientModal';
+import { ClientEddit } from '../ClientEddit';
 
 export const ProfileClient = () => {
 
@@ -24,7 +26,8 @@ export const ProfileClient = () => {
 
         <div className='d-flex justify-content-between align-items-start mb-3'>
           <h4>Datos personales</h4>
-          <button className="btn btn-outline-primary btn-sm ">Editar</button>
+          <ClientEddit/>
+          <ClientModal/>
 
         </div>
         <div>

@@ -4,6 +4,7 @@ import { onAddNewClient,
          onLoadClients, 
          onSetActiveClient, 
          onSetFilter,
+         onUpdateClient,
         } from "../store/clients/clientSlice";
 
 import { clientsApi } from "../api";
@@ -24,16 +25,21 @@ export const useClientsStore = () => {
     }
 
     // Nuevo cliente 
-    const startSavingClient = async(clientSave) =>{
+    const startSavingClient = async(clientSave, isEditMode) =>{
         try {
-        
-            const {data} = await clientsApi.post('/clients', clientSave);
-            dispatch( onAddNewClient(data));
+    if (isEditMode) {
+      const { data } = await clientsApi.put(`/clients/${clientSave.dni}`, clientSave);
+      dispatch(onUpdateClient(data));
+      return;
+    }
 
-        } catch (error) {
-            console.log(error);
-            shallowEqual.dire('Error al guardar', error.response.data.msg, 'error');
-        }
+    const { data } = await clientsApi.post('/clients', clientSave);
+    dispatch(onAddNewClient(data));
+
+  } catch (error) {
+    console.error('Error al guardar cliente', error);
+    shallowEqual.dire('Error al guardar', error.response?.data?.msg || 'Error desconocido', 'error');
+  }
     }
 
 

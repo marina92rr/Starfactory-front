@@ -21,9 +21,7 @@ export const ClientsPage = () => {
   }, []);
 
   // Cuando seleccionas un cliente, navegamos a /clients/:dni
-  const handleSelect = dni => {
-    navigate(`${dni}`);
-  };
+  const handleSelect = dni => { navigate(`${dni}`);};
   return (
 
     <div className='container-fluid col-7 mt-5' >
@@ -35,7 +33,6 @@ export const ClientsPage = () => {
       <div className='d-flex'>
         <div className='form-floating p-0 mb-2 d-flex'>
           <FindClient/>
-          
         </div>
       </div>
       <div className="border rounded-top br-3 d-flex align-items-center p-3 bg-light">
@@ -54,7 +51,7 @@ export const ClientsPage = () => {
                 onMouseDown={() => handleSelect(client.dni)}
                 className="form fw-bold p-2 d-flex align-items-center" style={{cursor:"pointer"}} htmlFor={`client-${i}`}>
                  {fullName}
-                  <LabelClient  dni={client.dni}/>
+                  <LabelClient dni={client.dni}/>
                 </label>
               </div>
               <div className='d-flex'>

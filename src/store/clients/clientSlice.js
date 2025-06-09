@@ -39,8 +39,12 @@ export const clientSlice = createSlice({
 
     // Modificar cliente por dni
     onUpdateClient:(state, {payload})=>{
-      const update = payload;
-      state.clients = state.clients.map( client => client.dni === update.dni ? update : client);  //Si el id existe entonces update sino nuevo client
+      state.clients = state.clients.map( client =>{      //Nuevo array del evento
+        if( client.dni === payload.dni){
+          return payload;
+        }
+        return client;
+      })   
     },
 //
     //eliminar cliente por dni

@@ -14,8 +14,6 @@ export const FindLabel = () => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   
-
-
   //Filtrar clientes
   const handleFilterChange = (e) => {
         const value = e.target.value;
