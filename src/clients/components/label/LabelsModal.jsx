@@ -36,7 +36,7 @@ export const LabelsModal = ({dni}) => {
 
   
   //Abrir modal addNewLabel
-  const {isModalOpen, closeModal} = useUiStore();             //Abrir/ cerrar modal
+  const {isModalLabelOpen, closeLabelModal} = useUiStore();             //Abrir/ cerrar modal
   const { labels, starLoadingLabels} = useLabelsStore();      //Lectura todos los Labels
   const {activeClient, starLoadingClientByDNI} = useClientsStore();                   //Cliente activo en clientPage
   
@@ -90,8 +90,8 @@ export const LabelsModal = ({dni}) => {
   return (
 
     <Modal
-      isOpen={isModalOpen}
-      onRequestClose={closeModal}
+      isOpen={isModalLabelOpen}
+      onRequestClose={closeLabelModal}
       style= {customStyles}
       contentLabel='Etiquetas' 
     >

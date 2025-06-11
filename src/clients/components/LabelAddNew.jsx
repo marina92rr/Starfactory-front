@@ -4,7 +4,7 @@ import { useUiStore } from "../../hooks/useUiStore"
 
 
 export const LabelAddNew = () => {
-    const {openModal} = useUiStore();   //Abrir modal
+    const {openLabelModal} = useUiStore();   //Abrir modal
     const {setActiveLabel} = useLabelsStore();
 
     const handleClickNew = () =>{
@@ -13,7 +13,7 @@ export const LabelAddNew = () => {
             Description:'',
             color: '',
         })
-        openModal();
+        openLabelModal();
     }
 
   return (

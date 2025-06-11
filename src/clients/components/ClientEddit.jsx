@@ -8,7 +8,7 @@ import { useUiStore } from "../../hooks/useUiStore"
 
 export const ClientEddit = () => {
 
-    const {openModal} = useUiStore();   //Abrir modal
+    const {openClientModal} = useUiStore();   //Abrir modal
     const {setActiveClient, activeClient} = useClientsStore();
 
     const handleClickNew = () =>{
@@ -22,7 +22,7 @@ export const ClientEddit = () => {
             isTeacher: false
         })
 
-        openModal();
+        openClientModal();
     }
 
 

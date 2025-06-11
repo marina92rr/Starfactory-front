@@ -16,7 +16,7 @@ const customStyles = {
 };
 
 export const ClientModal = () => {
-  const { isModalOpen, closeModal } = useUiStore();
+  const { isModalClientOpen, closeClientModal } = useUiStore();
   const { activeClient, startSavingClient, starLoadingClients } = useClientsStore();
 
   const isEditMode = !!activeClient?.dni;
@@ -49,7 +49,7 @@ export const ClientModal = () => {
       isTeacher: true,
     });
   }
-  setFormSubmitted();
+  setFormSubmitted(false);
 }, []);
 
   const titleClass = useMemo(() => {
@@ -72,7 +72,7 @@ const onInputChange = ({ target }) => {
   if (formValues.name.trim().length === 0) return;
 
   await startSavingClient(formValues, isEditMode); // <-- pasa el modo
-  closeModal();
+  closeClientModal();
   await starLoadingClients();
 
   setFormSubmitted(false);
@@ -92,12 +92,12 @@ const onInputChange = ({ target }) => {
 
   return (
     <Modal
-      isOpen={isModalOpen}
-      onRequestClose={closeModal}
+      isOpen={isModalClientOpen}
+      onRequestClose={closeClientModal}
       style={customStyles}
-      contentLabel={activeClient ? 'Editar Cliente' : 'Añadir Cliente'}
+      contentLabel={isEditMode ? 'Editar Cliente' : 'Añadir Cliente'}
     >
-      <h1>{activeClient ? 'Editar Cliente' : 'Añadir nuevo Cliente'}</h1>
+      <h1>{isEditMode ? 'Editar Cliente' : 'Añadir nuevo Cliente'}</h1>
       <hr />
       <form className='container' onSubmit={onSubmit}>
         <div className='mb-3'>
@@ -182,7 +182,7 @@ const onInputChange = ({ target }) => {
         </div>
 
         <button type='submit' className='btn btn-primary btn-block'>
-          {activeClient ? 'Actualizar' : 'Guardar'}
+          {isEditMode ? 'Actualizar' : 'Guardar'}
         </button>
       </form>
     </Modal>

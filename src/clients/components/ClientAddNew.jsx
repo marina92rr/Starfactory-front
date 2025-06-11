@@ -4,7 +4,7 @@ import { useUiStore } from "../../hooks/useUiStore"
 
 export const ClientAddNew = () => {
 
-    const {openModal} = useUiStore();   //Abrir modal
+    const {openClientModal} = useUiStore();   //Abrir modal
     const {setActiveClient} = useClientsStore();
 
     const handleClickNew = () =>{
@@ -18,7 +18,7 @@ export const ClientAddNew = () => {
             isTeacher: false
         })
 
-        openModal();
+        openClientModal();
     }
 
 

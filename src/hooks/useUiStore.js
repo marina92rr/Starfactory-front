@@ -1,38 +1,58 @@
 import { useDispatch, useSelector } from "react-redux"
-import { onCloseModal, onOpenModal } from "../store/ui/uiSlice";
+import { onCloseClientModal, onCloseLabelModal, onOpenClientModal, onOpenLabelModal } from "../store/ui/uiSlice";
 
 
 
 export const useUiStore = () => {
 
     const dispatch = useDispatch();
-    const { isModalOpen} = useSelector( state => state.ui);
+    const { 
+      isModalClientOpen,
+      isModalLabelOpen
+     } = useSelector( state => state.ui);
 
-    //Abrir modal
-    const openModal = () =>{
-        dispatch(onOpenModal());
+
+    //*--------------------------------ClientModal--------------------------------
+
+    //Abrir ClientModal
+    const openClientModal = () =>{
+        dispatch(onOpenClientModal());
     }
 
-    //Cerrar modal
-    const closeModal = () =>{
-        dispatch(onCloseModal());
+    //Cerrar ClientModal
+    const closeClientModal = () =>{
+        dispatch(onCloseClientModal());
     }
 
-    //Condicion
-    const toggleModal = () =>{
-        (isModalOpen)
-        ?openModal()
-        :closeModal()
+    //Condicion ClientModal
+    //const toggleClientModal = () =>{  (isModalClientOpen)?openClientModal():closeClientModal()}
+
+    //*--------------------------------LabelModal--------------------------------
+
+        //Abrir ClientModal
+    const openLabelModal = () =>{
+        dispatch(onOpenLabelModal());
     }
+
+    //Cerrar ClientModal
+    const closeLabelModal = () =>{
+        dispatch(onCloseLabelModal());
+    }
+
+  
+
 
   return {
     //*Propiedades
-    isModalOpen,
+    isModalClientOpen,
+    isModalLabelOpen,
 
     //*Metodos
-    openModal,
-    closeModal,
-    toggleModal
+    openClientModal,
+    closeClientModal,
+    
+    openLabelModal,
+    closeLabelModal
     
   }
 }

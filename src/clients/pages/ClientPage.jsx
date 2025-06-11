@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useClientsStore } from '../../hooks/useClientsStore';
 import { MenuClient } from '../components/clientPage/MenuClient';
 
@@ -14,6 +14,7 @@ export const ClientPage = () => {
 
   const { dni } = useParams();
   const { starLoadingClientByDNI, activeClient} = useClientsStore();
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -23,6 +24,12 @@ export const ClientPage = () => {
   if (!activeClient) {
     return <p>Cliente no encontrado</p>;
   }
+
+
+const handleSelect = dni => {
+  navigate('addSales');
+};
+
 
   return (
     <div className="container-fluid col-7 mt-5 pt-5">
@@ -59,7 +66,10 @@ export const ClientPage = () => {
 
         {/* DERECHA: Botones de acción */}
         <div className="d-flex gap-2 mt-2 mt-lg-0">
-          <button className="btn" type="button" style={{ background: '#38b647', color: 'white' }}>Nueva Venta</button>
+
+
+        <button className="btn btn-success" type="button"
+        style={{ background: '#38b647', color: 'white' }} onClick={() => handleSelect(activeClient.dni)}>Nueva venta</button>
           <button className="btn btn-outline-danger" type="button">Programar baja</button>
           <button className="btn btn-danger" type="button">Dar baja</button>
         </div>
