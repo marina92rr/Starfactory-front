@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { onCloseClientModal, onCloseLabelModal, onOpenClientModal, onOpenLabelModal } from "../store/ui/uiSlice";
+import { onCloseCategoryModal, onCloseClientModal, onCloseLabelModal, onCloseProductModal, onOpenCategoryModal, onOpenClientModal, onOpenLabelModal, onOpenProductModal } from "../store/ui/uiSlice";
 
 
 
@@ -8,7 +8,9 @@ export const useUiStore = () => {
     const dispatch = useDispatch();
     const { 
       isModalClientOpen,
-      isModalLabelOpen
+      isModalLabelOpen,
+      isModalCategoryOpen,
+      isModalProductOpen
      } = useSelector( state => state.ui);
 
 
@@ -29,16 +31,39 @@ export const useUiStore = () => {
 
     //*--------------------------------LabelModal--------------------------------
 
-        //Abrir ClientModal
+        //Abrir LabelModal
     const openLabelModal = () =>{
         dispatch(onOpenLabelModal());
     }
 
-    //Cerrar ClientModal
+    //Cerrar LabelModal
     const closeLabelModal = () =>{
         dispatch(onCloseLabelModal());
     }
 
+    //*--------------------------------CategoryModal--------------------------------
+
+        //Abrir LabelModal
+        const openCategoryModal = () =>{
+            dispatch(onOpenCategoryModal());
+        }
+    
+        //Cerrar LabelModal
+        const closeCategoryModal = () =>{
+            dispatch(onCloseCategoryModal());
+        }
+
+    //*--------------------------------ProductModal--------------------------------
+
+        //Abrir LabelModal
+        const openProductModal = () =>{
+            dispatch(onOpenProductModal());
+        }
+    
+        //Cerrar LabelModal
+        const closeProductModal = () =>{
+            dispatch(onCloseProductModal());
+        }
   
 
 
@@ -46,13 +71,21 @@ export const useUiStore = () => {
     //*Propiedades
     isModalClientOpen,
     isModalLabelOpen,
+    isModalCategoryOpen,
+    isModalProductOpen,
 
     //*Metodos
     openClientModal,
     closeClientModal,
     
     openLabelModal,
-    closeLabelModal
+    closeLabelModal,
+
+    openCategoryModal,
+    closeCategoryModal,
+
+    openProductModal,
+    closeProductModal
     
   }
 }

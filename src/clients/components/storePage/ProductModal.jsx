@@ -1,0 +1,142 @@
+
+import Modal from 'react-modal'
+import { useEffect, useMemo, useState } from 'react'
+import { useUiStore } from '../../../hooks/useUiStore';
+import { useCategoryStore } from '../../../hooks/useCategoryStore';
+import { useProductStore } from '../../../hooks/useProductStore';
+
+
+Modal.setAppElement('#root');
+
+const customStylesModal = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+
+export const ProductModal = () => {
+
+  const { isModalProductOpen, closeProductModal } = useUiStore(); //Abrir y cerrar modal
+  const { activeProduct, startSavingProduct, starLoadingProducts } = useProductStore();
+  const { categories } = useCategoryStore();
+
+
+
+  //Estado valor
+  const [formValues, setFormValues] = useState({
+    name: '',
+    description: '',
+    price: 0,
+    idCategory: ''
+  });
+
+  //Subir estado formulario
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (activeProduct) {
+      setFormValues({ ...activeProduct });
+    }
+  }, [activeProduct]);
+
+  const titleClass = useMemo(() => {
+    if (!formSubmitted) return '';
+    return formValues.name.trim().length > 0 ? 'is-valid' : 'is-invalid';
+  }, [formValues.name, formSubmitted]);
+
+  const onInputChange = ({ target }) => {
+    const { name, value } = target;
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setFormSubmitted(true);
+
+    if (formValues.name.trim().length === 0) return;
+
+    await startSavingProduct(formValues);  // Guarda en la BBDD
+
+    closeProductModal();  // Debería cerrar el modal
+
+    await starLoadingProducts();  // Recarga desde backend
+
+    setFormValues({
+      name: '',
+      description: '',
+      price: 0,
+      idCategory: ''
+    });
+    setFormSubmitted(false);
+  };
+
+
+  return (
+    <Modal
+      isOpen={isModalProductOpen}
+      onRequestClose={closeProductModal}
+      style={customStylesModal}
+      contentLabel='Crear Categoría' >
+
+      <h1>Nueva categoría</h1>
+      <hr />
+      <form className='container' onSubmit={onSubmit}>
+        <div className='mb-3'>
+          <label className="form-label">Nombre</label>
+          <input
+            className={`form-control ${titleClass}`}
+            name='name'
+            type="text"
+            value={formValues.name}
+            onChange={onInputChange}
+          />
+
+          <label className="form-label">Nombre para los clientes:</label>
+          <input
+            className={`form-control ${titleClass}`}
+            name='description'
+            type="text"
+            value={formValues.description}
+            onChange={onInputChange}
+          />
+          <label className="form-label">Categoría</label>
+          <select
+            className="form-select"
+            name="idCategory"
+            value={formValues.idCategory}
+            onChange={(e) => setFormValues({ ...formValues, idCategory: e.target.value })}
+            required
+          >
+            <option value="">-- Selecciona una categoría --</option>
+            {categories.map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+
+          <div className='d-flex justify-content-between'>
+
+            <label className="form-label">PVP</label>
+            <input
+              className={`form-control ${titleClass}`}
+              name='price'
+              type="number"
+              value={formValues.price}
+              onChange={onInputChange}
+            />
+          </div>
+
+        </div>
+        <button type='submit' className='btn btn-success btn-block'>Guardar</button>
+      </form>
+    </Modal>
+  )
+}

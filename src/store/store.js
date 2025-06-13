@@ -3,6 +3,7 @@ import { clientSlice } from "./clients/clientSlice"
 import { uiSlice } from "./ui/uiSlice"
 import { labelSlice } from "./label/labelSlice"
 import { categorySlice } from "./storeFactory/categorySlice"
+import { productSlice } from "./storeFactory/productSlice"
 
 
 export const store = configureStore({
@@ -11,7 +12,8 @@ export const store = configureStore({
         client: clientSlice.reducer,
         ui: uiSlice.reducer,
         labels: labelSlice.reducer,
-        category: categorySlice.reducer
+        category: categorySlice.reducer,
+        product: productSlice.reducer
     },
 
     middleware: (getDefaultMiddleware) =>

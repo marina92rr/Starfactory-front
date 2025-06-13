@@ -28,7 +28,7 @@ export const categorySlice = createSlice({
          payload.forEach( category =>{
         const exists = state.categories.some( dbCategory => dbCategory.id === category.id);
         if( !exists){
-          state.clients.push(category)
+          state.categories.push(category)
         }
       })
     }

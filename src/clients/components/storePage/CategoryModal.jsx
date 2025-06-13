@@ -19,7 +19,7 @@ const customStylesModal = {
 
 export const CategoryModal = () => {
 
-    const {isModalOpen, closeModal} = useUiStore(); //Abrir y cerrar modal
+    const {isModalCategoryOpen, closeCategoryModal} = useUiStore(); //Abrir y cerrar modal
     const { activeCategory, startSavingCategory, starLoadingCategories} = useCategoryStore();
 
 
@@ -58,7 +58,7 @@ export const CategoryModal = () => {
 
   await startSavingCategory(formValues);  // Guarda en la BBDD
 
-  closeModal();  // Debería cerrar el modal
+  closeCategoryModal();  // Debería cerrar el modal
 
   await starLoadingCategories();  // Recarga desde backend
 
@@ -69,8 +69,8 @@ export const CategoryModal = () => {
 
   return (
     <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
+        isOpen={isModalCategoryOpen}
+        onRequestClose={closeCategoryModal}
         style={customStylesModal}
         contentLabel='Crear Categoría' >
 

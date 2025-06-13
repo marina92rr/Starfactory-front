@@ -4,7 +4,7 @@ import { useUiStore } from "../../../hooks/useUiStore"
 
 export const CategoryAddNew = () => {
 
-  const {openModal} = useUiStore();
+  const {openCategoryModal} = useUiStore();
   const {setActiveCategory} = useCategoryStore();
 
 
@@ -12,7 +12,7 @@ export const CategoryAddNew = () => {
         setActiveCategory({
             name: '',
         })
-        openModal();
+        openCategoryModal();
     }
 
   return (
