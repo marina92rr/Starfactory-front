@@ -15,7 +15,7 @@ export const ProfileClient = () => {
     if (dni) {
       starLoadingClientByDNI(dni);
     }
-  }, [dni, starLoadingClientByDNI]);
+  }, []);
 
 
   return (
@@ -25,20 +25,12 @@ export const ProfileClient = () => {
       <div className="row border rounded p-4 shadow-sm ">
 
         <div className='d-flex justify-content-between align-items-start mb-3'>
-          <h4>Datos personales</h4>
+          <h2>Datos personales</h2>
           <ClientEddit/>
           <ClientModal/>
 
         </div>
         <div>
-        
-        <img
-            
-            alt="Foto perfil"
-            className="img-thumbnail rounded-circle mb-3"
-            style={{ width: '120px', height: '120px', objectFit: 'cover' }}
-          />
-
 
       </div>
 
@@ -65,7 +57,7 @@ export const ProfileClient = () => {
 
            <div>
             <strong>Fecha de alta:</strong> 
-            <p>ABRAHAM</p>
+            <p>_</p>
           </div>
         </div>
 

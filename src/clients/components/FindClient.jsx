@@ -10,7 +10,7 @@ export const FindClient = () => {
   const dispath = useDispatch();
   const navigate = useNavigate();
 
-  const { clients, starLoadingClients, startFilteringClients, filter, filteredList } = useClientsStore();
+  const { startFilteringClients, filter, filteredList } = useClientsStore();
   const [showDropdown, setShowDropdown] = useState(false);
 
   //Filtrar clientes
