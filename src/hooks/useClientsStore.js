@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { onAddNewClient, 
          onLoadClientByDNI, 
          onLoadClients, 
+         onLoadLimitClients, 
          onSetActiveClient, 
          onSetFilter,
          onUpdateClient,
@@ -15,7 +16,7 @@ import { useParams } from "react-router-dom";
 export const useClientsStore = () => {
   
     const dispatch = useDispatch();
-    const {clients, activeClient, filter, filteredList, isLoadingLabelsClient } = useSelector( state => state.client);
+    const {clients,clientsLimit, activeClient, filter, filteredList, isLoadingLabelsClient,isLoadingClients, allClientsLoaded } = useSelector( state => state.client);
     const {dni}= useParams();
 
 
@@ -60,6 +61,23 @@ export const useClientsStore = () => {
         }
     }
 
+     //Lectura de 30 clientes
+    const starLoadingLimitClients = async() =>{
+
+        try {
+            //const {data} = await axios.get('http://localhost:4001/api/clients');
+            const {data} = await clientsApi.get('clients/limit');
+            const client = data.clients;
+
+            dispatch(onLoadLimitClients(client));
+            //console.log({client});
+            
+        } catch (error) {
+            console.log('Error al cargar los eventos');
+            console.log(error);
+        }
+    }
+
     //Lectura de cliente
     const starLoadingClientByDNI = async() =>{
         try {
@@ -75,9 +93,25 @@ export const useClientsStore = () => {
 
     //Filtrar 
     // Filtrar clientes en frontend
-    const startFilteringClients = (searchTerm) => (dispatch) => {
-      dispatch(onSetFilter(searchTerm));
-    };
+   //const startFilteringClients = (searchTerm) => (dispatch) => {
+   //  dispatch(onSetFilter(searchTerm));
+   //};
+
+   // Filtrar clientes (se asegura de tener todos)
+const startFilteringClients = (searchTerm) => async (dispatch, getState) => {
+  const { client } = getState();
+
+  if (!client.allClientsLoaded) {
+    try {
+      const { data } = await clientsApi.get('clients');
+      dispatch(onLoadClients(data.clients));
+    } catch (error) {
+      console.error('Error al cargar todos los clientes', error);
+    }
+  }
+
+  dispatch(onSetFilter(searchTerm));
+};
    
 
     return{
@@ -87,11 +121,15 @@ export const useClientsStore = () => {
         filter,
         filteredList,
         isLoadingLabelsClient,
+        isLoadingClients,
+        allClientsLoaded,
+        clientsLimit,
 
         //*Metodos
         //Client
         setActiveClient,
         starLoadingClients,
+        starLoadingLimitClients,
         starLoadingClientByDNI,
         startSavingClient,
         startFilteringClients,

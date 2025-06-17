@@ -11,12 +11,13 @@ export const ClientsPage = () => {
 
   const navigate = useNavigate();
 
-  const { clients, starLoadingClients } = useClientsStore();
+  const { clientsLimit, starLoadingLimitClients } = useClientsStore();
 
   
   //LCarga de clientes
   useEffect(() => {
-    starLoadingClients();
+    //starLoadingClients();
+    starLoadingLimitClients();
        
   }, []);
 
@@ -31,16 +32,14 @@ export const ClientsPage = () => {
       </div>
       <ClientModal />
       <div className='d-flex'>
-        <div className='form-floating p-0 mb-2 d-flex'>
-          <FindClient/>
-        </div>
+       
       </div>
       <div className="border rounded-top br-3 d-flex align-items-center p-3 bg-light">
         
       </div>
 
       <div className="d-flex flex-column">
-        {clients.map((client, i) => {
+        {clientsLimit.map((client, i) => {
           const fullName = `${client.name} ${client.lastName}`.toUpperCase();
           return (
             <div key={i} className="border p-3 text-start">

@@ -13,8 +13,10 @@ export const FindClient = () => {
   const { startFilteringClients, filter, filteredList } = useClientsStore();
   const [showDropdown, setShowDropdown] = useState(false);
 
+
   //Filtrar clientes
   const handleFilterChange = (client) => {
+   
         const value = client.target.value;
         dispath(startFilteringClients(value));
         setShowDropdown(value.trim().length > 0 && filteredList.length > 0);
@@ -50,7 +52,11 @@ export const FindClient = () => {
             />
 
           {showDropdown && (
-          <ul className="dropdown-menu show pl-3">
+          <ul className="dropdown-menu show pl-3"
+               style={{
+      maxHeight: '400px', // puedes ajustar la altura que quieras
+      overflowY: 'auto',
+    }}>
             {filteredList.map(client => (
               <li
                 key={client.dni}

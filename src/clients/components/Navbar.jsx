@@ -1,7 +1,13 @@
+import { useDispatch, useSelector } from "react-redux";
 import { FindClient } from "./FindClient"
+import { useClientsStore } from "../../hooks/useClientsStore";
+import { useCallback, useState } from "react";
 
 
 export const Navbar = () => {
+
+  
+
   return (
     <>
       <div className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
@@ -12,7 +18,7 @@ export const Navbar = () => {
           User
         </span>
 
-        <FindClient/>
+       <FindClient/>
 
         <button className="btn btn-outline-danger ms-auto me-5">
           <i className="fas fa-sign-out-alt"></i>

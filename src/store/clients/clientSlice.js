@@ -5,7 +5,9 @@ export const clientSlice = createSlice({
   name: 'client',
   initialState:{
     isLoadingClients: false,
+    allClientsLoaded: false,
     clients: [],
+    clientsLimit: [],
     activeClient: null,
     filter: '',
     filteredList: [],
@@ -58,7 +60,20 @@ export const clientSlice = createSlice({
     //Lectura clientes
     onLoadClients : (state, {payload = []}) =>{
       state.isLoadingClients = false,
+      state.allClientsLoaded = true;
       state.clients = payload;
+      payload.forEach( client =>{
+        const exists = state.clients.some( dbClient => dbClient.dni === client.dni);
+        if( !exists){
+          state.clients.push(client)
+        }
+      })
+    },
+
+        //Lectura clientes
+    onLoadLimitClients : (state, {payload = []}) =>{
+      state.isLoadingClients = false,
+      state.clientsLimit = payload;
       payload.forEach( client =>{
         const exists = state.clients.some( dbClient => dbClient.dni === client.dni);
         if( !exists){
@@ -86,5 +101,6 @@ export const {
   onDeleteClient,
   onLoadClients,
   onLoadClientByDNI,
+  onLoadLimitClients
 
 } = clientSlice.actions; //accion
