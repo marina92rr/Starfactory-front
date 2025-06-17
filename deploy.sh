@@ -2,9 +2,6 @@
 
 echo "========== INICIANDO DEPLOY =========="
 
-# Moverse al directorio del proyecto (ajusta esta ruta)
-cd /ruta/a/tu/proyecto || { echo "❌ Error: No se pudo acceder al directorio del proyecto"; exit 1; }
-
 # Actualización del repositorio
 echo "📥 Ejecutando git fetch..."
 git fetch
