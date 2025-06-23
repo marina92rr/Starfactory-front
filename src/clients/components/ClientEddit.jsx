@@ -9,7 +9,7 @@ import { useUiStore } from "../../hooks/useUiStore"
 export const ClientEddit = () => {
 
     const {openClientModal} = useUiStore();   //Abrir modal
-    const {setActiveClient, activeClient} = useClientsStore();
+    const {setActiveClient} = useClientsStore();
 
     const handleClickNew = () =>{
         setActiveClient({

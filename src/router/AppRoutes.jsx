@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import { OverviewClient, ReservationsClient, SalesClient, ProfileClient} from '../clients/components/clientPage'
-import { ClientPage, ClientsPage, ServicesPage, StorePage } from '../clients/pages'
+import { ClientPage, ClientsPage, StorePage,RatesPage } from '../clients/pages'
 import { AddNewSales } from '../clients/components/clientPage/AddNewSales'
 
 
@@ -30,7 +30,7 @@ export const AppRoutes = () => {
         <Route path='/store' element={<StorePage/>}/>
         
         {/* ----------------------Servicios---------------------- */}
-        <Route path='/services' element={<ServicesPage/>}/>
+        <Route path='/rates' element={<RatesPage/>}/>
         
     </Routes>
   )

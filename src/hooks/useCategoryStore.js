@@ -19,7 +19,7 @@ const setActiveCategory = (categoryData) =>{
     const startSavingCategory = async(categorytSave) =>{
         try {
         
-            const {data} = await clientsApi.post('store/category', categorytSave);
+            const {data} = await clientsApi.post('category', categorytSave);
             dispatch( onAddNewCategory(data));
 
         } catch (error) {
@@ -32,7 +32,7 @@ const setActiveCategory = (categoryData) =>{
     
             try {
                 //const {data} = await axios.get('http://localhost:4001/api/store');
-                const {data} = await clientsApi.get('store/category');
+                const {data} = await clientsApi.get('category');
                 const category = data.categories;
     
                 dispatch(onLoadCategory(category));

@@ -17,7 +17,8 @@ export const ProductAddNew = () => {
 
   return (
     <button
-      className="btn btn-success btn-ms"
+      className="btn btn-ms"
+       style={{ background: '#38b647', color: 'white' }}
       onClick={handleClickNew}>
       Añadir Producto
     </button>

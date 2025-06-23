@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { onCloseCategoryModal, onCloseClientModal, onCloseLabelModal, onCloseProductModal, onOpenCategoryModal, onOpenClientModal, onOpenLabelModal, onOpenProductModal } from "../store/ui/uiSlice";
+import { onCloseCategoryModal, onCloseClientModal, onCloseLabelModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onOpenCategoryModal, onOpenClientModal, onOpenLabelModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal } from "../store/ui/uiSlice";
 
 
 
@@ -10,7 +10,9 @@ export const useUiStore = () => {
       isModalClientOpen,
       isModalLabelOpen,
       isModalCategoryOpen,
-      isModalProductOpen
+      isModalProductOpen,
+      isModalRateOpen,
+      isModalQuotaOpen
      } = useSelector( state => state.ui);
 
 
@@ -64,7 +66,28 @@ export const useUiStore = () => {
         const closeProductModal = () =>{
             dispatch(onCloseProductModal());
         }
-  
+    //*--------------------------------RateModal--------------------------------
+
+        //Abrir LabelModal
+        const openRateModal = () =>{
+            dispatch(onOpenRateModal());
+        }
+    
+        //Cerrar LabelModal
+        const closeRateModal = () =>{
+            dispatch(onCloseRateModal());
+        }
+    //*--------------------------------QuotaModal--------------------------------
+
+        //Abrir LabelModal
+        const openQuotaModal = () =>{
+            dispatch(onOpenQuotaModal());
+        }
+    
+        //Cerrar LabelModal
+        const closeQuotaModal = () =>{
+            dispatch(onCloseQuotaModal());
+        }
 
 
   return {
@@ -73,6 +96,8 @@ export const useUiStore = () => {
     isModalLabelOpen,
     isModalCategoryOpen,
     isModalProductOpen,
+    isModalRateOpen,
+    isModalQuotaOpen,
 
     //*Metodos
     openClientModal,
@@ -85,7 +110,13 @@ export const useUiStore = () => {
     closeCategoryModal,
 
     openProductModal,
-    closeProductModal
+    closeProductModal,
+
+    openRateModal,
+    closeRateModal,
+
+    openQuotaModal,
+    closeQuotaModal
     
   }
 }

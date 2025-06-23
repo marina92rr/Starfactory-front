@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { clientsApi } from "../api";
-import { onAddNewProduct, onLoadProduct, onSetActiveProduct } from "../store/storeFactory/productSlice";
+import { onAddNewProduct, onLoadProduct, onSetActiveProduct, onDeleteProduct } from "../store/storeFactory/productSlice";
 
 
 
@@ -9,13 +9,13 @@ export const useProductStore = () => {
     const dispatch = useDispatch();
     const { products, activeProduct } = useSelector( state => state.product);
 
-
+//Producto activo
 const setActiveProduct = (productData) =>{
     dispatch(onSetActiveProduct(productData))
 }
 
 
-// Nuevo cliente 
+// Nuevo producto 
     const startSavingProduct = async(productSave) =>{
         try {
         
@@ -27,6 +27,14 @@ const setActiveProduct = (productData) =>{
         }
     }
 
+    const  startDeleteProduct = async(product)=>{
+       
+            const {data} = await clientsApi.delete(`/products/${product.idProduct}`);
+            dispatch(onDeleteProduct(data));
+    }
+
+
+    //Lectura de productos por categorias
     const startLoadingProductsByCategory = async (idCategory) => {
         try {
           const { data } = await clientsApi.get(`/products/${idCategory}`);
@@ -35,7 +43,7 @@ const setActiveProduct = (productData) =>{
           console.error('Error cargando productos por categoría:', error);
         }
       };
-     //Lectura de categorias
+     //Lectura de productos
         const starLoadingProducts = async() =>{
     
             try {
@@ -60,7 +68,8 @@ const setActiveProduct = (productData) =>{
             setActiveProduct,
             startSavingProduct,
             starLoadingProducts,
-            startLoadingProductsByCategory
+            startLoadingProductsByCategory,
+            startDeleteProduct
         
         }
 

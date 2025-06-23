@@ -1,18 +1,19 @@
-import { useCategoryStore } from "../../../hooks/useCategoryStore";
+import { useRateStore } from "../../../hooks/useRateStore";
 import { useUiStore } from "../../../hooks/useUiStore"
 
 
-export const CategoryAddNew = () => {
+export const RateAddNew = () => {
 
-  const {openCategoryModal} = useUiStore();
-  const {setActiveCategory} = useCategoryStore();
+  const {openRateModal} = useUiStore();
+  const {setActiveRate} = useRateStore();
 
 
   const handleClickNew = () =>{
-        setActiveCategory({
+        setActiveRate({
             name: '',
+            description: '',
         })
-        openCategoryModal();
+        openRateModal();
     }
 
   return (
@@ -20,7 +21,7 @@ export const CategoryAddNew = () => {
       className="btn mx-auto"
        style={{ background: '#38b647', color: 'white' }}
       onClick={handleClickNew}>
-      Añadir Categoría
+      Añadir tarifa
     </button>
   )
 }

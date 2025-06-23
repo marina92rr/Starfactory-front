@@ -8,7 +8,9 @@ export const uiSlice = createSlice({
     isModalClientOpen: false,
     isModalLabelOpen: false,
     isModalCategoryOpen: false,
-    isModalProductOpen: false
+    isModalProductOpen: false,
+    isModalRateOpen: false,
+    isModalQuotaOpen: false,
 
   },
   reducers: {
@@ -23,15 +25,25 @@ export const uiSlice = createSlice({
     //Cerrar modal Label
     onCloseLabelModal: (state) =>{ state.isModalLabelOpen = false;},
     
-     //Abrir modal Categoria
-     onOpenCategoryModal: (state) =>{ state.isModalCategoryOpen = true;},
-     //Cerrar modal Categoria
-     onCloseCategoryModal: (state) =>{ state.isModalCategoryOpen = false;},
+    //Abrir modal Categoria
+    onOpenCategoryModal: (state) =>{ state.isModalCategoryOpen = true;},
+    //Cerrar modal Categoria
+    onCloseCategoryModal: (state) =>{ state.isModalCategoryOpen = false;},
 
-     //Abrir modal Producto
-     onOpenProductModal: (state) =>{ state.isModalProductOpen = true;},
-     //Cerrar modal Producto
-     onCloseProductModal: (state) =>{ state.isModalProductOpen = false;}
+    //Abrir modal Producto
+    onOpenProductModal: (state) =>{ state.isModalProductOpen = true;},
+    //Cerrar modal Producto
+    onCloseProductModal: (state) =>{ state.isModalProductOpen = false;},
+
+
+     //Abrir modal Rate
+     onOpenRateModal: (state) =>{ state.isModalRateOpen = true;},
+     //Cerrar modal Rate
+     onCloseRateModal: (state) =>{ state.isModalRateOpen = false;},
+     //Abrir modal Rate
+     onOpenQuotaModal: (state) =>{ state.isModalQuotaOpen = true;},
+     //Cerrar modal Rate
+     onCloseQuotaModal: (state) =>{ state.isModalQuotaOpen = false;}
 
 
   },
@@ -52,4 +64,11 @@ export const {
   //*Product
     onOpenProductModal,
     onCloseProductModal
+  //*Rate
+    ,onOpenRateModal,
+    onCloseRateModal,
+  //*Quota
+    onOpenQuotaModal,
+    onCloseQuotaModal
+    
 } = uiSlice.actions; //accion

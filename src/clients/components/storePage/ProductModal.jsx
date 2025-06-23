@@ -21,9 +21,10 @@ const customStylesModal = {
 export const ProductModal = () => {
 
   const { isModalProductOpen, closeProductModal } = useUiStore(); //Abrir y cerrar modal
-  const { activeProduct, startSavingProduct, starLoadingProducts } = useProductStore();
+  const { activeProduct, startSavingProduct, starLoadingProducts, startLoadingProductsByCategory } = useProductStore();
   const { categories } = useCategoryStore();
 
+  const isEditMode = !!activeProduct?.idProduct; //Si existe el id del producto, es modo edición
 
 
   //Estado valor
@@ -38,9 +39,17 @@ export const ProductModal = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   useEffect(() => {
-    if (activeProduct) {
+    if (isEditMode) {
       setFormValues({ ...activeProduct });
+    }else{
+      setFormValues({
+        name: '',
+        description: '',
+        price: 0,
+        idCategory: ''
+      });
     }
+    setFormSubmitted(false);
   }, [activeProduct]);
 
   const titleClass = useMemo(() => {
@@ -63,29 +72,30 @@ export const ProductModal = () => {
     if (formValues.name.trim().length === 0) return;
 
     await startSavingProduct(formValues);  // Guarda en la BBDD
-
     closeProductModal();  // Debería cerrar el modal
-
+    //window.location.reload();
     await starLoadingProducts();  // Recarga desde backend
+      setFormSubmitted(false);
 
-    setFormValues({
+if(isEditMode){
+   setFormValues({
       name: '',
       description: '',
       price: 0,
       idCategory: ''
     });
-    setFormSubmitted(false);
   };
-
+}
+   
 
   return (
     <Modal
       isOpen={isModalProductOpen}
       onRequestClose={closeProductModal}
       style={customStylesModal}
-      contentLabel='Crear Categoría' >
+      contentLabel={isEditMode ? 'Editar Producto' : 'Añadir nuevo Producto'} >
 
-      <h1>Nueva categoría</h1>
+      <h1>{isEditMode ? 'Editar Producto' : 'Añadir nuevo Producto'}</h1>
       <hr />
       <form className='container' onSubmit={onSubmit}>
         <div className='mb-3'>
@@ -135,7 +145,9 @@ export const ProductModal = () => {
           </div>
 
         </div>
-        <button type='submit' className='btn btn-success btn-block'>Guardar</button>
+        <button type='submit' className='btn btn-success btn-block'>
+          {isEditMode ? 'actualizar' : 'Guardar'}
+        </button>
       </form>
     </Modal>
   )

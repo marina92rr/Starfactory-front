@@ -21,6 +21,11 @@ export const productSlice = createSlice({
         state.activeProduct = null;
     },
 
+    onDeleteProduct:(state) =>{
+      state.products = state.products.filter(product => product.idProduct !== state.activeProduct.idProduct);
+      state.activeProduct = null;
+    },
+
     onLoadProduct: (state, { payload }) => {
       state.isLoadingProduct = false;
       state.products = payload; // ahora sí es un array directamente
@@ -32,6 +37,7 @@ export const {
     //*Metodos
    onSetActiveProduct,
    onAddNewProduct,
+   onDeleteProduct,
    onLoadProduct
    
 } = productSlice.actions; //accion

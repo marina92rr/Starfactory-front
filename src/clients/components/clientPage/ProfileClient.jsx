@@ -28,7 +28,6 @@ export const ProfileClient = () => {
           <h2>Datos personales</h2>
           <ClientEddit/>
           <ClientModal/>
-
         </div>
         <div>
 
