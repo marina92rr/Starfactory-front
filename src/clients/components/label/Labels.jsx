@@ -1,16 +1,15 @@
 
-import { useLabelsStore } from "../../hooks/useLabelsStore";
-import { useUiStore } from "../../hooks/useUiStore"
+import { useLabelsStore } from "../../../hooks/useLabelsStore";
+import { useUiStore } from "../../../hooks/useUiStore"
 
 
-export const LabelAddNew = () => {
+export const Labels = () => {
     const {openLabelModal} = useUiStore();   //Abrir modal
     const {setActiveLabel} = useLabelsStore();
 
     const handleClickNew = () =>{
         setActiveLabel({
             nameLabel: '',
-            Description:'',
             color: '',
         })
         openLabelModal();

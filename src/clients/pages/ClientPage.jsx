@@ -5,20 +5,21 @@ import { MenuClient } from '../components/clientPage/MenuClient';
 
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { LabelClient } from '../components/clientPage/LabelClient';
-import {LabelsModal} from '../components/label/LabelsModal'
-import { LabelAddNew } from '../components/LabelAddNew';
+import { LabelsModal} from '../components/label/LabelsModal'
+import {  Labels } from '../components/label/Labels';
+
 
 
 export const ClientPage = () => {
 
 
-  const { dni } = useParams();
-  const { starLoadingClientByDNI, activeClient} = useClientsStore();
+  const { idClient } = useParams();
+  const { starLoadingClientByID, activeClient} = useClientsStore();
   const navigate = useNavigate();
 
 
   useEffect(() => {
-    starLoadingClientByDNI(); 
+    starLoadingClientByID(); 
   }, []);
 
   if (!activeClient) {
@@ -26,7 +27,7 @@ export const ClientPage = () => {
   }
 
 
-const handleSelect = dni => {
+const handleSelect = idClient => {
   navigate('addSales');
 };
 
@@ -56,20 +57,22 @@ const handleSelect = dni => {
       </div>
       <div className="d-flex justify-content-between align-items-start flex-wrap mt-2">
 
-    <LabelsModal dni={dni} />
+    <LabelsModal idClient={activeClient.idClient} />
         {/* IZQUIERDA: Etiquetas */}
         <div className="d-flex flex-wrap align-items-center gap-2" style={{ minHeight: '42px' }}>
-          <LabelClient dni={dni}  />
-          <LabelAddNew/>
+          <LabelClient idClient={activeClient.idClient}  />
+          <Labels/>
 
         </div>
 
         {/* DERECHA: Botones de acción */}
         <div className="d-flex gap-2 mt-2 mt-lg-0">
-
-
-        <button className="btn btn-success" type="button"
-        style={{ background: '#38b647', color: 'white' }} onClick={() => handleSelect(activeClient.dni)}>Nueva venta</button>
+        <button 
+          className="btn btn-success" type="button"
+          style={{ background: '#38b647', color: 'white' }} 
+          onClick={() => handleSelect(activeClient.idClient)}>
+            Nueva venta
+          </button>
           <button className="btn btn-outline-danger" type="button">Programar baja</button>
           <button className="btn btn-danger" type="button">Dar baja</button>
         </div>

@@ -7,6 +7,7 @@ import { CreateLabelModal } from './CreateLabelModal';
 import { useClientsStore} from '../../../hooks/useClientsStore'
 import { useFilterLabels } from '../../../hooks/useFilterLabels';
 import { clientsApi } from '../../../api';
+import { LabelAddNew } from './LabelAddNew';
 
 Modal.setAppElement('#root');
 
@@ -31,20 +32,18 @@ const customStyles = {
 };
 
 
-export const LabelsModal = ({dni}) => {
+export const LabelsModal = ({idClient}) => {
 
-
-  
   //Abrir modal addNewLabel
-  const {isModalLabelOpen, closeLabelModal} = useUiStore();             //Abrir/ cerrar modal
+  const {isModalLabelOpen, isModalCreateLabelOpen, closeLabelModal} = useUiStore();             //Abrir/ cerrar modal
   const { labels, starLoadingLabels} = useLabelsStore();      //Lectura todos los Labels
-  const {activeClient, starLoadingClientByDNI} = useClientsStore();                   //Cliente activo en clientPage
+  const {activeClient, starLoadingClientByID} = useClientsStore();                   //Cliente activo en clientPage
   
     //Create modal
   const [showModal, setShowModal] = useState(false);
   const [selectedLabels, setSelectedLabels] = useState([]);
 
-  const clientLabels = useFilterLabels({dni});
+  const clientLabels = useFilterLabels({idClient});
 
 //Nada mas cargar la pag 
   useEffect(() =>{
@@ -69,15 +68,13 @@ export const LabelsModal = ({dni}) => {
 //Guardar etiqueta
  const handleSaveLabels = async () => {
     try {
-       await clientsApi.put(`/labels/${activeClient.dni}`, {
+       const {data} = await clientsApi.put(`/labels/client/${activeClient.idClient}`, {
         ...activeClient,
         idLabels: selectedLabels
       });
-
-      await starLoadingClientByDNI(activeClient.dni); // recargar cliente si quieres
+      await starLoadingClientByID(activeClient.idClient); // recargar cliente si quieres
       window.location.reload();
             closeModal();
-
 
     } catch (error) {
       console.error('Error al guardar etiquetas del cliente', error);
@@ -88,36 +85,26 @@ export const LabelsModal = ({dni}) => {
   if (!labels || labels.length === 0) return null;
 
   return (
-
+<>
     <Modal
       isOpen={isModalLabelOpen}
       onRequestClose={closeLabelModal}
       style= {customStyles}
+      shouldCloseOnOverlayClick={true} // ✅ esto permite cerrar al pulsar fuera
       contentLabel='Etiquetas' 
     >
-     
      <div>
      </div>
           <h1>Editar etiquetas</h1>
-         
           <hr />
           <div className='d-flex mb-3'>
             <input 
               type="text" 
               className='form-input col-10 me-2'
               placeholder='Buscar...' />
-                      <button
-                        className="btn btn-success"
-                        onClick={() => setShowModal(true)}
-                      >
-                        Nueva
-                      </button>
-                      {showModal && (
-            <CreateLabelModal
-              onCreate={handleCreate}
-              onClose={() => setShowModal(false)}
-            />
-          )}
+           <div>
+            <LabelAddNew/>
+           </div>
             <hr />
           </div>
           {labels.map((label) => {
@@ -153,7 +140,8 @@ export const LabelsModal = ({dni}) => {
      
     
     </Modal>
+    {isModalCreateLabelOpen && <CreateLabelModal />}
    
-    
+    </>
   )
 }

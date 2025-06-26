@@ -30,9 +30,9 @@ export const FindLabel = () => {
     setShowDropdown(filter.trim().length > 0 && filteredList.length > 0);
   };
 
-  // Cuando seleccionas un cliente, navegamos a /clients/:dni
-  const handleSelect = dni => {
-    navigate(`${dni}`);
+  // Cuando seleccionas un cliente, navegamos a /clients/:ID
+  const handleSelect = idClient => {
+    navigate(`${idClient}`);
     setShowDropdown(false);
   };
   return (
@@ -54,9 +54,9 @@ export const FindLabel = () => {
           <ul className="dropdown-menu show position-absolute w-100 z-3">
             {filteredList.map(client => (
               <li
-                key={client.dni}
+                key={client.idClient}
                 className="dropdown-item"
-                onMouseDown={() => handleSelect(client.dni)}
+                onMouseDown={() => handleSelect(client.idClient)}
               >
                 {client.name.toUpperCase()} {client.lastName.toUpperCase()}
               </li>

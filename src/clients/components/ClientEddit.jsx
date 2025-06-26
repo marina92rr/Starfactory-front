@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { act } from 'react'
 
 import { useClientsStore } from "../../hooks/useClientsStore";
 import { useUiStore } from "../../hooks/useUiStore"
@@ -9,19 +9,10 @@ import { useUiStore } from "../../hooks/useUiStore"
 export const ClientEddit = () => {
 
     const {openClientModal} = useUiStore();   //Abrir modal
-    const {setActiveClient} = useClientsStore();
+    const {setActiveClient, activeClient} = useClientsStore();
 
     const handleClickNew = () =>{
-        setActiveClient({
-            name: '',
-            lastName:'',
-            dni: '',
-            email: '',
-            mainPhone: '',
-            optionalPhone: '',
-            isTeacher: false
-        })
-
+        setActiveClient(activeClient)
         openClientModal();
     }
 

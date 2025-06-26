@@ -1,22 +1,23 @@
 import React from 'react'
 import { useUiStore } from '../../../hooks/useUiStore'
 import { useProductStore } from '../../../hooks/useProductStore';
+import { useCategoryStore } from '../../../hooks/useCategoryStore';
 
-export const ProductEdit= () => {
+export const CategoryEdit= () => {
 
-  const {openProductModal} = useUiStore();
-  const {setActiveProduct, activeProduct} = useProductStore();
+  const {openCategoryModal} = useUiStore();
+  const {setActiveCategory, activeCategory} = useCategoryStore();
 
   const handleClickNew = () => {
-    setActiveProduct(activeProduct);
-    openProductModal();
+    setActiveCategory(activeCategory);
+    openCategoryModal(activeCategory);
   }
   return (
     <div>
         <button   
           className='btn btn-secondary mx-2'
           onClick={handleClickNew}>
-          <i className="bi bi-pencil-square"></i>
+            Editar
         </button>
     </div>
   )

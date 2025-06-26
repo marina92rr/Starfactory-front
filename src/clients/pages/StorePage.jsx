@@ -10,6 +10,9 @@ import { ProductDelete } from '../components/storePage/ProductDelete'
 import { ProductEdit } from '../components/storePage/ProductEdit'
 import { onLoadProduct } from '../../store/storeFactory/productSlice'
 import { useDispatch } from 'react-redux'
+import { CategoryEdit } from '../components/storePage/CategoryEdit'
+import { CategoryDelete } from '../components/storePage/CategoryDelete'
+
 
 export const StorePage = () => {
 
@@ -76,16 +79,27 @@ export const StorePage = () => {
             </div>
     
             <div className='col-8 ms-4' >
-              <div className='border bg-light rounded-top  d-flex justify-content-between align-items-center p-3'>
+              <div className='border bg-light rounded-top justify-content-between align-items-center p-3'>
                 {activeCategory ? (
                   <h3>{activeCategory.name.toUpperCase()}</h3>
                 )    
                   : (
                     <h2 className='text-muted'>Productos</h2>
                 )}  
-                <ProductAddNew/>
-                <ProductModal/>
               </div>
+              {activeCategory ? (
+                <div className='border rounded-top  d-flex justify-content-between align-items-center p-3'>
+                  <ProductAddNew />
+                  <ProductModal />
+                  <div className='align-items-end d-flex gap-2'>
+                    <CategoryEdit />
+                    <CategoryDelete />
+                  </div>
+                </div>
+              ) :(
+                <div></div>
+              )}
+             
               <table className="table border ">
                 <thead >
                   <tr >

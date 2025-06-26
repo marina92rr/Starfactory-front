@@ -7,23 +7,19 @@ import { ClientEddit } from '../ClientEddit';
 export const ProfileClient = () => {
 
 
-  const { dni } = useParams();
-  const { starLoadingClientByDNI, activeClient  } = useClientsStore();
+  const { idClient } = useParams();
+  const { starLoadingClientByID, activeClient  } = useClientsStore();
 
 
   useEffect(() => {
-    if (dni) {
-      starLoadingClientByDNI(dni);
+    if (idClient) {
+      starLoadingClientByID(idClient);
     }
   }, []);
 
-
   return (
-    
     <div className="container mt-5">
-    
       <div className="row border rounded p-4 shadow-sm ">
-
         <div className='d-flex justify-content-between align-items-start mb-3'>
           <h2>Datos personales</h2>
           <ClientEddit/>

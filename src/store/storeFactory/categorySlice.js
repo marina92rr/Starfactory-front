@@ -21,6 +21,15 @@ export const categorySlice = createSlice({
         state.activeCategory = null;
     },
 
+      // Modificar cliente por dni
+    onUpdateCategory:(state, {payload})=>{
+      state.categories = state.categories.map( category =>{      //Nuevo array del evento
+        if( category.idCategory === payload.idCategory){
+          return payload;
+        }
+        return category;
+      })   
+    },
     onLoadCategory : (state, {payload}) =>{
         state.isLoadingCategory = false;
         state.categories = payload;
@@ -31,7 +40,11 @@ export const categorySlice = createSlice({
           state.categories.push(category)
         }
       })
-    }
+    },
+    onDeleteCategory:(state) =>{
+      state.categories = state.categories.filter(category => category.idCategory !== state.activeCategory.idCategory);
+      state.activeCategory = null;
+    },
 
 }
 })
@@ -39,5 +52,7 @@ export const {
     //*Metodos
     onSetActiveCategory, 
     onAddNewCategory, 
-    onLoadCategory 
+    onUpdateCategory,
+    onLoadCategory,
+    onDeleteCategory 
 } = categorySlice.actions; //accion

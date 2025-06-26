@@ -24,6 +24,8 @@ export const RateModal = () => {
     const {isModalRateOpen, closeRateModal} = useUiStore(); //Abrir y cerrar modal
     const { activeRate, startSavingRate, starLoadingRates} = useRateStore();
 
+    const isEditRate = !!activeRate?.idRate;
+
 
     //Estado valor
     const [formValues, setFormValues] = useState({
@@ -35,8 +37,13 @@ export const RateModal = () => {
     const [formSubmitted, setFormSubmitted] = useState(false);
 
     useEffect(() => {
-        if(activeRate){
+        if(isEditRate){
             setFormValues({...activeRate});
+        }else{
+            setFormValues({
+                name: '',
+                description: '',
+            })
         }
     }, [activeRate]);
 
@@ -58,20 +65,24 @@ export const RateModal = () => {
   setFormSubmitted(true);
 
   if (formValues.name.trim().length === 0) return;
-  await startSavingRate(formValues);  // Guarda en la BBDD
+  await startSavingRate(formValues, isEditRate);  // Guarda en la BBDD
   closeRateModal();  // Debería cerrar el modal
   await starLoadingRates();  // Recarga desde backend
-  setFormValues({ name: '', description: '' });  // Limpia el formulario
-  setFormSubmitted(false);
-};
+  if(isEditRate){
+    setFormValues({ 
+      name: '', 
+      description: '' 
+  });  // Limpia el formulario
 
+  }
+};
 
   return (
     <Modal
         isOpen={isModalRateOpen}
         onRequestClose={closeRateModal}
         style={customStylesModal}
-        contentLabel='Crear Tarifa' 
+        contentLabel={isEditRate ? 'Actualizar Tarifa' :'Crear Tarifa'} 
        >
 
         <h1>Nueva Tarifa</h1>
@@ -97,7 +108,9 @@ export const RateModal = () => {
                     onChange={onInputChange} 
                 />
             </div>
-            <button type='submit' className='btn btn-success btn-block'>Guardar</button>
+            <button type='submit' className='btn btn-success btn-block'>
+              {isEditRate ? 'Actualizar' :'Guardar'}
+              </button>
         </form>
     </Modal>
   )

@@ -22,9 +22,10 @@ export const ProductModal = () => {
 
   const { isModalProductOpen, closeProductModal } = useUiStore(); //Abrir y cerrar modal
   const { activeProduct, startSavingProduct, starLoadingProducts, startLoadingProductsByCategory } = useProductStore();
-  const { categories } = useCategoryStore();
+  const { categories, activeCategory } = useCategoryStore();
 
   const isEditMode = !!activeProduct?.idProduct; //Si existe el id del producto, es modo edición
+  const isEditCategory = !!activeCategory?.idCategory; //Si existe el id de la categoría, es modo edición
 
 
   //Estado valor
@@ -71,7 +72,7 @@ export const ProductModal = () => {
 
     if (formValues.name.trim().length === 0) return;
 
-    await startSavingProduct(formValues);  // Guarda en la BBDD
+    await startSavingProduct(formValues, isEditCategory, isEditMode);  // Guarda en la BBDD
     closeProductModal();  // Debería cerrar el modal
     //window.location.reload();
     await starLoadingProducts();  // Recarga desde backend
@@ -124,7 +125,11 @@ if(isEditMode){
             onChange={(e) => setFormValues({ ...formValues, idCategory: e.target.value })}
             required
           >
-            <option value="">-- Selecciona una categoría --</option>
+             {isEditCategory 
+                ? ( <option value={activeCategory.idCategory}>{activeCategory.name}</option> )
+                : ( <option value="">Selecciona una Categoría</option>) 
+              }
+              
             {categories.map((category) => (
               <option key={category._id} value={category._id}>
                 {category.name}
@@ -132,8 +137,7 @@ if(isEditMode){
             ))}
           </select>
 
-          <div className='d-flex justify-content-between'>
-
+          <div className='mb-3'>
             <label className="form-label">PVP</label>
             <input
               className={`form-control ${titleClass}`}

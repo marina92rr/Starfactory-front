@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { onCloseCategoryModal, onCloseClientModal, onCloseLabelModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onOpenCategoryModal, onOpenClientModal, onOpenLabelModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal } from "../store/ui/uiSlice";
+import { onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseLabelModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenLabelModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal } from "../store/ui/uiSlice";
 
 
 
@@ -9,6 +9,8 @@ export const useUiStore = () => {
     const { 
       isModalClientOpen,
       isModalLabelOpen,
+      isModalCreateLabelOpen,
+      isModalColorLabelOpen,
       isModalCategoryOpen,
       isModalProductOpen,
       isModalRateOpen,
@@ -33,7 +35,7 @@ export const useUiStore = () => {
 
     //*--------------------------------LabelModal--------------------------------
 
-        //Abrir LabelModal
+    //Abrir LabelModal
     const openLabelModal = () =>{
         dispatch(onOpenLabelModal());
     }
@@ -41,6 +43,26 @@ export const useUiStore = () => {
     //Cerrar LabelModal
     const closeLabelModal = () =>{
         dispatch(onCloseLabelModal());
+    }
+
+     //Abrir Create LabelModal
+    const openCreateLabelModal = () =>{
+        dispatch(onOpenCreateLabelModal());
+    }
+
+    //Cerrar Create LabelModal
+    const closeCreateLabelModal = () =>{
+        dispatch(onCloseCreateLabelModal());
+    }
+
+         //Abrir Color LabelModal
+    const openColorLabelModal = () =>{
+        dispatch(onOpenColorLabelModal());
+    }
+
+    //Cerrar Color LabelModal
+    const closeColorLabelModal = () =>{
+        dispatch(onCloseColorLabelModal());
     }
 
     //*--------------------------------CategoryModal--------------------------------
@@ -94,6 +116,8 @@ export const useUiStore = () => {
     //*Propiedades
     isModalClientOpen,
     isModalLabelOpen,
+    isModalCreateLabelOpen,
+    isModalColorLabelOpen,
     isModalCategoryOpen,
     isModalProductOpen,
     isModalRateOpen,
@@ -105,6 +129,10 @@ export const useUiStore = () => {
     
     openLabelModal,
     closeLabelModal,
+    openCreateLabelModal,
+    onCloseCreateLabelModal,
+    openColorLabelModal,
+    closeColorLabelModal,
 
     openCategoryModal,
     closeCategoryModal,

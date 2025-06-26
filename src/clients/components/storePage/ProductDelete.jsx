@@ -7,8 +7,6 @@ export const ProductDelete = ({product}) => {
 
       const handleDelete = () => {
         startDeleteProduct(product);
-        window.location.reload();
-
   }
   
   return (

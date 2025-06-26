@@ -3,9 +3,9 @@
 import { useFilterLabels } from '../../../hooks/useFilterLabels';
 
 
-export const LabelClient = ({ dni  }) => {
+export const LabelClient = ({ idClient  }) => {
 
-  const labels = useFilterLabels({dni});
+  const labels = useFilterLabels({idClient});
 
 
    if (!labels || labels.length === 0) return null;

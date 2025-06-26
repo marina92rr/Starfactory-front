@@ -1,6 +1,6 @@
 
 import { useDispatch, useSelector } from "react-redux";
-import { addLabel, onLoadingLabels, onLoadLabels, onSetActiveLabel, onSetFilterLabel, onSetLabels } from "../store/label/labelSlice";
+import { addLabel, onDeleteLabel, onLoadingLabels, onLoadLabels, onSetActiveLabel, onSetFilterLabel, onSetLabels, onUpdateLabel } from "../store/label/labelSlice";
 import { clientsApi } from "../api";
 import { useClientsStore } from "./useClientsStore";
 import { useParams } from "react-router-dom";
@@ -10,9 +10,8 @@ import { useEffect, useState } from "react";
 
 export const useLabelsStore = () => {
   const dispatch = useDispatch();
-  const { labels, filter, filteredList, activeLabel, isLoadingLabels } = useSelector(state => state.labels);
-  const {dni} = useParams();
-
+  const { labels, filter, filteredList, activeLabel } = useSelector(state => state.labels);
+  const {idClient} = useParams();
 
    //Activar cliente
     const setActiveLabel = (labelData) => {
@@ -22,6 +21,7 @@ export const useLabelsStore = () => {
 
   const starLoadingLabels = async() =>{
    try {
+    
      const {data} = await clientsApi.get('labels');
     const label = data.labels;
 
@@ -33,45 +33,36 @@ export const useLabelsStore = () => {
    }
   }
 
-  const createLabelAndAssign = async (labelData) => {
+  const createLabelAndAssign = async (labelData, isEditMode) => {
     try {
-      const { data } = await clientsApi.post('labels/create-and-assign', labelData);
+      //if (isEditMode) {
+      //  const { data } = await clientsApi.put(`/labels/label/${labelData.idLabel}`, labelData);
+      //  dispatch(onUpdateLabel(data));
+      //  return;
+      //}
+      
+      const { data } = await clientsApi.post('labels/labelClient', labelData);
+      console.log(data);
       dispatch(addLabel(data.label));
     } catch (error) {
       console.error('Error al crear y asignar etiqueta:', error);
     }
   };
 
-  const startFilterLabels = async ({dni}) => {
-    if (!dni) return;
-    
+  const startFilterLabels = async () => {
+    if (!idClient) return;
     try {
-      const { data } = await clientsApi.get(`/clients/${dni}/labels`);
+      const { data } = await clientsApi.get(`/clients/${idClient}/labels`);
       dispatch(onSetLabels(data.labels || []));
     } catch (error) {
       console.error('Error al cargar labels:', error);
     }
   };
 
-  //const startFilterLabels = ({dni}) => {
-  // // src/components/clientPage/LabelClient.jsx
-//
-  //  const [labels, setLabels] = useState([])
-//
-  //     useEffect(() => {
-  //  if (!dni) return;
-//
-  //  clientsApi.get(`/clients/${dni}/labels`)
-  //    .then(({ data }) => {
-  //      setLabels(data.labels || []);
-  //    })
-  //    .catch(err => {
-  //      console.error('Error al cargar labels:', err);
-  //      setLabels([]);
-  //    });
-  //}, [dni]); // ✅ Solo se vuelve a ejecutar si cambia el dni
-  //  return labels;
-  //}
+  const startDeleteLabel = async(label)=>{
+        const {data} = await clientsApi.delete(`/labels/${label.idLabel}`);
+        dispatch(onDeleteLabel(data));
+    }
    return {
     //*Propiedades
     labels,
@@ -83,6 +74,7 @@ export const useLabelsStore = () => {
     createLabelAndAssign ,
     starLoadingLabels,
     setActiveLabel,
-    startFilterLabels
+    startFilterLabels,
+    startDeleteLabel
   };
 };

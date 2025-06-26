@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { onAddNewCategory, onLoadCategory, onSetActiveCategory } from "../store/storeFactory/categorySlice";
+import { onAddNewCategory, onDeleteCategory, onLoadCategory, onSetActiveCategory, onUpdateCategory } from "../store/storeFactory/categorySlice";
 import { clientsApi } from "../api";
 
 
@@ -14,11 +14,14 @@ const setActiveCategory = (categoryData) =>{
     dispatch(onSetActiveCategory(categoryData))
 }
 
-
-// Nuevo cliente 
-    const startSavingCategory = async(categorytSave) =>{
+// Actualizar o crear una categoria 
+    const startSavingCategory = async(categorytSave, isEditMode) =>{
         try {
-        
+            if (isEditMode) {
+                const { data } = await clientsApi.put(`/category/${categorytSave.idCategory}`, categorytSave);
+                dispatch(onUpdateCategory(data));
+            return;
+            }
             const {data} = await clientsApi.post('category', categorytSave);
             dispatch( onAddNewCategory(data));
 
@@ -42,6 +45,10 @@ const setActiveCategory = (categoryData) =>{
                 console.log(error);
             }
         };
+        const  startDeleteCategory = async()=>{
+            const {data} = await clientsApi.delete(`/category/${activeCategory.idCategory}`);
+            dispatch(onDeleteCategory(data));
+        }
         
              return{
             //*Propiedades
@@ -51,7 +58,8 @@ const setActiveCategory = (categoryData) =>{
             //*Metodos
             setActiveCategory,
             starLoadingCategories,
-            startSavingCategory
+            startSavingCategory,
+            startDeleteCategory
         
         }
 

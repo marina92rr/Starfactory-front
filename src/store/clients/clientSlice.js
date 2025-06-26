@@ -39,20 +39,20 @@ export const clientSlice = createSlice({
     },
 
 
-    // Modificar cliente por dni
+    // Modificar cliente por ID
     onUpdateClient:(state, {payload})=>{
       state.clients = state.clients.map( client =>{      //Nuevo array del evento
-        if( client.dni === payload.dni){
+        if( client.idClient === payload.idClient){
           return payload;
         }
         return client;
       })   
     },
 //
-    //eliminar cliente por dni
+    //eliminar cliente por ID
     onDeleteClient : (state) =>{
       if(state.activeClient){
-        state.clients = state.clients.filter( client => client.dni !== state.activeClient.dni);
+        state.clients = state.clients.filter( client => client.idClient !== state.activeClient.idClient);
         state.activeClient = null;
       }
     },
@@ -63,7 +63,7 @@ export const clientSlice = createSlice({
       state.allClientsLoaded = true;
       state.clients = payload;
       payload.forEach( client =>{
-        const exists = state.clients.some( dbClient => dbClient.dni === client.dni);
+        const exists = state.clients.some( dbClient => dbClient.idClient === client.idClient);
         if( !exists){
           state.clients.push(client)
         }
@@ -75,7 +75,7 @@ export const clientSlice = createSlice({
       state.isLoadingClients = false,
       state.clientsLimit = payload;
       payload.forEach( client =>{
-        const exists = state.clients.some( dbClient => dbClient.dni === client.dni);
+        const exists = state.clients.some( dbClient => dbClient.idClient === client.idClient);
         if( !exists){
           state.clients.push(client)
         }
@@ -83,7 +83,7 @@ export const clientSlice = createSlice({
     },
 
     //Lectura Cliente
-    onLoadClientByDNI : (state, {payload}) =>{
+    onLoadClientByID : (state, {payload}) =>{
       state.activeClient = payload;
       state.error = null;
     }
@@ -100,7 +100,7 @@ export const {
   onUpdateClient,
   onDeleteClient,
   onLoadClients,
-  onLoadClientByDNI,
+  onLoadClientByID,
   onLoadLimitClients
 
 } = clientSlice.actions; //accion

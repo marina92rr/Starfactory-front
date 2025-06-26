@@ -20,6 +20,15 @@ export const rateSlice = createSlice({
         state.activeRate = null;
     },
 
+      // Modificar cliente por dni
+    onUpdateRate:(state, {payload})=>{
+      state.rates = state.rates.map( rate =>{      //Nuevo array del evento
+        if( rate.idRate === payload.idRate){
+          return payload;
+        }
+        return rate;
+      })   
+    },
     //Leer categoria
     onLoadRate : (state, {payload}) =>{
         state.isLoadingRate = false;
@@ -31,7 +40,11 @@ export const rateSlice = createSlice({
           state.rates.push(rate)
         }
       })
-    }
+    },
+    onDeleteRate:(state) =>{
+      state.rates = state.rates.filter(rate => rate.idRate !== state.activeRate.idRate);
+      state.activeRate = null;
+    },
 
 }
 })
@@ -39,5 +52,7 @@ export const {
     //*Metodos
     onSetActiveRate,
     onAddNewRate,
-    onLoadRate
+    onUpdateRate,
+    onLoadRate,
+    onDeleteRate
 } = rateSlice.actions; //accion

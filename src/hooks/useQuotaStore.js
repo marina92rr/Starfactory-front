@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { clientsApi } from "../api";
-import { onAddNewQuota, onLoadQuota, onSetActiveQuota } from "../store/rates/quotaSlice";
+import { onAddNewQuota, onDeleteQuota, onLoadQuota, onSetActiveQuota, onUpdateQuota } from "../store/rates/quotaSlice";
 
 
 
@@ -15,8 +15,13 @@ const setActiveQuota = (quotaData) =>{
 }
 
 // Crear cuota 
-    const startSavingQuota = async(quotaSave) =>{
+    const startSavingQuota = async(quotaSave, isEditMode) =>{
        try {
+        if (isEditMode) {
+            const { data } = await clientsApi.put(`/quotas/${quotaSave.idQuota}`, quotaSave);
+            dispatch(onUpdateQuota(data));
+            return;
+        }
         //Fuerza los datos numéricos del formulario, para que se envien como Number
         const preparedQuota = {
             ...quotaSave,       //Desglosa el objeto
@@ -55,6 +60,10 @@ const setActiveQuota = (quotaData) =>{
             console.log(error);
         }
     };
+    const  startDeleteQuota = async(quota)=>{
+        const {data} = await clientsApi.delete(`/quotas/${quota.idQuota}`);
+        dispatch(onDeleteQuota(data));
+    }
         
              return{
             //*Propiedades
@@ -66,6 +75,7 @@ const setActiveQuota = (quotaData) =>{
             startSavingQuota,
             startLoadingQuotasByRate,
             starLoadingQuotas,
+            startDeleteQuota
         }
 
     }

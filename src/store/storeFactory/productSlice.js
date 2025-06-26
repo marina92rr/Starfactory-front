@@ -21,6 +21,15 @@ export const productSlice = createSlice({
         state.activeProduct = null;
     },
 
+     // Modificar cliente por dni
+    onUpdateProduct:(state, {payload})=>{
+      state.products = state.products.map( product =>{      //Nuevo array del evento
+        if( product.idProduct === payload.idProduct){
+          return payload;
+        }
+        return product;
+      })   
+    },
     onDeleteProduct:(state) =>{
       state.products = state.products.filter(product => product.idProduct !== state.activeProduct.idProduct);
       state.activeProduct = null;
@@ -37,6 +46,7 @@ export const {
     //*Metodos
    onSetActiveProduct,
    onAddNewProduct,
+   onUpdateProduct,
    onDeleteProduct,
    onLoadProduct
    

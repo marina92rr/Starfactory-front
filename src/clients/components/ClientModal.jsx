@@ -19,7 +19,7 @@ export const ClientModal = () => {
   const { isModalClientOpen, closeClientModal } = useUiStore();
   const { activeClient, startSavingClient, starLoadingClients } = useClientsStore();
 
-  const isEditMode = !!activeClient?.dni;
+  const isEditMode = !!activeClient?.idClient;
 
 
   const [formValues, setFormValues] = useState({
@@ -74,8 +74,8 @@ const onInputChange = ({ target }) => {
   await startSavingClient(formValues, isEditMode); // <-- pasa el modo
   closeClientModal();
   await starLoadingClients();
-
   setFormSubmitted(false);
+  window.location.reload(true);
 
   if (!isEditMode) {
     setFormValues({

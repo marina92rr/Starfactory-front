@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { clientsApi } from "../api";
-import { onAddNewRate, onLoadRate, onSetActiveRate } from "../store/rates/rateSlice";
+import { onAddNewRate, onDeleteRate, onLoadRate, onSetActiveRate, onUpdateRate } from "../store/rates/rateSlice";
 
 
 
@@ -16,9 +16,14 @@ const setActiveRate = (rateData) =>{
 
 
 // Nuevo cliente 
-    const startSavingRate = async(rateSave) =>{
+    const startSavingRate = async(rateSave, isEditMode) =>{
         try {
         
+            if (isEditMode) {
+                const { data } = await clientsApi.put(`/rates/${rateSave.idRate}`, rateSave);
+                dispatch(onUpdateRate(data));
+                return;
+            }
             const {data} = await clientsApi.post('rates', rateSave);
             dispatch( onAddNewRate(data));
 
@@ -43,6 +48,11 @@ const setActiveRate = (rateData) =>{
             }
         };
         
+        const  startDeleteRate = async()=>{
+            const {data} = await clientsApi.delete(`/rates/${activeRate.idRate}`);
+            dispatch(onDeleteRate(data));
+        }
+
              return{
             //*Propiedades
             rates,
@@ -52,6 +62,7 @@ const setActiveRate = (rateData) =>{
             setActiveRate,
             startSavingRate,
             starLoadingRates,
+            startDeleteRate
         }
 
     }

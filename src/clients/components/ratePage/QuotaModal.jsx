@@ -22,9 +22,10 @@ export const QuotaModal = () => {
 
   const { isModalQuotaOpen, closeQuotaModal } = useUiStore(); //Abrir y cerrar modal
   const { activeQuota, startSavingQuota, starLoadingQuotas } = useQuotaStore();
-  const { rates } = useRateStore();
+  const { rates,activeRate } = useRateStore();
 
   const isEditQuota = !!activeQuota?.idQuota;
+  const isEditRate = !!activeRate?.idRate;
 
 
   //Estado valor
@@ -78,7 +79,7 @@ export const QuotaModal = () => {
 
     console.log('Enviando:', formValues);
 
-    await startSavingQuota(formValues);  // Guarda en la BBDD
+    await startSavingQuota(formValues, isEditQuota, isEditRate);  // Guarda en la BBDD
 
     closeQuotaModal();  // Debería cerrar el modal
 
@@ -142,7 +143,6 @@ export const QuotaModal = () => {
               value={formValues.period}
               onChange={onInputChange}
             >
-
                <option value=""> Periodo </option>
                <option value="puntual">Puntual</option>
                <option value="mensual">Mensual</option>
@@ -157,9 +157,12 @@ export const QuotaModal = () => {
               value={formValues.idRate}
               onChange={onInputChange}
             >
-              <option value=''>Selecciona una tarifa</option>
+              {isEditRate 
+                ? ( <option value={activeRate.idRate}>{activeRate.description}</option> )
+                : ( <option value="">Selecciona una tarifa</option>) 
+              }
               {rates.map(rate => (
-                <option key={rate._id} value={rate._id}>{rate.name}</option>
+                <option key={rate.idRate} value={rate.idRate}>{rate.name}</option>
               ))}
             </select>
          </div>

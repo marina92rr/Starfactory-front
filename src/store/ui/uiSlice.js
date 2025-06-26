@@ -7,6 +7,8 @@ export const uiSlice = createSlice({
   initialState:{
     isModalClientOpen: false,
     isModalLabelOpen: false,
+    isModalCreateLabelOpen: false,
+    isModalColorLabelOpen: false,
     isModalCategoryOpen: false,
     isModalProductOpen: false,
     isModalRateOpen: false,
@@ -24,6 +26,16 @@ export const uiSlice = createSlice({
     onOpenLabelModal: (state) =>{ state.isModalLabelOpen = true;},
     //Cerrar modal Label
     onCloseLabelModal: (state) =>{ state.isModalLabelOpen = false;},
+
+     //Abrir modal Create Label
+    onOpenCreateLabelModal: (state) =>{ state.isModalCreateLabelOpen = true;},
+    //Cerrar modal Create Label
+    onCloseCreateLabelModal: (state) =>{ state.isModalCreateLabelOpen = false;},
+
+     //Abrir modal Color Label
+    onOpenColorLabelModal: (state) =>{ state.isModalColorLabelOpen = true;},
+    //Cerrar modal color Label
+    onCloseColorLabelModal: (state) =>{ state.isModalColorLabelOpen = false;},
     
     //Abrir modal Categoria
     onOpenCategoryModal: (state) =>{ state.isModalCategoryOpen = true;},
@@ -56,6 +68,12 @@ export const {
   //*Label
     onOpenLabelModal,
     onCloseLabelModal,
+  //*Create Label
+    onOpenCreateLabelModal,
+    onCloseCreateLabelModal,
+  //*Color Label
+    onOpenColorLabelModal,
+    onCloseColorLabelModal,
 
   //*Category
     onOpenCategoryModal,

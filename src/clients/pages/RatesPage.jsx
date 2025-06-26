@@ -9,12 +9,14 @@ import { QuotaAddNew } from '../components/ratePage/QuotaAddNew';
 import { QuotaModal } from '../components/ratePage/QuotaModal';
 import { QuotaEdit } from '../components/ratePage/QuotaEdit';
 import { QuotaDelete } from '../components/ratePage/QuotaDelete';
+import { RateDelete } from '../components/ratePage/RateDelete';
+import { RateEdit } from '../components/ratePage/RateEdit';
 
 
 export const RatesPage = () => {
 
   const { starLoadingRates, rates, activeRate, setActiveRate } = useRateStore();
-  const { quotas, startLoadingQuotasByRate } = useQuotaStore();
+  const { quotas, startLoadingQuotasByRate, activeQuota } = useQuotaStore();
 
   useEffect(() => {
     starLoadingRates();
@@ -74,13 +76,25 @@ export const RatesPage = () => {
           <div className='border bg-light rounded-top  d-flex justify-content-between align-items-center p-3'>
             {activeRate ? (
               <h3>{activeRate.description.toUpperCase()}</h3>
-            )    
+            )
               : (
                 <h2 className='text-muted'>Cuotas</h2>
-            )}  
-            <QuotaAddNew/>
-            <QuotaModal/>
+              )}
           </div>
+
+          {activeRate ? (
+            <div className='border rounded-top  d-flex justify-content-between align-items-center p-3'>
+              <QuotaAddNew />
+              <QuotaModal />
+              <div className='align-items-end d-flex gap-2'>
+                <RateEdit />
+                <RateDelete />
+              </div>
+            </div>
+          ) :(
+            <div></div>
+          )}
+
           <table className="table border ">
             <thead >
               <tr >
@@ -94,33 +108,33 @@ export const RatesPage = () => {
               </tr>
             </thead>
             <tbody>
-    {quotas.length === 0 ? (
-      <tr>
-        <td colSpan={5} className="text-muted text-center">No hay cuotas en esta tarifa</td>
-      </tr>
-    ) : (
-      quotas.map((quota, i) => {
-        const { iva, total } = IVAProduct(quota.price);
-        return (
-          <tr key={i}>
-            <td className='text-primary p-3 text-start'>{quota.name.toUpperCase()}</td>
-            <td className="p-3 text-end">{quota.numSession}</td>
-            <td className="p-3 text-center">{quota.period}</td>
-            <td className="p-3 text-end">{total}€</td>
-            <td className="p-3 text-end">{iva}€</td>
-            <td >
-              <div className='d-flex justify-content-center align-items-center gap-2'>
-                <QuotaEdit quota={quota}/>
-                <QuotaModal/>
-                <QuotaDelete quota={quota}/>
-              </div>
-            </td>
+              {quotas.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="text-muted text-center">No hay cuotas en esta tarifa</td>
+                </tr>
+              ) : (
+                quotas.map((quota, i) => {
+                  const { iva, total } = IVAProduct(quota.price);
+                  return (
+                    <tr key={i}>
+                      <td className='text-primary p-3 text-start'>{quota.name.toUpperCase()}</td>
+                      <td className="p-3 text-end">{quota.numSession}</td>
+                      <td className="p-3 text-center">{quota.period}</td>
+                      <td className="p-3 text-end">{total}€</td>
+                      <td className="p-3 text-end">{iva}€</td>
+                      <td >
+                        <div className='d-flex justify-content-center align-items-center gap-2'>
+                          <QuotaEdit quota={activeQuota} />
+                          <QuotaModal />
+                          <QuotaDelete quota={activeQuota} />
+                        </div>
+                      </td>
 
-          </tr>
-        );
-      })
-    )}
-  </tbody>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
           </table>
 
         </div>

@@ -11,7 +11,7 @@ export const AppRoutes = () => {
         <Route path='/' element={<ClientsPage/>}/>
 
         {/* ----------------------Cliente---------------------- */}
-        <Route path=":dni" element={<ClientPage />}>
+        <Route path=":idClient" element={<ClientPage />}>
           {/* Ruta índice: /clients/:dni */}
           <Route index element={<OverviewClient />} />
           {/* Vista general */}

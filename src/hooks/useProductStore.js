@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { clientsApi } from "../api";
-import { onAddNewProduct, onLoadProduct, onSetActiveProduct, onDeleteProduct } from "../store/storeFactory/productSlice";
+import { onAddNewProduct, onLoadProduct, onSetActiveProduct, onDeleteProduct, onUpdateProduct } from "../store/storeFactory/productSlice";
 
 
 
@@ -16,8 +16,13 @@ const setActiveProduct = (productData) =>{
 
 
 // Nuevo producto 
-    const startSavingProduct = async(productSave) =>{
+    const startSavingProduct = async(productSave,isEditMode) =>{
         try {
+             if (isEditMode) {
+                    const { data } = await clientsApi.put(`/products/${productSave.idProduct}`, productSave);
+                    dispatch(onUpdateProduct(data));
+                    return;
+                  }
         
             const {data} = await clientsApi.post('/products', productSave);
             dispatch( onAddNewProduct(data));
@@ -28,9 +33,8 @@ const setActiveProduct = (productData) =>{
     }
 
     const  startDeleteProduct = async(product)=>{
-       
-            const {data} = await clientsApi.delete(`/products/${product.idProduct}`);
-            dispatch(onDeleteProduct(data));
+        const {data} = await clientsApi.delete(`/products/${product.idProduct}`);
+        dispatch(onDeleteProduct(data));
     }
 
 

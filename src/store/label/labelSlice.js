@@ -36,6 +36,16 @@ export const labelSlice = createSlice({
     addLabel: (state, action) => {
       state.labels.push(action.payload);
     },
+
+      // Modificar cliente por idClient
+    onUpdateLabel:(state, {payload})=>{
+      state.labels = state.labels.map( label =>{      //Nuevo array del evento
+        if( label.idLabel === payload.idLabel){
+          return payload;
+        }
+        return label;
+      })   
+    },
  
     onLoadLabels: (state, {payload}) =>{
       state.isLoadingLabels = false;
@@ -46,15 +56,20 @@ export const labelSlice = createSlice({
           state.labels.push(label)
         }
       })
-    }
+    },
+    onDeleteLabel:(state) =>{
+      state.labels = state.labels.filter(label => label.idLabel !== state.activeLabel.idLabel);
+      state.activeLabel = null;
+    },
   }
 })
 export const { 
   onSetActiveLabel,
   addLabel,
+  onUpdateLabel,
   onSetFilterLabel,
-  LoadLabelsForDni,
   onSetLabels,
   onLoadLabels,
-  onLoadingLabels
+  onLoadingLabels,
+  onDeleteLabel
 } = labelSlice.actions; //accion
