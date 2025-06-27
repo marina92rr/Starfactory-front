@@ -38,7 +38,7 @@ export const QuotaModal = () => {
     numPeriods: 0,
     period: '',
     price: 0,
-    idRate:''
+    idRate: ''
   });
 
   //Subir estado formulario
@@ -47,14 +47,14 @@ export const QuotaModal = () => {
   useEffect(() => {
     if (isEditQuota) {
       setFormValues({ ...activeQuota });
-    }else{
+    } else {
       setFormValues({
         name: '',
         numSession: 0,
         numPeriods: 0,
         period: '',
         price: 0,
-        idRate:''
+        idRate: ''
       })
     }
   }, [activeQuota]);
@@ -67,11 +67,11 @@ export const QuotaModal = () => {
   const onInputChange = ({ target }) => {
     const { name, value, type } = target;
     setFormValues(prev => ({
-    ...prev,
-    [name]: type === 'number'
-      ? (value === '' ? '' : parseInt(value, 10)) // para campos vacíos
-      : value
-  }));
+      ...prev,
+      [name]: type === 'number'
+        ? (value === '' ? '' : parseInt(value, 10)) // para campos vacíos
+        : value
+    }));
   };
 
   const onSubmit = async (e) => {
@@ -86,22 +86,22 @@ export const QuotaModal = () => {
 
     closeQuotaModal();  // Debería cerrar el modal
 
-      setActiveRate(activeRate);
-      startLoadingQuotasByRate(activeRate._id);
+    setActiveRate(activeRate);
+    startLoadingQuotasByRate(activeRate._id);
 
     //await starLoadingQuotas();  // Recarga desde backend
 
-    if(isEditQuota){
+    if (isEditQuota) {
       setFormValues({
         name: '',
         numSession: 0,
         numPeriods: 0,
         period: '',
         price: 0,
-        idRate:''
+        idRate: ''
       });
     }
-     };
+  };
 
 
   return (
@@ -109,9 +109,9 @@ export const QuotaModal = () => {
       isOpen={isModalQuotaOpen}
       onRequestClose={closeQuotaModal}
       style={customStylesModal}
-      contentLabel={isEditQuota ? 'Actualizar Cuota' : 'Añadir Cuota' }>
+      contentLabel={isEditQuota ? 'Actualizar Cuota' : 'Añadir Cuota'}>
 
-      <h1>{isEditQuota ? 'Actualizar Cuota' : 'Nueva Cuota' }</h1>
+      <h1>{isEditQuota ? 'Actualizar Cuota' : 'Nueva Cuota'}</h1>
       <hr />
       <form className='container' onSubmit={onSubmit}>
 
@@ -119,43 +119,43 @@ export const QuotaModal = () => {
 
           <div className='mb-3'>
             <label className="form-label">Nombre</label>
-          <input
-            className={`form-control ${titleClass}`}
-            name='name'
-            type="text"
-            value={formValues.name}
-            onChange={onInputChange}
-          />
-          </div>
-
-        <div className='d-flex justify-content-between mb-3'>
-       
-           <div className='mx-1'>
-            <label className="form-label">Nº de días</label>
             <input
               className={`form-control ${titleClass}`}
-              name='numSession'
-              type="number"
-              value={formValues.numSession}
+              name='name'
+              type="text"
+              value={formValues.name}
               onChange={onInputChange}
             />
           </div>
-          <div className='mx-1'>
-            <label className="form-label" htmlFor="period">Periodo</label>
-            <select
-              className={`form-select ${titleClass}`}
-              name='period'
-              type="text"
-              value={formValues.period}
-              onChange={onInputChange}
-            >
-               <option value=""> Periodo </option>
-               <option value="puntual">Puntual</option>
-               <option value="mensual">Mensual</option>
-            </select>
+
+          <div className='d-flex justify-content-between mb-3'>
+
+            <div className='mx-1'>
+              <label className="form-label">Nº de días</label>
+              <input
+                className={`form-control ${titleClass}`}
+                name='numSession'
+                type="number"
+                value={formValues.numSession}
+                onChange={onInputChange}
+              />
+            </div>
+            <div className='mx-1'>
+              <label className="form-label" htmlFor="period">Periodo</label>
+              <select
+                className={`form-select ${titleClass}`}
+                name='period'
+                type="text"
+                value={formValues.period}
+                onChange={onInputChange}
+              >
+                <option value=""> Periodo </option>
+                <option value="puntual">Puntual</option>
+                <option value="mensual">Mensual</option>
+              </select>
+            </div>
           </div>
-        </div>
-         <div className='mb-3'>
+          <div className='mb-3'>
             <label className="form-label">Tarifa</label>
             <select
               className={`form-select ${titleClass}`}
@@ -163,14 +163,14 @@ export const QuotaModal = () => {
               value={formValues.idRate}
               onChange={onInputChange}
             >
-               
-              ( <option value="">Selecciona una tarifa</option>) 
-              
+
+              ( <option value="">Selecciona una tarifa</option>)
+
               {rates.map(rate => (
                 <option key={rate._id} value={rate._id}>{rate.name}</option>
               ))}
             </select>
-         </div>
+          </div>
           <div className='mb-3'>
             <label className="form-label">PVP</label>
             <input
@@ -183,7 +183,7 @@ export const QuotaModal = () => {
           </div>
 
         </div>
-        <button type='submit' className='btn btn-success btn-block'>{isEditQuota ? 'Actualizar' : 'guardar' }</button>
+        <button type='submit' className='btn btn-success btn-block'>{isEditQuota ? 'Actualizar' : 'guardar'}</button>
       </form>
     </Modal>
   )
