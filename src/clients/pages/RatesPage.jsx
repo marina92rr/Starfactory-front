@@ -11,18 +11,16 @@ import { QuotaEdit } from '../components/ratePage/QuotaEdit';
 import { QuotaDelete } from '../components/ratePage/QuotaDelete';
 import { RateDelete } from '../components/ratePage/RateDelete';
 import { RateEdit } from '../components/ratePage/RateEdit';
-import { useDispatch } from 'react-redux';
 
 
 export const RatesPage = () => {
 
   const { starLoadingRates, rates, activeRate, setActiveRate } = useRateStore();
   const { quotas, startLoadingQuotasByRate, activeQuota } = useQuotaStore();
-  const dispatch = useDispatch()
 
   useEffect(() => {
     starLoadingRates();
-  }, []);
+  }, [activeQuota]);
   
   return (
     <div className='container-fluid col-8 mt-5'>
@@ -116,10 +114,10 @@ export const RatesPage = () => {
                   <td colSpan={5} className="text-muted text-center">No hay cuotas en esta tarifa</td>
                 </tr>
               ) : (
-                quotas.map((quota, i) => {
+                quotas.map((quota) => {
                   const { iva, total } = IVAProduct(quota.price);
                   return (
-                    <tr key={i}>
+                    <tr key={quota.idQuota}>
                       <td className='text-primary p-3 text-start'>{quota.name}</td>
                       <td className="p-3 text-end">{quota.numSession}</td>
                       <td className="p-3 text-center">{quota.period}</td>
@@ -127,9 +125,10 @@ export const RatesPage = () => {
                       <td className="p-3 text-end">{iva}€</td>
                       <td >
                         <div className='d-flex justify-content-center align-items-center gap-2'>
-                          <QuotaEdit quota={activeQuota} />
-                          <QuotaModal />
-                          <QuotaDelete quota={activeQuota} />
+                          
+                          <QuotaEdit quota={quota} />
+                          
+                          <QuotaDelete quota={quota} />
                         </div>
                       </td>
 

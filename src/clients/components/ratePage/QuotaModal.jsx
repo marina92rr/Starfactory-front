@@ -3,9 +3,7 @@ import Modal from 'react-modal'
 import { useEffect, useMemo, useState } from 'react'
 import { useUiStore } from '../../../hooks/useUiStore';
 import { useQuotaStore } from '../../../hooks/useQuotaStore';
-import { onLoadQuota } from '../../../store/rates/quotaSlice';
 import { useRateStore } from '../../../hooks/useRateStore';
-import { useDispatch } from 'react-redux';
 
 
 Modal.setAppElement('#root');
@@ -20,15 +18,12 @@ const customStylesModal = {
   },
 };
 
-export const QuotaModal = () => {
+export const QuotaModal = ({quota}) => {
 
   const { isModalQuotaOpen, closeQuotaModal } = useUiStore(); //Abrir y cerrar modal
-  const { activeQuota, startSavingQuota, starLoadingQuotas } = useQuotaStore();
-  const { rates, activeRate, setActiveRate, startLoadingQuotasByRate } = useRateStore();
-  const dispatch = useDispatch();
+  const { activeQuota, startSavingQuota } = useQuotaStore();
+  const { rates } = useRateStore();
 
-  const isEditQuota = !!activeQuota?.idQuota;
-  const isEditRate = !!activeRate?.idRate;
 
 
   //Estado valor
@@ -44,8 +39,12 @@ export const QuotaModal = () => {
   //Subir estado formulario
   const [formSubmitted, setFormSubmitted] = useState(false);
 
+  const isEditMode = !!activeQuota?.idQuota;
+
   useEffect(() => {
-    if (isEditQuota) {
+      console.log("🎯 activeQuota recibido en modal:", activeQuota);
+
+    if (activeQuota && isEditMode) {
       setFormValues({ ...activeQuota });
     } else {
       setFormValues({
@@ -80,18 +79,12 @@ export const QuotaModal = () => {
 
     if (formValues.name.trim().length === 0) return;
 
-    //console.log('Enviando:', formValues);
-
-    await startSavingQuota(formValues);  // Guarda en la BBDD
-
+    await startSavingQuota(formValues, isEditMode);  // Guarda en la BBDD
     closeQuotaModal();  // Debería cerrar el modal
 
-    setActiveRate(activeRate);
-    startLoadingQuotasByRate(activeRate._id);
-
-    //await starLoadingQuotas();  // Recarga desde backend
-
-    if (isEditQuota) {
+    setFormSubmitted(false);
+    
+    if (isEditMode) {
       setFormValues({
         name: '',
         numSession: 0,
@@ -109,9 +102,9 @@ export const QuotaModal = () => {
       isOpen={isModalQuotaOpen}
       onRequestClose={closeQuotaModal}
       style={customStylesModal}
-      contentLabel={isEditQuota ? 'Actualizar Cuota' : 'Añadir Cuota'}>
+      contentLabel={isEditMode ? 'Actualizar Cuota' : 'Añadir Cuota'}>
 
-      <h1>{isEditQuota ? 'Actualizar Cuota' : 'Nueva Cuota'}</h1>
+      <h1>{isEditMode ? 'Actualizar Cuota' : 'Nueva Cuota'}</h1>
       <hr />
       <form className='container' onSubmit={onSubmit}>
 
@@ -183,7 +176,7 @@ export const QuotaModal = () => {
           </div>
 
         </div>
-        <button type='submit' className='btn btn-success btn-block'>{isEditQuota ? 'Actualizar' : 'guardar'}</button>
+        <button type='submit' className='btn btn-success btn-block'>{isEditMode ? 'Actualizar' : 'guardar'}</button>
       </form>
     </Modal>
   )

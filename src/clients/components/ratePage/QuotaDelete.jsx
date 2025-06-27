@@ -1,13 +1,15 @@
 import React from 'react'
 import { useQuotaStore } from '../../../hooks/useQuotaStore';
+import { useRateStore } from '../../../hooks/useRateStore';
 
 export const QuotaDelete = ({quota}) => {
 
-  const { startDeleteQuota } = useQuotaStore();
-
+  const { startDeleteQuota, startLoadingQuotasByRate } = useQuotaStore();
+  const {activeRate} = useRateStore();
+  
   const handleDelete = () => {
     startDeleteQuota(quota);    
-    window.location.reload();
+    startLoadingQuotasByRate(activeRate._id);
   }
   
   return (

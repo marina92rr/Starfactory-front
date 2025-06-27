@@ -8,8 +8,8 @@ export const QuotaEdit= ({quota}) => {
   const {setActiveQuota} = useQuotaStore();
 
   const handleClickNew = () => {
-    setActiveQuota(quota); // Reset active quota
-    openQuotaModal(); 
+  setActiveQuota(quota);
+  openQuotaModal();
   }
 
   return (

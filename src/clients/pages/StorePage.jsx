@@ -18,13 +18,14 @@ export const StorePage = () => {
 
   const dispatch = useDispatch();
   const { starLoadingCategories, categories, activeCategory, setActiveCategory } = useCategoryStore();
-  const {products, startLoadingProductsByCategory} = useProductStore();
+  const {products, startLoadingProductsByCategory, activeProduct} = useProductStore();
 
 
   useEffect(() => {
+
     starLoadingCategories();
 
-  }, []);
+  }, [activeProduct]);
 
   return (
 
@@ -66,7 +67,7 @@ export const StorePage = () => {
                                   }
                                 }}
                               >
-                                {category.name.toUpperCase()}
+                                {category.name}
                               </div>
                             </div>
                           </div>
@@ -81,7 +82,7 @@ export const StorePage = () => {
             <div className='col-8 ms-4' >
               <div className='border bg-light rounded-top justify-content-between align-items-center p-3'>
                 {activeCategory ? (
-                  <h3>{activeCategory.name.toUpperCase()}</h3>
+                  <h3>{activeCategory.name}</h3>
                 )    
                   : (
                     <h2 className='text-muted'>Productos</h2>

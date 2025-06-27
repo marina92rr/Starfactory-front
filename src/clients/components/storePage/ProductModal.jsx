@@ -21,8 +21,8 @@ const customStylesModal = {
 export const ProductModal = () => {
 
   const { isModalProductOpen, closeProductModal } = useUiStore(); //Abrir y cerrar modal
-  const { activeProduct, startSavingProduct, starLoadingProducts, startLoadingProductsByCategory } = useProductStore();
-  const { categories, activeCategory } = useCategoryStore();
+  const { activeProduct, startSavingProduct } = useProductStore();
+  const { categories } = useCategoryStore();
 
   const isEditMode = !!activeProduct?.idProduct; //Si existe el id del producto, es modo edición
 
@@ -73,8 +73,7 @@ export const ProductModal = () => {
     
     await startSavingProduct(formValues, isEditMode);  // Guarda en la BBDD
     closeProductModal();  // Debería cerrar el modal
-    
-      setFormSubmitted(false);
+    setFormSubmitted(false);
 
 if(isEditMode){
    setFormValues({

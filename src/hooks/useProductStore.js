@@ -22,14 +22,13 @@ export const useProductStore = () => {
             const normalizedProduct = normalizeAllTextFields(productSave); //  normalizar todos los campos string
 
             if (isEditMode) {
-                await clientsApi.put(`/products/${productSave.idProduct}`, normalizedProduct);
-                dispatch(onUpdateProduct(productSave));
+                const { data } = await clientsApi.put(`/products/${productSave.idProduct}`, normalizedProduct);
+                dispatch(onUpdateProduct({...normalizedProduct}));
                 return;
             }
 
-            await clientsApi.post('/products', normalizedProduct);
-            dispatch(onAddNewProduct(productSave));
-
+            const { data } = await clientsApi.post('/products', normalizedProduct);
+            dispatch(onAddNewProduct({...normalizedProduct}));
         } catch (error) {
             console.log(error);
         }
@@ -38,7 +37,8 @@ export const useProductStore = () => {
     const startDeleteProduct = async (product) => {
          try {
             await clientsApi.delete(`/products/${product.idProduct}`);
-            dispatch(onDeleteProduct(product));
+            dispatch(onDeleteProduct());
+            
         } catch (error) {
             console.error('Error al eliminar el producto:', error);
         }

@@ -58,7 +58,8 @@ export const useQuotaStore = () => {
     const startDeleteQuota = async (quota) => {
         try {
                    await clientsApi.delete(`/quotas/${quota.idQuota}`);
-                   dispatch(onDeleteQuota(quota));
+                   dispatch(onDeleteQuota());
+                  
                } catch (error) {
                    console.error('Error al eliminar el producto:', error);
                }

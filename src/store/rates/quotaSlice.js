@@ -37,8 +37,10 @@ export const quotaSlice = createSlice({
     },
 
     onDeleteQuota:(state) =>{
-      state.quotas = state.quotas.filter(quota => quota.idQuota !== state.activeQuota.idQuota);
-      state.activeQuota = null;
+      if(state.activeQuota){
+        state.quotas = state.quotas.filter(quota => quota.idQuota !== state.activeQuota.idQuota);
+        state.activeQuota = null;
+      }
     },
 }
 })

@@ -31,8 +31,11 @@ export const productSlice = createSlice({
       })
     },
     onDeleteProduct: (state) => {
-      state.products = state.products.filter(product => Number(product.idProduct) !== Number(state.activeProduct.idProduct));
-      state.activeProduct = null;
+      if(state.activeProduct){
+        state.products = state.products.filter(product => product.idProduct !== state.activeProduct.idProduct);
+        state.activeProduct = null;
+      }
+      
     },
 
     onLoadProduct: (state, { payload }) => {
