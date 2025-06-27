@@ -40,7 +40,6 @@ export const LabelsModal = ({idClient}) => {
   const {activeClient, starLoadingClientByID} = useClientsStore();                   //Cliente activo en clientPage
   
     //Create modal
-  const [showModal, setShowModal] = useState(false);
   const [selectedLabels, setSelectedLabels] = useState([]);
 
   const clientLabels = useFilterLabels({idClient});
@@ -140,7 +139,7 @@ export const LabelsModal = ({idClient}) => {
      
     
     </Modal>
-    {isModalCreateLabelOpen && <CreateLabelModal />}
+    {isModalCreateLabelOpen && <CreateLabelModal idClient={idClient}/>}
    
     </>
   )

@@ -1,6 +1,8 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 
+
+
 export const clientSlice = createSlice({
   name: 'client',
   initialState:{
@@ -27,14 +29,14 @@ export const clientSlice = createSlice({
     onSetFilter: (state, action) => {
       state.filter = action.payload;
       const filter = state.filter.trim().toLowerCase();
-      state.filteredList = state.clients.filter(dbclient => {const full = `${dbclient.name} ${dbclient.lastname}`.toLowerCase();
+      state.filteredList = state.clients.filter(dbclient => {const full = `${dbclient.name} ${dbclient.lastname}`.toUpperCase();
         return full.includes(filter);
       });
     },
 
     //Añadir cliente
-    onAddNewClient: (state, action) => {
-      state.clients.push(action.payload);
+    onAddNewClient: (state, {payload}) => {
+      state.clients.push(payload);
       state.activeClient = null;
     },
 

@@ -5,6 +5,7 @@ import { clientsApi } from "../api";
 import { useClientsStore } from "./useClientsStore";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { normalizeAllTextFields } from "../helpers/normalizeText";
 
 
 
@@ -33,19 +34,19 @@ export const useLabelsStore = () => {
    }
   }
 
-  const createLabelAndAssign = async (labelData, isEditMode) => {
+  const createLabelAndAssign = async (labelData, idClient) => {
     try {
-      //if (isEditMode) {
-      //  const { data } = await clientsApi.put(`/labels/label/${labelData.idLabel}`, labelData);
-      //  dispatch(onUpdateLabel(data));
-      //  return;
-      //}
+      const normalizedLabelAssign = normalizeAllTextFields(labelData); //  normalizar todos los campos string
       
-      const { data } = await clientsApi.post('labels/labelClient', labelData);
-      console.log(data);
+      const { data } = await clientsApi.post('/labels/assign', normalizedLabelAssign, idClient);
       dispatch(addLabel(data.label));
     } catch (error) {
-      console.error('Error al crear y asignar etiqueta:', error);
+      if (error.response?.status === 400 && error.response.data.errors?.name) {
+      return error.response.data.errors; // devolvemos el objeto de errores
+    }
+    console.error('Error al crear etiqueta:', error);
+    return { general: { msg: 'Error inesperado' } };
+  
     }
   };
 

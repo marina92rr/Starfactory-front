@@ -17,7 +17,7 @@ export const rateSlice = createSlice({
     //Añadir tarifa
     onAddNewRate: (state, {payload}) =>{
         state.rates.push(payload);
-        state.activeRate = null;
+        state.activeRate = payload;
     },
 
       // Modificar cliente por dni
@@ -36,7 +36,7 @@ export const rateSlice = createSlice({
 
          payload.forEach( rate =>{
         const exists = state.rates.some( dbRate => dbRate.id === rate.id);
-        if( !exists){
+        if(!exists){
           state.rates.push(rate)
         }
       })

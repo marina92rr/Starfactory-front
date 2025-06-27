@@ -3,7 +3,9 @@ import Modal from 'react-modal'
 import { useEffect, useMemo, useState } from 'react'
 import { useUiStore } from '../../../hooks/useUiStore';
 import { useQuotaStore } from '../../../hooks/useQuotaStore';
+import { onLoadQuota } from '../../../store/rates/quotaSlice';
 import { useRateStore } from '../../../hooks/useRateStore';
+import { useDispatch } from 'react-redux';
 
 
 Modal.setAppElement('#root');
@@ -22,7 +24,8 @@ export const QuotaModal = () => {
 
   const { isModalQuotaOpen, closeQuotaModal } = useUiStore(); //Abrir y cerrar modal
   const { activeQuota, startSavingQuota, starLoadingQuotas } = useQuotaStore();
-  const { rates,activeRate } = useRateStore();
+  const { rates, activeRate, setActiveRate, startLoadingQuotasByRate } = useRateStore();
+  const dispatch = useDispatch();
 
   const isEditQuota = !!activeQuota?.idQuota;
   const isEditRate = !!activeRate?.idRate;
@@ -77,13 +80,16 @@ export const QuotaModal = () => {
 
     if (formValues.name.trim().length === 0) return;
 
-    console.log('Enviando:', formValues);
+    //console.log('Enviando:', formValues);
 
-    await startSavingQuota(formValues, isEditQuota, isEditRate);  // Guarda en la BBDD
+    await startSavingQuota(formValues);  // Guarda en la BBDD
 
     closeQuotaModal();  // Debería cerrar el modal
 
-    await starLoadingQuotas();  // Recarga desde backend
+      setActiveRate(activeRate);
+      startLoadingQuotasByRate(activeRate._id);
+
+    //await starLoadingQuotas();  // Recarga desde backend
 
     if(isEditQuota){
       setFormValues({
@@ -157,12 +163,11 @@ export const QuotaModal = () => {
               value={formValues.idRate}
               onChange={onInputChange}
             >
-              {isEditRate 
-                ? ( <option value={activeRate.idRate}>{activeRate.description}</option> )
-                : ( <option value="">Selecciona una tarifa</option>) 
-              }
+               
+              ( <option value="">Selecciona una tarifa</option>) 
+              
               {rates.map(rate => (
-                <option key={rate.idRate} value={rate.idRate}>{rate.name}</option>
+                <option key={rate._id} value={rate._id}>{rate.name}</option>
               ))}
             </select>
          </div>

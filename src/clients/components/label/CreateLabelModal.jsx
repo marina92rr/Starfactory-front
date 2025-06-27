@@ -3,8 +3,9 @@ import Modal  from 'react-modal'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLabelsStore } from '../../../hooks/useLabelsStore';
 import { useUiStore } from '../../../hooks/useUiStore';
+import { useClientsStore } from '../../../hooks/useClientsStore';
 
-Modal.setAppElement('#root');
+//Modal.setAppElement('#root');
 
 const customStylesModal = {
   content: {
@@ -34,35 +35,34 @@ const colors = [
 
 export const CreateLabelModal = () => {
 
-  const { isModalCreateLabelOpen, onCloseCreateLabelModal} = useUiStore();
-  const {setActiveLabel, activeLabel, createLabelAndAssign } = useLabelsStore();
-
-  const isEditLabel = !!activeLabel?.idLabel; //Actualizar etiqueta
+  const { isModalCreateLabelOpen, closeCreateLabelModal} = useUiStore();
+  const { activeLabel, createLabelAndAssign } = useLabelsStore();
+  const {activeClient} = useClientsStore();
 
   //Estado valor
   const [formValues, setFormValues] = useState({
     name: '',
-    color: '#087990' 
+    color: '#087990' ,
+    idClient: activeClient.idClient
     //Color por defecto
   });
 
   //Subir estado formulario
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [selectedColor, setSelectedColor] = useState('#087990');
-  const [showPalette, setShowPalette] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);    //Subir formulario
+  const [selectedColor, setSelectedColor] = useState('#087990');  //Guardar color(aleatorio, personalizado y color)
+  const [showPalette, setShowPalette] = useState(false);  //Abrir paleta de colores
+    const [errors, setErrors] = useState({}); // para guardar errores por campo
 
 
 
+//Cargar formulario base
   useEffect(() => {
-    if(isEditLabel){
-      setFormValues({...activeLabel});
-    }else{
       setFormValues({ 
         name: '', 
-        color: '#087990'
+        color: '#087990',
+        idClient: activeClient.idClient
       })
-    }
-  }, [activeLabel]);
+  }, [activeLabel, activeClient]);
 
 
   const titleClass = useMemo(() => {
@@ -77,11 +77,16 @@ export const CreateLabelModal = () => {
         if (name === 'color') {
           setSelectedColor(value);
         }
-        setFormValues((prev) => ({
+           setFormValues((prev) => ({
           ...prev,
           [name]: value,
         }));
-      };
+
+        // Limpiar el error del campo al escribir
+        if (errors[name]) {
+        setErrors((prev) => ({ ...prev, [name]: null }));
+    }
+  };
 
 //Seleccionar color
   const handleColorClick = (color) => {
@@ -104,29 +109,46 @@ export const CreateLabelModal = () => {
     setShowPalette(false);
   };
 
-const onSubmit = async (e) => {
-    e.preventDefault();
-    setFormSubmitted(true);
-    if (formValues.name.trim().length === 0) return;
-    await createLabelAndAssign(formValues, isEditLabel);  // Guarda en la BBDD
-    onCloseCreateLabelModal();  // cerrar el modal
-    isEditLabel
-      ? setFormValues({ ...formValues })
-      : setFormValues({ name: '', color:'#087990' }); // Limpia el formulario si no es edición
+  const onSubmit = async (e) => {
+  e.preventDefault();
+  setErrors({});
+  setFormSubmitted(true);
 
+  if (formValues.name.trim().length === 0) return;
+
+  const resultErrors = await createLabelAndAssign(formValues);
+
+  if (resultErrors) {
+    setErrors(resultErrors); // muestra errores en pantalla
     setFormSubmitted(false);
-  };
+    return;
+  }
+
+  // Solo si no hay errores:
+  setFormValues({
+    name: '',
+    color: '#087990',
+    idClient: activeClient.idClient
+  });
+
+   window.location.reload();
+  closeCreateLabelModal();
+  setFormSubmitted(false);
+  
+
+
+};
 
 
   return (
     <Modal
       isOpen={isModalCreateLabelOpen}
-      onRequestClose={onCloseCreateLabelModal}
+      onRequestClose={closeCreateLabelModal}
       style={customStylesModal}
       shouldCloseOnOverlayClick={true} // ✅ esto permite cerrar al pulsar fuera
       contentLabel="Nueva Etiqueta"
     >
-      <h2 className='modal-title'>{isEditLabel ? 'Editar Etiqueta' : 'Nueva Etiqueta'}</h2>
+      <h2 className='modal-title'>Nueva Etiqueta</h2>
       <hr />
       <form onSubmit={onSubmit}>
         <div className="form-group mb-2">
@@ -139,6 +161,8 @@ const onSubmit = async (e) => {
             value={formValues.name}
             onChange={onInputChange}
           />
+          {errors.name && <span className="text-danger">{errors.name.msg}</span>}
+
         </div>
        
         <div className="form-group">
@@ -227,7 +251,7 @@ const onSubmit = async (e) => {
           
         </div>
         <button type="submit" className="btn btn-primary">
-          {isEditLabel ? 'Actualizar' : 'Crear'}
+         Crear
         </button>
         
       </form>

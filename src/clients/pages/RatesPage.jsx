@@ -11,16 +11,19 @@ import { QuotaEdit } from '../components/ratePage/QuotaEdit';
 import { QuotaDelete } from '../components/ratePage/QuotaDelete';
 import { RateDelete } from '../components/ratePage/RateDelete';
 import { RateEdit } from '../components/ratePage/RateEdit';
+import { useDispatch } from 'react-redux';
 
 
 export const RatesPage = () => {
 
   const { starLoadingRates, rates, activeRate, setActiveRate } = useRateStore();
   const { quotas, startLoadingQuotasByRate, activeQuota } = useQuotaStore();
+  const dispatch = useDispatch()
 
   useEffect(() => {
     starLoadingRates();
   }, []);
+  
   return (
     <div className='container-fluid col-8 mt-5'>
       <div className='py-5 d-flex justify-content-between'>
@@ -60,7 +63,7 @@ export const RatesPage = () => {
                               }
                             }}
                           >
-                            {rate.description.toUpperCase()}
+                            {rate.description}
                           </div>
                         </div>
                       </div>
@@ -75,7 +78,7 @@ export const RatesPage = () => {
         <div className='col-8 ms-4' >
           <div className='border bg-light rounded-top  d-flex justify-content-between align-items-center p-3'>
             {activeRate ? (
-              <h3>{activeRate.description.toUpperCase()}</h3>
+              <h3>{activeRate.description}</h3>
             )
               : (
                 <h2 className='text-muted'>Cuotas</h2>
@@ -117,7 +120,7 @@ export const RatesPage = () => {
                   const { iva, total } = IVAProduct(quota.price);
                   return (
                     <tr key={i}>
-                      <td className='text-primary p-3 text-start'>{quota.name.toUpperCase()}</td>
+                      <td className='text-primary p-3 text-start'>{quota.name}</td>
                       <td className="p-3 text-end">{quota.numSession}</td>
                       <td className="p-3 text-center">{quota.period}</td>
                       <td className="p-3 text-end">{total}€</td>

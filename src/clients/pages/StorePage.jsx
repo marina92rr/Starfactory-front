@@ -120,7 +120,7 @@ export const StorePage = () => {
             const { iva, total } = IVAProduct(product.price);
             return (
               <tr key={i}>
-                <td className='text-primary p-3 text-start'>{product.name.toUpperCase()}</td>
+                <td className='text-primary p-3 text-start'>{product.name}</td>
                 <td className="p-3 text-end">{total}€</td>
                 <td className="p-3 text-end">{iva}€</td>
                 <td >

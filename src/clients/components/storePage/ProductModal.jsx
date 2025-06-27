@@ -25,7 +25,6 @@ export const ProductModal = () => {
   const { categories, activeCategory } = useCategoryStore();
 
   const isEditMode = !!activeProduct?.idProduct; //Si existe el id del producto, es modo edición
-  const isEditCategory = !!activeCategory?.idCategory; //Si existe el id de la categoría, es modo edición
 
 
   //Estado valor
@@ -71,11 +70,10 @@ export const ProductModal = () => {
     setFormSubmitted(true);
 
     if (formValues.name.trim().length === 0) return;
-
-    await startSavingProduct(formValues, isEditCategory, isEditMode);  // Guarda en la BBDD
+    
+    await startSavingProduct(formValues, isEditMode);  // Guarda en la BBDD
     closeProductModal();  // Debería cerrar el modal
-    //window.location.reload();
-    await starLoadingProducts();  // Recarga desde backend
+    
       setFormSubmitted(false);
 
 if(isEditMode){
@@ -125,11 +123,8 @@ if(isEditMode){
             onChange={(e) => setFormValues({ ...formValues, idCategory: e.target.value })}
             required
           >
-             {isEditCategory 
-                ? ( <option value={activeCategory.idCategory}>{activeCategory.name}</option> )
-                : ( <option value="">Selecciona una Categoría</option>) 
-              }
-              
+               
+            <option value="">Selecciona una Categoría</option>  
             {categories.map((category) => (
               <option key={category._id} value={category._id}>
                 {category.name}

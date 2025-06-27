@@ -130,7 +130,7 @@ export const useUiStore = () => {
     openLabelModal,
     closeLabelModal,
     openCreateLabelModal,
-    onCloseCreateLabelModal,
+    closeCreateLabelModal,
     openColorLabelModal,
     closeColorLabelModal,
 

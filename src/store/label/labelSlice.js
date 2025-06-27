@@ -1,6 +1,7 @@
 
 
 import { createSlice } from '@reduxjs/toolkit';
+import { normalizeAllTextFields } from '../../helpers/normalizeText';
 
 //---------Counter 10 + increment(+1) = 11
 export const labelSlice = createSlice({
@@ -33,8 +34,9 @@ export const labelSlice = createSlice({
       state.errorMessage = null;
     },
 
-    addLabel: (state, action) => {
-      state.labels.push(action.payload);
+    addLabel: (state, {payload}) => {
+      const normalized = normalizeAllTextFields(payload);
+      state.labels.push(normalized);
     },
 
       // Modificar cliente por idClient

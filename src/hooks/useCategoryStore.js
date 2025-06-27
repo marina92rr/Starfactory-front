@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { onAddNewCategory, onDeleteCategory, onLoadCategory, onSetActiveCategory, onUpdateCategory } from "../store/storeFactory/categorySlice";
 import { clientsApi } from "../api";
+import { normalizeAllTextFields } from "../helpers/normalizeText";
 
 
 
@@ -17,12 +18,14 @@ const setActiveCategory = (categoryData) =>{
 // Actualizar o crear una categoria 
     const startSavingCategory = async(categorytSave, isEditMode) =>{
         try {
+            const normalizedCategory = normalizeAllTextFields(categorytSave); //  normalizar todos los campos string
+            
             if (isEditMode) {
-                const { data } = await clientsApi.put(`/category/${categorytSave.idCategory}`, categorytSave);
+                const { data } = await clientsApi.put(`/category/${normalizedCategory.idCategory}`, normalizedCategory);
                 dispatch(onUpdateCategory(data));
             return;
             }
-            const {data} = await clientsApi.post('category', categorytSave);
+            const {data} = await clientsApi.post('category', normalizedCategory);
             dispatch( onAddNewCategory(data));
 
         } catch (error) {

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { normalizeAllTextFields } from '../../helpers/normalizeText';
 
 //---------Counter 10 + increment(+1) = 11
 export const categorySlice = createSlice({
@@ -17,6 +18,7 @@ export const categorySlice = createSlice({
 
     //Añadir categoria
     onAddNewCategory: (state, {payload}) =>{
+
         state.category.push(payload);
         state.activeCategory = null;
     },

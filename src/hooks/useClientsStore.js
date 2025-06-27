@@ -11,6 +11,7 @@ import {
 
 import { clientsApi } from "../api";
 import { useParams } from "react-router-dom";
+import { normalizeAllTextFields } from "../helpers/normalizeText";
 
 
 
@@ -29,18 +30,18 @@ export const useClientsStore = () => {
   // Nuevo cliente 
   const startSavingClient = async (clientSave, isEditMode) => {
     try {
+       const normalizedClient = normalizeAllTextFields(clientSave); //  normalizar todos los campos string
       if (isEditMode) {
-        const { data } = await clientsApi.put(`/clients/${clientSave.idClient}`, clientSave);
+        const { data } = await clientsApi.put(`/clients/${clientSave.idClient}`, normalizedClient);
         dispatch(onUpdateClient(data));
         return;
       }
 
-      const { data } = await clientsApi.post('/clients', clientSave);
+      const { data } = await clientsApi.post('/clients', normalizedClient);
       dispatch(onAddNewClient(data));
 
     } catch (error) {
       console.error('Error al guardar cliente', error);
-      shallowEqual.dire('Error al guardar', error.response?.data?.msg || 'Error desconocido', 'error');
     }
   }
 
