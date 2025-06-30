@@ -7,7 +7,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { LabelClient } from '../components/clientPage/LabelClient';
 import { LabelsModal} from '../components/label/LabelsModal'
 import {  Labels } from '../components/label/Labels';
-import { UnSubscribeClient } from '../components/clientPage/unSubscribeClient';
+import { UnSubscribeClient } from '../components/clientPage/UnSubscribeClient';
 import { ProgramUnSubscribe } from '../components/clientPage/ProgramUnSubscribe';
 
 
