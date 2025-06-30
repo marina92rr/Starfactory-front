@@ -11,6 +11,8 @@ export const ProductAddNew = () => {
   const handleClickNew = () =>{
         setActiveProduct({
             name: '',
+            description: '',
+            price: 0
         })
         openProductModal();
     }

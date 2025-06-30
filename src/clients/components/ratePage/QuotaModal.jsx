@@ -18,12 +18,11 @@ const customStylesModal = {
   },
 };
 
-export const QuotaModal = ({quota}) => {
+export const QuotaModal = () => {
 
   const { isModalQuotaOpen, closeQuotaModal } = useUiStore(); //Abrir y cerrar modal
-  const { activeQuota, startSavingQuota } = useQuotaStore();
-  const { rates } = useRateStore();
-
+  const { activeQuota, startSavingQuota, startLoadingQuotasByRate } = useQuotaStore();
+  const { rates, activeRate } = useRateStore();
 
 
   //Estado valor
@@ -32,20 +31,25 @@ export const QuotaModal = ({quota}) => {
     numSession: 0,
     numPeriods: 0,
     period: '',
-    price: 0,
-    idRate: ''
+    price: 0
   });
 
   //Subir estado formulario
   const [formSubmitted, setFormSubmitted] = useState(false);
-
   const isEditMode = !!activeQuota?.idQuota;
 
   useEffect(() => {
       console.log("🎯 activeQuota recibido en modal:", activeQuota);
 
     if (activeQuota && isEditMode) {
-      setFormValues({ ...activeQuota });
+      setFormValues({ 
+        name: activeQuota.name || '',
+        idQuota: activeQuota.idQuota || '',
+        numSession: activeQuota.numSession || 0,
+        numPeriods: activeQuota.numPeriods || 0,
+        period: activeQuota.period || '',
+        price: activeQuota.price || 0
+      })
     } else {
       setFormValues({
         name: '',
@@ -53,10 +57,10 @@ export const QuotaModal = ({quota}) => {
         numPeriods: 0,
         period: '',
         price: 0,
-        idRate: ''
+        idRate: activeRate?._id?.toString() || '',
       })
     }
-  }, [activeQuota]);
+  }, [activeQuota, activeRate]);
 
   const titleClass = useMemo(() => {
     if (!formSubmitted) return '';
@@ -81,6 +85,7 @@ export const QuotaModal = ({quota}) => {
 
     await startSavingQuota(formValues, isEditMode);  // Guarda en la BBDD
     closeQuotaModal();  // Debería cerrar el modal
+    startLoadingQuotasByRate(activeRate._id);
 
     setFormSubmitted(false);
     
@@ -90,8 +95,7 @@ export const QuotaModal = ({quota}) => {
         numSession: 0,
         numPeriods: 0,
         period: '',
-        price: 0,
-        idRate: ''
+        price: 0
       });
     }
   };
@@ -142,7 +146,9 @@ export const QuotaModal = ({quota}) => {
                 value={formValues.period}
                 onChange={onInputChange}
               >
-                <option value=""> Periodo </option>
+                {!isEditMode 
+              ? ( <option value="">-- Periodo --</option>)
+              :(<option value={activeQuota.period}>{activeQuota.period}</option>)}
                 <option value="puntual">Puntual</option>
                 <option value="mensual">Mensual</option>
               </select>
@@ -155,12 +161,12 @@ export const QuotaModal = ({quota}) => {
               name='idRate'
               value={formValues.idRate}
               onChange={onInputChange}
+              disabled={true}
             >
-
-              ( <option value="">Selecciona una tarifa</option>)
-
               {rates.map(rate => (
-                <option key={rate._id} value={rate._id}>{rate.name}</option>
+                <option key={rate._id} value={rate._id.toString()}>
+                  {rate.name}
+                </option>
               ))}
             </select>
           </div>

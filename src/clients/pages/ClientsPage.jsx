@@ -31,12 +31,11 @@ export const ClientsPage = () => {
         <ClientAddNew />
       </div>
       <ClientModal />
-      <div className='d-flex'>
-       
+      <div className='d-flex my-3 justify-content-between'>
+        <button>Etiqueta</button>
+       <p className='text text-primary'>Bajas Programadas (0)</p>
       </div>
-      <div className="border rounded-top br-3 d-flex align-items-center p-3 bg-light">
-        
-      </div>
+      
 
       <div className="d-flex flex-column">
         {clientsLimit.map((client, i) => {

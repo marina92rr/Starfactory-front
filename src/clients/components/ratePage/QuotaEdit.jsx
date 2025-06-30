@@ -10,6 +10,7 @@ export const QuotaEdit= ({quota}) => {
   const handleClickNew = () => {
   setActiveQuota(quota);
   openQuotaModal();
+
   }
 
   return (

@@ -24,7 +24,7 @@ export const StorePage = () => {
   useEffect(() => {
 
     starLoadingCategories();
-
+    
   }, [activeProduct]);
 
   return (
@@ -127,7 +127,6 @@ export const StorePage = () => {
                 <td >
                   <div className='d-flex justify-content-center align-items-center gap-2'>
                     <ProductEdit product={product}/>
-                    <ProductModal/>
                     <ProductDelete product={product}/>
                   </div>
                 </td>

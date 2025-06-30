@@ -11,10 +11,12 @@ import { QuotaEdit } from '../components/ratePage/QuotaEdit';
 import { QuotaDelete } from '../components/ratePage/QuotaDelete';
 import { RateDelete } from '../components/ratePage/RateDelete';
 import { RateEdit } from '../components/ratePage/RateEdit';
+import { useDispatch } from 'react-redux';
 
 
 export const RatesPage = () => {
 
+  const dispatch = useDispatch();
   const { starLoadingRates, rates, activeRate, setActiveRate } = useRateStore();
   const { quotas, startLoadingQuotasByRate, activeQuota } = useQuotaStore();
 
@@ -114,10 +116,10 @@ export const RatesPage = () => {
                   <td colSpan={5} className="text-muted text-center">No hay cuotas en esta tarifa</td>
                 </tr>
               ) : (
-                quotas.map((quota) => {
+                quotas.map((quota,i) => {
                   const { iva, total } = IVAProduct(quota.price);
                   return (
-                    <tr key={quota.idQuota}>
+                    <tr key={i}>
                       <td className='text-primary p-3 text-start'>{quota.name}</td>
                       <td className="p-3 text-end">{quota.numSession}</td>
                       <td className="p-3 text-center">{quota.period}</td>

@@ -2,13 +2,13 @@ import React from 'react'
 import { useUiStore } from '../../../hooks/useUiStore'
 import { useProductStore } from '../../../hooks/useProductStore';
 
-export const ProductEdit= () => {
+export const ProductEdit= ({product}) => {
 
   const {openProductModal} = useUiStore();
-  const {setActiveProduct, activeProduct} = useProductStore();
+  const {setActiveProduct} = useProductStore();
 
   const handleClickNew = () => {
-    setActiveProduct(activeProduct);
+    setActiveProduct(product);
     openProductModal();
   }
   return (

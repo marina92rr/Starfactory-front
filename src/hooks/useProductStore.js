@@ -20,15 +20,14 @@ export const useProductStore = () => {
     const startSavingProduct = async (productSave, isEditMode) => {
         try {
             const normalizedProduct = normalizeAllTextFields(productSave); //  normalizar todos los campos string
-
             if (isEditMode) {
                 const { data } = await clientsApi.put(`/products/${productSave.idProduct}`, normalizedProduct);
-                dispatch(onUpdateProduct({...normalizedProduct}));
+                dispatch(onUpdateProduct(data));
                 return;
             }
 
             const { data } = await clientsApi.post('/products', normalizedProduct);
-            dispatch(onAddNewProduct({...normalizedProduct}));
+            dispatch(onAddNewProduct(data));
         } catch (error) {
             console.log(error);
         }

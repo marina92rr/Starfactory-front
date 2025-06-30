@@ -7,6 +7,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { LabelClient } from '../components/clientPage/LabelClient';
 import { LabelsModal} from '../components/label/LabelsModal'
 import {  Labels } from '../components/label/Labels';
+import { UnSubscribeClient } from '../components/clientPage/unSubscribeClient';
+import { ProgramUnSubscribe } from '../components/clientPage/ProgramUnSubscribe';
 
 
 
@@ -73,8 +75,8 @@ const handleSelect = idClient => {
           onClick={() => handleSelect(activeClient.idClient)}>
             Nueva venta
           </button>
-          <button className="btn btn-outline-danger" type="button">Programar baja</button>
-          <button className="btn btn-danger" type="button">Dar baja</button>
+          <ProgramUnSubscribe/>
+          <UnSubscribeClient/>
         </div>
 
       </div>

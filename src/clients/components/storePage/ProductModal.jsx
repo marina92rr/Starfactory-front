@@ -21,8 +21,8 @@ const customStylesModal = {
 export const ProductModal = () => {
 
   const { isModalProductOpen, closeProductModal } = useUiStore(); //Abrir y cerrar modal
-  const { activeProduct, startSavingProduct } = useProductStore();
-  const { categories } = useCategoryStore();
+  const { activeProduct, startSavingProduct, startLoadingProductsByCategory } = useProductStore();
+  const { categories, activeCategory } = useCategoryStore();
 
   const isEditMode = !!activeProduct?.idProduct; //Si existe el id del producto, es modo edición
 
@@ -31,37 +31,44 @@ export const ProductModal = () => {
   const [formValues, setFormValues] = useState({
     name: '',
     description: '',
-    price: 0,
-    idCategory: ''
+    price: 0
   });
 
   //Subir estado formulario
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   useEffect(() => {
-    if (isEditMode) {
-      setFormValues({ ...activeProduct });
+    if (activeProduct && isEditMode) {
+      setFormValues({ 
+        name: activeProduct.name || '',
+        idProduct: activeProduct.idProduct || '',
+        description: activeProduct.description || '',
+        price: activeProduct.price || 0
+      }
+      );
     }else{
       setFormValues({
         name: '',
         description: '',
         price: 0,
-        idCategory: ''
+        idCategory: '',
+        idCategory: activeCategory?._id?.toString() || '',
       });
     }
-    setFormSubmitted(false);
-  }, [activeProduct]);
+  }, [activeProduct, activeCategory]);
 
   const titleClass = useMemo(() => {
     if (!formSubmitted) return '';
     return formValues.name.trim().length > 0 ? 'is-valid' : 'is-invalid';
   }, [formValues.name, formSubmitted]);
 
-  const onInputChange = ({ target }) => {
-    const { name, value } = target;
-    setFormValues((prev) => ({
+   const onInputChange = ({ target }) => {
+    const { name, value, type } = target;
+    setFormValues(prev => ({
       ...prev,
-      [name]: value,
+      [name]: type === 'number'
+        ? (value === '' ? '' : parseInt(value, 10)) // para campos vacíos
+        : value
     }));
   };
 
@@ -73,6 +80,8 @@ export const ProductModal = () => {
     
     await startSavingProduct(formValues, isEditMode);  // Guarda en la BBDD
     closeProductModal();  // Debería cerrar el modal
+    startLoadingProductsByCategory(activeCategory._id);
+
     setFormSubmitted(false);
 
 if(isEditMode){
@@ -80,7 +89,7 @@ if(isEditMode){
       name: '',
       description: '',
       price: 0,
-      idCategory: ''
+      
     });
   };
 }
@@ -119,13 +128,12 @@ if(isEditMode){
             className="form-select"
             name="idCategory"
             value={formValues.idCategory}
-            onChange={(e) => setFormValues({ ...formValues, idCategory: e.target.value })}
-            required
+            onChange={onInputChange}
+            disabled={true}
           >
-               
-            <option value="">Selecciona una Categoría</option>  
-            {categories.map((category) => (
-              <option key={category._id} value={category._id}>
+                 
+            {categories.map(category => (
+              <option key={category._id} value={category._id.toString()}>
                 {category.name}
               </option>
             ))}

@@ -10,7 +10,7 @@ export const CategoryEdit= () => {
 
   const handleClickNew = () => {
     setActiveCategory(activeCategory);
-    openCategoryModal(activeCategory);
+    openCategoryModal();
   }
   return (
     <div>
