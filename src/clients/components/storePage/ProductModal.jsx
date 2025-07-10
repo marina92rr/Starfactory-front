@@ -51,7 +51,6 @@ export const ProductModal = () => {
         name: '',
         description: '',
         price: 0,
-        idCategory: '',
         idCategory: activeCategory?._id?.toString() || '',
       });
     }

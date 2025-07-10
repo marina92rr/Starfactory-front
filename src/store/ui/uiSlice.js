@@ -13,6 +13,7 @@ export const uiSlice = createSlice({
     isModalProductOpen: false,
     isModalRateOpen: false,
     isModalQuotaOpen: false,
+    isModalSaleOpen:false
 
   },
   reducers: {
@@ -55,7 +56,12 @@ export const uiSlice = createSlice({
      //Abrir modal Rate
      onOpenQuotaModal: (state) =>{ state.isModalQuotaOpen = true;},
      //Cerrar modal Rate
-     onCloseQuotaModal: (state) =>{ state.isModalQuotaOpen = false;}
+     onCloseQuotaModal: (state) =>{ state.isModalQuotaOpen = false;},
+
+     //Venta Modal
+      onOpenSaleModal: (state) =>{ state.isModalSaleOpen = true;},
+     //Cerrar modal Rate
+     onCloseSaleModal: (state) =>{ state.isModalSaleOpen = false;}
 
 
   },
@@ -87,6 +93,10 @@ export const {
     onCloseRateModal,
   //*Quota
     onOpenQuotaModal,
-    onCloseQuotaModal
+    onCloseQuotaModal,
+  //*Venta
+    onOpenSaleModal,
+    onCloseSaleModal
+  
     
 } = uiSlice.actions; //accion

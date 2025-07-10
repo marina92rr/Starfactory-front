@@ -6,6 +6,7 @@ import { categorySlice } from "./storeFactory/categorySlice"
 import { productSlice } from "./storeFactory/productSlice"
 import { rateSlice } from "./rates/rateSlice"
 import { quotaSlice } from "./rates/quotaSlice"
+import { productClientSlice } from "./sales/productClientSlice"
 
 
 export const store = configureStore({
@@ -18,6 +19,8 @@ export const store = configureStore({
         product: productSlice.reducer,
         rate: rateSlice.reducer,
         quota: quotaSlice.reducer,
+        productClient: productClientSlice.reducer
+       
     },
 
     middleware: (getDefaultMiddleware) =>

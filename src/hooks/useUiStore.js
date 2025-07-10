@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseLabelModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenLabelModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal } from "../store/ui/uiSlice";
+import { onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseLabelModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenLabelModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal } from "../store/ui/uiSlice";
 
 
 
@@ -14,7 +14,8 @@ export const useUiStore = () => {
       isModalCategoryOpen,
       isModalProductOpen,
       isModalRateOpen,
-      isModalQuotaOpen
+      isModalQuotaOpen,
+      isModalSaleOpen,
      } = useSelector( state => state.ui);
 
 
@@ -111,6 +112,18 @@ export const useUiStore = () => {
             dispatch(onCloseQuotaModal());
         }
 
+     //*--------------------------------SaleModal--------------------------------
+
+        //Abrir LabelModal
+        const openSaleModal = () =>{
+            dispatch(onOpenSaleModal());
+        }
+    
+        //Cerrar LabelModal
+        const closeSaleModal = () =>{
+            dispatch(onCloseSaleModal());
+        }
+
 
   return {
     //*Propiedades
@@ -122,6 +135,7 @@ export const useUiStore = () => {
     isModalProductOpen,
     isModalRateOpen,
     isModalQuotaOpen,
+    isModalSaleOpen,
 
     //*Metodos
     openClientModal,
@@ -144,7 +158,10 @@ export const useUiStore = () => {
     closeRateModal,
 
     openQuotaModal,
-    closeQuotaModal
+    closeQuotaModal,
+
+    openSaleModal,
+    closeSaleModal,
     
   }
 }

@@ -38,7 +38,7 @@ const handleSelect = idClient => {
     <div className="container-fluid col-7 mt-5 pt-5">
       <div className="d-flex">
         <h1 className="me-3">
-          {activeClient.name.toUpperCase()} {activeClient.lastName.toUpperCase()}
+          {activeClient.name} {activeClient.lastName}
         </h1>
         <div>{activeClient.idClient}</div>
       </div>
