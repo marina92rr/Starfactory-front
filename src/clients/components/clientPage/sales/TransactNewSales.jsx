@@ -8,25 +8,10 @@ import { useClientsStore } from '../../../../hooks/useClientsStore';
 export const TransactNewSales = () => {
 
     const {openSaleModal} = useUiStore();
-    const { setActiveProduct} = useProductStore();
-    const { setActiveQuota} = useQuotaStore();
-    const {setActiveClient} = useClientsStore();
 
 
     const handleClickNew = () =>{
-        setActiveProduct({
-            name: '',
-            idProduct: 0,
-            price: 0,
-        })
-        setActiveQuota({
-            name: '',
-            idQuota:0,
-            price: 0,
-        })
-
-        setActiveClient({ idClient: 0})
-
+        
         openSaleModal();
     }
 

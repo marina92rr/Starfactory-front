@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useProductStore } from '../../../hooks/useProductStore';
 import { useQuotaStore } from '../../../hooks/useQuotaStore';
 import { useClientsStore } from '../../../hooks/useClientsStore';
@@ -46,9 +46,19 @@ export const AddNewSales = () => {
   );
 };
 
+const totalAmount = useMemo(() => {
+  return selectedProducts.reduce((total, product) => {
+    const discountAmount = parseFloat(product.discount) || 0;
+    const finalPrice = product.price - discountAmount;
+    return total + finalPrice;
+  }, 0).toFixed(2);
+}, [selectedProducts]);
+
   const handleRemoveProduct = (indexToRemove) => {
     setSelectedProducts(prev => prev.filter((_, i) => i !== indexToRemove));
   };
+
+
 
   return (
     <div className='container-fluid  mt-5'>
@@ -129,7 +139,7 @@ export const AddNewSales = () => {
                                 type="number" 
                                 className='form-control' 
                                 placeholder='Descuento'
-                                value={product.discount}
+                                value={product.discount ?? ''}
                                 onChange={(e) => handleDiscountChange(i, e.target.value)} />
                               <span className='input-group-text'>%</span>
                             </div>
@@ -162,15 +172,15 @@ export const AddNewSales = () => {
                   <div className="d-flex text-end justify-content-end align-items-center  p-3">
                     <h4 className="fw-medium px-2">Total a pagar: </h4>
                     <h4 className="fw-medium">
-                      {selectedProducts.reduce((total, product) => {
-                          const discountAmount = ( product.discount || null ) ;
-                          return total + (product.price - discountAmount);
-                      }, 0).toFixed(2)} €
+                      {totalAmount} €
                     </h4>
                   </div>
                   <div className='d-flex justify-content-end'>
                     <TransactNewSales/>
-                    <TransactModalSales/>
+                    <TransactModalSales 
+                      selectedProducts={selectedProducts}
+                      totalAmount={totalAmount} 
+                    />
                   </div>
                 </td>
               </tr>
