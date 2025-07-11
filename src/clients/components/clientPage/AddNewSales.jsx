@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useProductStore } from '../../../hooks/useProductStore';
 import { useQuotaStore } from '../../../hooks/useQuotaStore';
 import { useClientsStore } from '../../../hooks/useClientsStore';
-import { TransactNewSales } from './sales/transactNewSales';
-import { TransactModalSales } from './sales/transactModalSales';
+import { TransactNewSales } from './sales/TransactNewSales';
+import { TransactModalSales } from './sales/TransactModalSales';
 
 
 export const AddNewSales = () => {
