@@ -27,9 +27,14 @@ export const useProductClientStore = () => {
             }
 
             const { data } = await clientsApi.post('/productclient', normalizedProductClient);
-            dispatch(onAddNewProductClient(data));
+            
+            if(Array.isArray(data)){
+                data.forEach((item) => dispatch(onAddNewProductClient(item)));
+            }else{
+                dispatch(onAddNewProductClient(data));
+            }
         } catch (error) {
-            console.log(error);
+            console.log('Error en Front', error);
         }
     }
 

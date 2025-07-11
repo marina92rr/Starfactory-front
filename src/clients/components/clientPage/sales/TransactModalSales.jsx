@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Modal from 'react-modal'
 import { useUiStore } from '../../../../hooks/useUiStore';
 import { useClientsStore } from '../../../../hooks/useClientsStore';
+import { useProductClientStore } from '../../../../hooks/useProductClientStore';
 
 const customStylesModal = {
   content: {
@@ -16,6 +17,7 @@ const customStylesModal = {
 export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
 
   const { isModalSaleOpen, closeSaleModal } = useUiStore();
+  const { startSavingProductClient } = useProductClientStore();
   const [paymentMethod, setPaymentMethod] = useState('Efectivo')
   const {activeClient} = useClientsStore();
 
@@ -28,7 +30,7 @@ export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
     discount:item.discount
   }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault()
 
     const dataToSend = {
@@ -38,7 +40,10 @@ export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
       paymentMethod: paymentMethod,
       paid: true,
     }
-    console.log('Venta finalizada:', dataToSend)
+    console.log('Venta finalizada:', dataToSend);
+
+    await startSavingProductClient(dataToSend, false); // false = modo crear
+
     closeSaleModal();
   }
 
