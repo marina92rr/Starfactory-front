@@ -59,6 +59,25 @@ export const labelSlice = createSlice({
         }
       })
     },
+
+    //Filtrar labels Busqueda
+    onSetFilter: (state, action) => {
+      state.filter = action.payload;
+
+      const normalize = str => (str || '')
+        .normalize('NFD')                         // Quita tildes
+        .replace(/[\u0300-\u036f]/g, '')          // Elimina marcas de acento
+        .toUpperCase()
+        .trim();
+
+      const filter = normalize(state.filter);
+
+      state.filteredList = state.labels.filter(label => {
+        const fullName = normalize(`${label.name}`);
+        return fullName.includes(filter);
+      });
+    },
+    
     onDeleteLabel:(state) =>{
       state.labels = state.labels.filter(label => label.idLabel !== state.activeLabel.idLabel);
       state.activeLabel = null;
@@ -73,5 +92,6 @@ export const {
   onSetLabels,
   onLoadLabels,
   onLoadingLabels,
-  onDeleteLabel
+  onDeleteLabel,
+  onSetFilters
 } = labelSlice.actions; //accion

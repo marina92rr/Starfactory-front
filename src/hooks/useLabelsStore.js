@@ -6,6 +6,7 @@ import { useClientsStore } from "./useClientsStore";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { normalizeAllTextFields } from "../helpers/normalizeText";
+import { onSetFilter } from "../store/clients/clientSlice";
 
 
 
@@ -34,6 +35,8 @@ export const useLabelsStore = () => {
    }
   }
 
+  
+
   const createLabelAndAssign = async (labelData, idClient) => {
     try {
       const normalizedLabelAssign = normalizeAllTextFields(labelData); //  normalizar todos los campos string
@@ -60,6 +63,24 @@ export const useLabelsStore = () => {
     }
   };
 
+    // Filtrar labels (se asegura de tener todos)
+    const startFindLabels = (searchTerm) => async (dispatch, getState) => {
+      const { label } = getState();
+  
+      if (!label.onLoadLabels) {
+        try {
+          const { data } = await clientsApi.get('labels');
+          dispatch(onLoadLabels(data.labels));
+        } catch (error) {
+          console.error('Error al cargar todas las etiquetas', error);
+        }
+      }
+  
+      dispatch(onSetFilter(searchTerm));
+    };
+
+
+
   const startDeleteLabel = async(label)=>{
         const {data} = await clientsApi.delete(`/labels/${label.idLabel}`);
         dispatch(onDeleteLabel(data));
@@ -76,6 +97,7 @@ export const useLabelsStore = () => {
     starLoadingLabels,
     setActiveLabel,
     startFilterLabels,
-    startDeleteLabel
+    startDeleteLabel,
+    startFindLabels
   };
 };

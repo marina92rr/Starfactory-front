@@ -3,6 +3,7 @@ import Modal from 'react-modal'
 import { useUiStore } from '../../../../hooks/useUiStore';
 import { useClientsStore } from '../../../../hooks/useClientsStore';
 import { useProductClientStore } from '../../../../hooks/useProductClientStore';
+import { useNavigate } from 'react-router-dom';
 
 const customStylesModal = {
   content: {
@@ -16,6 +17,7 @@ const customStylesModal = {
 
 export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
 
+  const navigate = useNavigate();
   const { isModalSaleOpen, closeSaleModal } = useUiStore();
   const { startSavingProductClient } = useProductClientStore();
   const [paymentMethod, setPaymentMethod] = useState('Efectivo')
@@ -43,6 +45,7 @@ export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
     console.log('Venta finalizada:', dataToSend);
 
     await startSavingProductClient(dataToSend, false); // false = modo crear
+    navigate(`/${activeClient.idClient}/sales`);
 
     closeSaleModal();
   }

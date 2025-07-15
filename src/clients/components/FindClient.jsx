@@ -63,7 +63,7 @@ export const FindClient = () => {
                 className="dropdown-item"
                 onMouseDown={() => handleSelect(client.idClient)}
               >
-                {client.name.toUpperCase()} {client.lastName.toUpperCase()}
+                {client.name} {client.lastName}
               </li>
             ))}
           </ul>
