@@ -20,15 +20,7 @@ export const productClientSlice = createSlice({
       state.activeProductClient = null;
     },
 
-    // Modificar cliente por dni
-    onUpdateProductClient: (state, { payload }) => {
-      state.productClients = state.productClients.map(productClient => {      //Nuevo array del evento
-        if (productClient.idProductClient === payload.idProductClient) {
-          return payload;
-        }
-        return productClient;
-      })
-    },
+    
     onDeleteProductClient: (state) => {
       if(state.activeProductClient){
         state.productClients = state.productClients.filter(productClient => productClient.idProductClient !== state.activeProductClient.idProductClient);
@@ -37,11 +29,11 @@ export const productClientSlice = createSlice({
       
     },
 
-    onLoadProductClient: (state, { payload }) => {
+    onLoadProductsClient: (state, { payload }) => {
       state.isLoadingProduct = false;
       state.productClients = payload; // ahora sí es un array directamente
     }
 
   },
 })
-export const {onSetActiveProductClient, onAddNewProductClient, onUpdateProductClient, onDeleteProductClient, onLoadProductClient } = productClientSlice.actions; //accion
+export const {onSetActiveProductClient, onAddNewProductClient, onUpdateProductClient, onDeleteProductClient, onLoadProductsClient } = productClientSlice.actions; //accion

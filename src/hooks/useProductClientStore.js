@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux"
 import { clientsApi } from "../api";
 import { normalizeAllTextFields } from "../helpers/normalizeText";
-import { onAddNewProductClient, onDeleteProductClient, onLoadProductClient, onSetActiveProductClient, onUpdateProductClient } from "../store/sales/productClientSlice";
+import { onAddNewProductClient, onDeleteProductClient, onLoadProductsClient, onSetActiveProductClient, onUpdateProductClient } from "../store/sales/productClientSlice";
+import { useClientsStore } from "./useClientsStore";
 
 
 
@@ -53,27 +54,14 @@ export const useProductClientStore = () => {
     //Lectura de productos por cliente
     const startLoadingProductsByClient = async (idClient) => {
         try {
-            const { data } = await clientsApi.get(`/productClient/${idClient}`);
-            dispatch(onLoadProductClient(data.productClients));
-        } catch (error) {
-            console.error('Error cargando productos por categoría:', error);
-        }
+            const { data } = await clientsApi.get(`/productclient/${idClient}`);
+            dispatch(onLoadProductsClient(data.productsClient)); // ¡Ojo! Asegúrate del nombre exacto del action
+        
+          } catch (error) {
+            console.error('❌ Error cargando productos del cliente:', error);
+          }
     };
-    //Lectura de productos
-    const starLoadingProductsclient = async () => {
-
-        try {
-            //const {data} = await axios.get('http://localhost:4001/api/store');
-            const { data } = await clientsApi.get('/productClient');
-            const productsclient = data.productClients;
-
-            dispatch(onLoadProductClient(productsclient));
-
-        } catch (error) {
-            console.log('Error al cargar los eventos');
-            console.log(error);
-        }
-    };
+    
 
     return {
         //*Propiedades
@@ -81,7 +69,6 @@ export const useProductClientStore = () => {
        activeProductClient,
         //*Metodos
        startSavingProductClient,
-       starLoadingProductsclient,
        setActiveProductClient,
        startLoadingProductsByClient,
        startDeleteProductClient
