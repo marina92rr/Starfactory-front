@@ -11,13 +11,14 @@ export const ClientsPage = () => {
 
   const navigate = useNavigate();
 
-  const { clientsLimit, starLoadingLimitClients } = useClientsStore();
+  const { clientsLimit, starLoadingLimitClients, loadClientsWithScheduledCancellation, scheduledCancellationClients } = useClientsStore();
 
   
   //LCarga de clientes
   useEffect(() => {
     //starLoadingClients();
     starLoadingLimitClients();
+    loadClientsWithScheduledCancellation(); //Baja programada
        
   }, []);
 
@@ -33,7 +34,7 @@ export const ClientsPage = () => {
       <ClientModal />
       <div className='d-flex my-3 justify-content-between'>
         <button>Etiqueta</button>
-       <p className='text text-primary'>Bajas Programadas (0)</p>
+      Bajas programadas ({scheduledCancellationClients.length})
       </div>
       
 

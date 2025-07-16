@@ -4,8 +4,10 @@ import {
   onLoadClientByID,
   onLoadClients,
   onLoadLimitClients,
+  onLoadScheduledCancellations,
   onSetActiveClient,
   onSetFilter,
+  onToggleClientStatusCancel,
   onUpdateClient,
 } from "../store/clients/clientSlice";
 
@@ -18,7 +20,7 @@ import { normalizeAllTextFields } from "../helpers/normalizeText";
 export const useClientsStore = () => {
 
   const dispatch = useDispatch();
-  const { clients, clientsLimit, activeClient, filter, filteredList, isLoadingLabelsClient, isLoadingClients, allClientsLoaded } = useSelector(state => state.client);
+  const { clients, clientsLimit, activeClient, filter, filteredList, isLoadingLabelsClient, isLoadingClients, allClientsLoaded,scheduledCancellationClients } = useSelector(state => state.client);
   const { idClient } = useParams();
 
 
@@ -93,11 +95,6 @@ export const useClientsStore = () => {
     }
   }
 
-  //Filtrar 
-  // Filtrar clientes en frontend
-  //const startFilteringClients = (searchTerm) => (dispatch) => {
-  //  dispatch(onSetFilter(searchTerm));
-  //};
 
   // Filtrar clientes (se asegura de tener todos)
   const startFilteringClients = (searchTerm) => async (dispatch, getState) => {
@@ -115,6 +112,48 @@ export const useClientsStore = () => {
     dispatch(onSetFilter(searchTerm));
   };
 
+  //-------Baja------------
+  //Obtener clientes con baja programada
+  const loadClientsWithScheduledCancellation = async () => {
+  try {
+    const { data } = await clientsApi.get('clients/cancel');
+    console.log('loadClientsWithScheduledCancellation:', data.clients);
+    dispatch(onLoadScheduledCancellations(data.clients));
+  } catch (error) {
+    console.error('Error al obtener clientes con baja programada:', error);
+  }
+};
+
+  //Dar baja cliente
+  const toggleClientStatusCancel = async (idClient) => {
+    try {
+      const { data } = await clientsApi.patch(`clients/cancel/${idClient}`);
+      console.log('onToggleClientStatusCancel:', onToggleClientStatusCancel);
+
+      dispatch(onToggleClientStatusCancel(data.client)); // recuerda: el backend devuelve `{ msg, client }`
+    } catch (error) {
+      console.error('Error al cambiar estado de baja del cliente:', error);
+    }
+  };
+  //Programar baja
+ const programClientCancellation = async (idClient, cancelDate) => {
+  try{
+    const { data } = await clientsApi.patch(`/clients/programcancel/${idClient}`, { cancelDate });
+    dispatch(onToggleClientStatusCancel(data.client)); // O solo data si no devuelves { client: ... }
+  } catch (error) {
+    console.error('Error al programar baja del cliente:', error);
+  }
+};
+
+const cancelClientScheduledCancellation = async (idClient) => {
+  try {
+    const { data } = await clientsApi.patch(`clients/cancelScheduled/${idClient}`);
+    dispatch(onToggleClientStatusCancel(data.client));
+  } catch (error) {
+    console.error('Error al cancelar la baja programada:', error);
+  }
+};
+
 
   return {
     //*propiedades
@@ -126,6 +165,7 @@ export const useClientsStore = () => {
     isLoadingClients,
     allClientsLoaded,
     clientsLimit,
+    scheduledCancellationClients,
 
     //*Metodos
     //Client
@@ -135,6 +175,10 @@ export const useClientsStore = () => {
     starLoadingClientByID,
     startSavingClient,
     startFilteringClients,
+    toggleClientStatusCancel,
+    programClientCancellation,
+    cancelClientScheduledCancellation,
+    loadClientsWithScheduledCancellation
 
     //Label
   }

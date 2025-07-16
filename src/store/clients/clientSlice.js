@@ -14,7 +14,9 @@ export const clientSlice = createSlice({
     filter: '',
     filteredList: [],
     error: null,
-    isLoadingLabelsClient: false
+    isLoadingLabelsClient: false,
+    scheduledCancellationClients: [], // 👈 nuevo array
+
   },
   reducers: {
 
@@ -97,8 +99,29 @@ export const clientSlice = createSlice({
     onLoadClientByID: (state, { payload }) => {
       state.activeClient = payload;
       state.error = null;
-    }
+    },
+
+
+    //----------Bajas---------------
+    // Cargar clientes con baja programada
+    onLoadScheduledCancellations: (state, { payload }) => {
+      state.scheduledCancellationClients = payload;
+    },
+
+    // Cancelar baja de cliente
+    onToggleClientStatusCancel: (state, { payload }) => {
+      state.clients = state.clients.map(client =>
+        client.idClient === payload.idClient ? payload : client
+      );
+      if (state.activeClient?.idClient === payload.idClient) {
+        state.activeClient = payload;
+      }
+    },
+
+
   },
+
+
 
 
 })
@@ -112,6 +135,8 @@ export const {
   onDeleteClient,
   onLoadClients,
   onLoadClientByID,
-  onLoadLimitClients
+  onLoadLimitClients,
+  onToggleClientStatusCancel,
+  onLoadScheduledCancellations
 
 } = clientSlice.actions; //accion

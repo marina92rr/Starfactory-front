@@ -7,17 +7,21 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { LabelClient } from '../components/clientPage/LabelClient';
 import { LabelsModal} from '../components/label/LabelsModal'
 import {  Labels } from '../components/label/Labels';
-import { UnSubscribeClient } from '../components/clientPage/UnSubscribeClient';
-import { ProgramUnSubscribe } from '../components/clientPage/ProgramUnSubscribe';
+import { SubscribeClient } from '../components/clientPage/SubscribeClient';
+import { getClientStatus } from '../../helpers/getClientStatus';
 
 
 
 export const ClientPage = () => {
 
 
-  const { idClient } = useParams();
   const { starLoadingClientByID, activeClient} = useClientsStore();
+  const { isActive, isImmediateCancellation, isScheduledCancellation, cancelDate } = getClientStatus(activeClient?.dateCancellation);
+  
   const navigate = useNavigate();
+
+ 
+
 
 
   useEffect(() => {
@@ -57,6 +61,11 @@ const handleSelect = idClient => {
           </button>
         </div>
       </div>
+      <div className='w-100 h-30 d-flex  mt-2'>
+        
+      {isImmediateCancellation && <p className="bg-danger rounded text-white fw-bold ms-auto">De baja</p>}
+      {isScheduledCancellation && <p className="bg-warning rounded text-white fw-bold ms-auto">Baja programada: {cancelDate.toLocaleDateString()}</p>}
+      </div>
       <div className="d-flex justify-content-between align-items-start flex-wrap mt-2">
 
     <LabelsModal idClient={activeClient.idClient} />
@@ -75,8 +84,7 @@ const handleSelect = idClient => {
           onClick={() => handleSelect(activeClient.idClient)}>
             Nueva venta
           </button>
-          <ProgramUnSubscribe/>
-          <UnSubscribeClient/>
+          <SubscribeClient idClient={activeClient.idClient} />
         </div>
 
       </div>
