@@ -16,8 +16,7 @@ import {
 import { clientsApi } from "../api";
 import { useParams } from "react-router-dom";
 import { normalizeAllTextFields } from "../helpers/normalizeText";
-
-
+import { clearActiveClient } from "../store/clients/clientSlice";
 
 export const useClientsStore = () => {
 
@@ -33,6 +32,10 @@ export const useClientsStore = () => {
     dispatch(onSetActiveClient(clientsData))
   }
 
+  const startClearingActiveClient = () => {
+    dispatch(clearActiveClient());
+  };
+
   // Nuevo cliente 
   const startSavingClient = async (clientSave, isEditMode) => {
     try {
@@ -40,11 +43,12 @@ export const useClientsStore = () => {
       if (isEditMode) {
         const { data } = await clientsApi.put(`/clients/${clientSave.idClient}`, normalizedClient);
         dispatch(onUpdateClient(data));
-        return;
-      }
+       
+      } else {
+        const { data } = await clientsApi.post('/clients', normalizedClient);
+        dispatch(onAddNewClient(data));
+      } 
 
-      const { data } = await clientsApi.post('/clients', normalizedClient);
-      dispatch(onAddNewClient(data));
 
     } catch (error) {
       console.error('Error al guardar cliente', error);
@@ -188,6 +192,7 @@ export const useClientsStore = () => {
     //*propiedades
     clients,
     activeClient,
+    startClearingActiveClient,
     filter,
     filteredList,
     isLoadingLabelsClient,

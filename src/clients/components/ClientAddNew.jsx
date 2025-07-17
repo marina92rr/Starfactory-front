@@ -1,24 +1,16 @@
+import { useDispatch } from "react-redux";
 import { useClientsStore } from "../../hooks/useClientsStore";
 import { useUiStore } from "../../hooks/useUiStore"
 
 
 export const ClientAddNew = () => {
-
-    const {openClientModal} = useUiStore();   //Abrir modal
-    const {setActiveClient} = useClientsStore();
-
+  const dispatch = useDispatch();
+  const { openClientModal } = useUiStore(); // Abrir modal
+  const { startClearingActiveClient } = useClientsStore();
+  // Abrir modal y limpiar cliente activo
     const handleClickNew = () =>{
-        setActiveClient({
-            name: '',
-            lastName:'',
-            dni: '',
-            email: '',
-            mainPhone: '',
-            optionalPhone: '',
-            isTeacher: false
-        })
-
-        openClientModal();
+      startClearingActiveClient();
+      openClientModal();
     }
 
 

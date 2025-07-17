@@ -1,8 +1,6 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 
-
-
 export const clientSlice = createSlice({
   name: 'client',
   initialState: {
@@ -30,15 +28,19 @@ export const clientSlice = createSlice({
       state.activeClient = payload;
     },
 
+    clearActiveClient: (state) => {
+      state.activeClient = null;
+      state.activeClientLabels = [];
+    },
+
     //Filtrar cliente
     onSetFilter: (state, action) => {
       state.filter = action.payload;
 
       const normalize = str => (str || '')
         .normalize('NFD')                         // Quita tildes
-        .replace(/[\u0300-\u036f]/g, '')          // Elimina marcas de acento
-        .toUpperCase()
-        .trim();
+        .replace(/[\u0300-\u036f]/g, '') 
+        .trim()         // Elimina marcas de acento
 
       const filter = normalize(state.filter);
 
@@ -107,10 +109,10 @@ export const clientSlice = createSlice({
 
     //----------Etiquetas-----------------
 
-   onLoadFilteredLabels: (state, action) => {
-  const { idClient, labels } = action.payload;
-  state.filteredLabelsByClient[idClient] = labels;
-},
+    onLoadFilteredLabels: (state, action) => {
+      const { idClient, labels } = action.payload;
+      state.filteredLabelsByClient[idClient] = labels;
+    },
 
     // Cargar etiquetas de cliente
     onLoadLabelsOfActiveClient: (state, action) => {
@@ -143,6 +145,7 @@ export const clientSlice = createSlice({
 export const {
   //*Client
   onSetActiveClient,
+  clearActiveClient,
   onSetFilter,
   onFilterClient,
   onAddNewClient,

@@ -35,59 +35,49 @@ export const ClientModal = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
 
 
- useEffect(() => {
-  if (isEditMode) {
-    setFormValues({ ...activeClient });
-  } else {
-    setFormValues({
-      name: '',
-      lastName: '',
-      dni: '',
-      email: '',
-      mainPhone: '',
-      optionalPhone: '',
-      isTeacher: true,
-    });
-  }
-  setFormSubmitted(false);
-}, []);
+  useEffect(() => {
+    if (isModalClientOpen) {
+      if (isEditMode) {
+        setFormValues({ ...activeClient });
+      } else {
+        setFormValues({
+          name: '',
+          lastName: '',
+          dni: '',
+          email: '',
+          mainPhone: '',
+          optionalPhone: '',
+          isTeacher: true,
+        });
+      }
+      setFormSubmitted(false);
+    }
+  }, [isModalClientOpen, activeClient, isEditMode]);
 
   const titleClass = useMemo(() => {
     if (!formSubmitted) return '';
     return formValues.name.trim().length > 0 ? 'is-valid' : 'is-invalid';
   }, [formValues.name, formSubmitted]);
 
-const onInputChange = ({ target }) => {
-  const { name, type, checked, value } = target;
-  setFormValues((prev) => ({
-    ...prev,
-    [name]: type === 'checkbox' ? checked : value,
-  }));
-};
+  const onInputChange = ({ target }) => {
+    const { name, type, checked, value } = target;
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-  setFormSubmitted(true);
+    setFormSubmitted(true);
 
-  if (formValues.name.trim().length === 0) return;
+    if (formValues.name.trim().length === 0) return;
 
-  await startSavingClient(formValues, isEditMode); // <-- pasa el modo
-  closeClientModal();
-  await starLoadingClients();
-  setFormSubmitted(false);
-  window.location.reload(true);
-
-  if (!isEditMode) {
-    setFormValues({
-      name: '',
-      lastName: '',
-      dni: '',
-      email: '',
-      mainPhone: '',
-      optionalPhone: '',
-      isTeacher: true,
-    });
-  }
+    await startSavingClient(formValues, isEditMode); // <-- pasa el modo
+    closeClientModal();
+    //await starLoadingClients();
+    setFormSubmitted(false);
+    window.location.reload(true);
   };
 
   return (
@@ -106,7 +96,7 @@ const onInputChange = ({ target }) => {
             className={`form-control ${titleClass}`}
             name='name'
             type="text"
-            value={formValues.name}
+            value={formValues.name || ''}
             onChange={onInputChange}
           />
         </div>
@@ -117,7 +107,7 @@ const onInputChange = ({ target }) => {
             className='form-control'
             name='lastName'
             type="text"
-            value={formValues.lastName}
+            value={formValues.lastName || ''}
             onChange={onInputChange}
           />
         </div>
@@ -128,7 +118,7 @@ const onInputChange = ({ target }) => {
             className='form-control'
             name='dni'
             type="text"
-            value={formValues.dni}
+            value={formValues.dni || ''}
             onChange={onInputChange}
           />
         </div>
@@ -139,7 +129,7 @@ const onInputChange = ({ target }) => {
             className='form-control'
             name='email'
             type="text"
-            value={formValues.email}
+            value={formValues.email || ''}
             onChange={onInputChange}
           />
         </div>
@@ -151,7 +141,7 @@ const onInputChange = ({ target }) => {
               className='form-control'
               name='mainPhone'
               type="text"
-              value={formValues.mainPhone}
+              value={formValues.mainPhone || ''}
               onChange={onInputChange}
             />
           </div>
@@ -161,7 +151,7 @@ const onInputChange = ({ target }) => {
               className='form-control'
               name='optionalPhone'
               type="text"
-              value={formValues.optionalPhone}
+              value={formValues.optionalPhone || ''}
               onChange={onInputChange}
             />
           </div>
@@ -173,7 +163,7 @@ const onInputChange = ({ target }) => {
             type="checkbox"
             name="isTeacher"
             id="isTeacherCheckbox"
-            checked={formValues.isTeacher}
+            checked={formValues.isTeacher || false}
             onChange={onInputChange}
           />
           <label className="form-check-label" htmlFor="isTeacherCheckbox">
