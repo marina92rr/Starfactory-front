@@ -18,7 +18,7 @@ export const ClientsPage = () => {
   useEffect(() => {
     //starLoadingClients();
     starLoadingLimitClients();
-    loadClientsWithScheduledCancellation(); //Baja programada
+    //loadClientsWithScheduledCancellation(); //Baja programada
        
   }, []);
 

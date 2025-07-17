@@ -3,6 +3,8 @@ import {
   onAddNewClient,
   onLoadClientByID,
   onLoadClients,
+  onLoadFilteredLabels,
+  onLoadLabelsOfActiveClient,
   onLoadLimitClients,
   onLoadScheduledCancellations,
   onSetActiveClient,
@@ -20,8 +22,10 @@ import { normalizeAllTextFields } from "../helpers/normalizeText";
 export const useClientsStore = () => {
 
   const dispatch = useDispatch();
-  const { clients, clientsLimit, activeClient, filter, filteredList, isLoadingLabelsClient, isLoadingClients, allClientsLoaded,scheduledCancellationClients } = useSelector(state => state.client);
+  const { clients, clientsLimit, activeClient, filter, filteredList, isLoadingLabelsClient, isLoadingClients, allClientsLoaded, activeClientLabels, scheduledCancellationClients, filteredLabels } = useSelector(state => state.client);
   const { idClient } = useParams();
+  const filteredLabelsByClient = useSelector(state => state.client.filteredLabelsByClient);
+
 
 
   //Activar cliente
@@ -32,7 +36,7 @@ export const useClientsStore = () => {
   // Nuevo cliente 
   const startSavingClient = async (clientSave, isEditMode) => {
     try {
-       const normalizedClient = normalizeAllTextFields(clientSave); //  normalizar todos los campos string
+      const normalizedClient = normalizeAllTextFields(clientSave); //  normalizar todos los campos string
       if (isEditMode) {
         const { data } = await clientsApi.put(`/clients/${clientSave.idClient}`, normalizedClient);
         dispatch(onUpdateClient(data));
@@ -88,6 +92,9 @@ export const useClientsStore = () => {
       const { data } = await clientsApi.get(`clients/${idClient}`);
       const client = data.client;
       dispatch(onLoadClientByID(client));
+
+      // ¡NO USAR dispatch aquí! Solo llamas a la función:
+      await startLoadingLabelsOfClient(client.idClient);
       // dispatch(onSetActiveClient(client));
 
     } catch (error) {
@@ -112,17 +119,39 @@ export const useClientsStore = () => {
     dispatch(onSetFilter(searchTerm));
   };
 
+  //-------Etiquetas------------
+  // Cargar etiquetas de cliente
+  const startLoadingLabelsOfClient = async (idClient) => {
+    try {
+      const { data } = await clientsApi.get(`clients/${idClient}/labels`);
+
+      dispatch(onLoadLabelsOfActiveClient(data));
+    } catch (error) {
+      console.error('Error cargando labels del cliente', error);
+    }
+  }
+
+  const startLoadingFilteredLabels = async (idClient) => {
+    try {
+      const { data } = await clientsApi.get(`/clients/${idClient}/arraylabels`);
+      dispatch(onLoadFilteredLabels({ idClient, labels: data.labels || [] }));
+    } catch (err) {
+      console.error('Error al cargar filtered labels:', err);
+      dispatch(onLoadFilteredLabels({ idClient, labels: [] }));
+    }
+  };
+
   //-------Baja------------
   //Obtener clientes con baja programada
   const loadClientsWithScheduledCancellation = async () => {
-  try {
-    const { data } = await clientsApi.get('clients/cancel');
-    console.log('loadClientsWithScheduledCancellation:', data.clients);
-    dispatch(onLoadScheduledCancellations(data.clients));
-  } catch (error) {
-    console.error('Error al obtener clientes con baja programada:', error);
-  }
-};
+    try {
+      const { data } = await clientsApi.get('clients/cancelprogram');
+      console.log('loadClientsWithScheduledCancellation:', data.clients);
+      dispatch(onLoadScheduledCancellations(data.clients));
+    } catch (error) {
+      console.error('Error al obtener clientes con baja programada:', error);
+    }
+  };
 
   //Dar baja cliente
   const toggleClientStatusCancel = async (idClient) => {
@@ -136,23 +165,23 @@ export const useClientsStore = () => {
     }
   };
   //Programar baja
- const programClientCancellation = async (idClient, cancelDate) => {
-  try{
-    const { data } = await clientsApi.patch(`/clients/programcancel/${idClient}`, { cancelDate });
-    dispatch(onToggleClientStatusCancel(data.client)); // O solo data si no devuelves { client: ... }
-  } catch (error) {
-    console.error('Error al programar baja del cliente:', error);
-  }
-};
+  const programClientCancellation = async (idClient, cancelDate) => {
+    try {
+      const { data } = await clientsApi.patch(`/clients/programcancel/${idClient}`, { cancelDate });
+      dispatch(onToggleClientStatusCancel(data.client)); // O solo data si no devuelves { client: ... }
+    } catch (error) {
+      console.error('Error al programar baja del cliente:', error);
+    }
+  };
 
-const cancelClientScheduledCancellation = async (idClient) => {
-  try {
-    const { data } = await clientsApi.patch(`clients/cancelScheduled/${idClient}`);
-    dispatch(onToggleClientStatusCancel(data.client));
-  } catch (error) {
-    console.error('Error al cancelar la baja programada:', error);
-  }
-};
+  const cancelClientScheduledCancellation = async (idClient) => {
+    try {
+      const { data } = await clientsApi.patch(`clients/cancelScheduled/${idClient}`);
+      dispatch(onToggleClientStatusCancel(data.client));
+    } catch (error) {
+      console.error('Error al cancelar la baja programada:', error);
+    }
+  };
 
 
   return {
@@ -166,6 +195,9 @@ const cancelClientScheduledCancellation = async (idClient) => {
     allClientsLoaded,
     clientsLimit,
     scheduledCancellationClients,
+    activeClientLabels,
+    filteredLabels,
+    filteredLabelsByClient,
 
     //*Metodos
     //Client
@@ -178,7 +210,9 @@ const cancelClientScheduledCancellation = async (idClient) => {
     toggleClientStatusCancel,
     programClientCancellation,
     cancelClientScheduledCancellation,
-    loadClientsWithScheduledCancellation
+    loadClientsWithScheduledCancellation,
+    startLoadingLabelsOfClient,
+    startLoadingFilteredLabels,
 
     //Label
   }

@@ -15,7 +15,10 @@ export const clientSlice = createSlice({
     filteredList: [],
     error: null,
     isLoadingLabelsClient: false,
-    scheduledCancellationClients: [], // 👈 nuevo array
+    filteredLabelsByClient: {}, // <- Añade este campo para el resultado de filtrar labels de un cliente
+
+    activeClientLabels: [], // 👈 nuevo array Labels
+    scheduledCancellationClients: [], // 👈 nuevo array Programado
 
   },
   reducers: {
@@ -102,6 +105,18 @@ export const clientSlice = createSlice({
     },
 
 
+    //----------Etiquetas-----------------
+
+   onLoadFilteredLabels: (state, action) => {
+  const { idClient, labels } = action.payload;
+  state.filteredLabelsByClient[idClient] = labels;
+},
+
+    // Cargar etiquetas de cliente
+    onLoadLabelsOfActiveClient: (state, action) => {
+      state.activeClientLabels = action.payload; // array de labels completos
+    },
+
     //----------Bajas---------------
     // Cargar clientes con baja programada
     onLoadScheduledCancellations: (state, { payload }) => {
@@ -137,6 +152,9 @@ export const {
   onLoadClientByID,
   onLoadLimitClients,
   onToggleClientStatusCancel,
-  onLoadScheduledCancellations
+  onLoadScheduledCancellations,
+  //*Labels
+  onLoadLabelsOfActiveClient,
+  onLoadFilteredLabels
 
 } = clientSlice.actions; //accion
