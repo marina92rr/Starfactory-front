@@ -49,7 +49,7 @@ export const labelSlice = createSlice({
       })   
     },
  
-    onLoadLabels: (state, {payload}) =>{
+    onLoadLabels:(state, {payload}) =>{
       state.isLoadingLabels = false;
       state.labels = payload;
       payload.forEach( label =>{
@@ -61,17 +61,16 @@ export const labelSlice = createSlice({
     },
 
     //Filtrar labels Busqueda
-    onSetFilter: (state, action) => {
+    onSetFilterLabel: (state, action) => {
       state.filter = action.payload;
 
       const normalize = str => (str || '')
         .normalize('NFD')                         // Quita tildes
         .replace(/[\u0300-\u036f]/g, '')          // Elimina marcas de acento
         .toUpperCase()
-        .trim();
 
       const filter = normalize(state.filter);
-
+      // Filtrar labels
       state.filteredList = state.labels.filter(label => {
         const fullName = normalize(`${label.name}`);
         return fullName.includes(filter);
@@ -92,6 +91,5 @@ export const {
   onSetLabels,
   onLoadLabels,
   onLoadingLabels,
-  onDeleteLabel,
-  onSetFilters
+  onDeleteLabel
 } = labelSlice.actions; //accion

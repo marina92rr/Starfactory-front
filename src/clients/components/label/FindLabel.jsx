@@ -8,19 +8,19 @@ import { useLabelsStore } from '../../../hooks/useLabelsStore';
 // Componente para buscar y filtrar Labels por nombre
 export const FindLabel = () => {
 
-
   const dispatch  = useDispatch();
  
-
   const {startFindLabels,filter, filteredList} = useLabelsStore();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
   
   //Filtrar clientes
   const handleFilterChange = (e) => {
-        const value = e.target.value;
-        dispatch(startFindLabels(value));
-        setShowDropdown(value.trim().length > 0 && filteredList.length > 0);
+      const value = e.target.value.toUpperCase();
+      setInputValue(value);
+      dispatch(startFindLabels(value));
+      setShowDropdown(value.trim().length > 0 && filteredList.length > 0);
   };
 
 
@@ -46,7 +46,7 @@ export const FindLabel = () => {
               placeholder="Buscar Label..."
               className='form-control rounded-3 bg-light-subtle p-1'
               style={{ outline: 'none', borderColor: 'gray' }}
-              value={filter}
+              value={inputValue}
               onChange={handleFilterChange}
               onFocus={handleFocus}
               onBlur={handleBlur}
