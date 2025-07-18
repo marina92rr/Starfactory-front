@@ -5,12 +5,17 @@ import { createSlice } from '@reduxjs/toolkit';
 export const uiSlice = createSlice({
   name: 'ui',
   initialState:{
+    //Clinte
     isModalClientOpen: false,
+    //Etiqueta
     isModalLabelOpen: false,
     isModalCreateLabelOpen: false,
     isModalColorLabelOpen: false,
+    isModalFilterClientsByLabelOpen: false,
+    //Tienda
     isModalCategoryOpen: false,
     isModalProductOpen: false,
+    //Tarifa
     isModalRateOpen: false,
     isModalQuotaOpen: false,
     isModalSaleOpen:false
@@ -37,7 +42,12 @@ export const uiSlice = createSlice({
     onOpenColorLabelModal: (state) =>{ state.isModalColorLabelOpen = true;},
     //Cerrar modal color Label
     onCloseColorLabelModal: (state) =>{ state.isModalColorLabelOpen = false;},
-    
+
+    //Abrir modal Filtrar clientes por etiqueta
+    onOpenFilterClientsByLabelModal: (state) =>{ state.isModalFilterClientsByLabelOpen = true;},
+    //Cerrar modal Filtrar clientes por etiqueta
+    onCloseFilterClientsByLabelModal: (state) =>{ state.isModalFilterClientsByLabelOpen = false;},
+
     //Abrir modal Categoria
     onOpenCategoryModal: (state) =>{ state.isModalCategoryOpen = true;},
     //Cerrar modal Categoria
@@ -80,6 +90,9 @@ export const {
   //*Color Label
     onOpenColorLabelModal,
     onCloseColorLabelModal,
+  //*Filter Clients by Label
+    onOpenFilterClientsByLabelModal,
+    onCloseFilterClientsByLabelModal,
 
   //*Category
     onOpenCategoryModal,

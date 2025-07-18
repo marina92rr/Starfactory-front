@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseLabelModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenLabelModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal } from "../store/ui/uiSlice";
+import { onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseFilterClientsByLabelModal, onCloseLabelModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenFilterClientsByLabelModal, onOpenLabelModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal } from "../store/ui/uiSlice";
 
 
 
@@ -11,6 +11,7 @@ export const useUiStore = () => {
       isModalLabelOpen,
       isModalCreateLabelOpen,
       isModalColorLabelOpen,
+      isModalFilterClientsByLabelOpen,
       isModalCategoryOpen,
       isModalProductOpen,
       isModalRateOpen,
@@ -66,6 +67,16 @@ export const useUiStore = () => {
         dispatch(onCloseColorLabelModal());
     }
 
+    //Abrir Filtro clientes por label LabelModal
+    const openFilterClientByLabelModal = () =>{
+        dispatch(onOpenFilterClientsByLabelModal());
+    }
+
+    //Cerrar Filtro clientes por label LabelModal
+    const closeFilterClientByLabelModal = () =>{
+        dispatch(onCloseFilterClientsByLabelModal());
+    }
+
     //*--------------------------------CategoryModal--------------------------------
 
         //Abrir LabelModal
@@ -77,6 +88,8 @@ export const useUiStore = () => {
         const closeCategoryModal = () =>{
             dispatch(onCloseCategoryModal());
         }
+
+        
 
     //*--------------------------------ProductModal--------------------------------
 
@@ -136,6 +149,8 @@ export const useUiStore = () => {
     isModalRateOpen,
     isModalQuotaOpen,
     isModalSaleOpen,
+    isModalFilterClientsByLabelOpen,
+
 
     //*Metodos
     openClientModal,
@@ -147,6 +162,8 @@ export const useUiStore = () => {
     closeCreateLabelModal,
     openColorLabelModal,
     closeColorLabelModal,
+    openFilterClientByLabelModal,
+    closeFilterClientByLabelModal,
 
     openCategoryModal,
     closeCategoryModal,

@@ -14,8 +14,8 @@ export const clientSlice = createSlice({
     error: null,
     isLoadingLabelsClient: false,
     filteredLabelsByClient: {}, // <- Añade este campo para el resultado de filtrar labels de un cliente
-
     activeClientLabels: [], // 👈 nuevo array Labels
+    filteredClientsByLabel: [],
     scheduledCancellationClients: [], // 👈 nuevo array Programado
 
   },
@@ -33,20 +33,25 @@ export const clientSlice = createSlice({
       state.activeClientLabels = [];
     },
 
+    onResetClientsPAge:(state) => {
+      state.activeClient = null;},
+
     //Filtrar cliente
     onSetFilter: (state, action) => {
       state.filter = action.payload;
 
       const normalize = str => (str || '')
-        .normalize('NFD')                         // Quita tildes
-        .replace(/[\u0300-\u036f]/g, '') 
-        .trim()         // Elimina marcas de acento
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim();
 
       const filter = normalize(state.filter);
 
       state.filteredList = state.clients.filter(client => {
         const fullName = normalize(`${client.name} ${client.lastName}`);
-        return fullName.includes(filter);
+        const filterWords = filter.split(' ').filter(Boolean);
+        return filterWords.every(word => fullName.includes(word));
       });
     },
 
@@ -119,6 +124,13 @@ export const clientSlice = createSlice({
       state.activeClientLabels = action.payload; // array de labels completos
     },
 
+     setFilteredClientsByLabel: (state, action) => {
+      state.filteredClientsByLabel = action.payload;
+    },
+    clearFilteredClientsByLabel: (state) => {
+      state.filteredClientsByLabel = [];
+    },
+
     //----------Bajas---------------
     // Cargar clientes con baja programada
     onLoadScheduledCancellations: (state, { payload }) => {
@@ -158,6 +170,8 @@ export const {
   onLoadScheduledCancellations,
   //*Labels
   onLoadLabelsOfActiveClient,
-  onLoadFilteredLabels
+  onLoadFilteredLabels,
+  setFilteredClientsByLabel,
+  clearFilteredClientsByLabel,
 
 } = clientSlice.actions; //accion

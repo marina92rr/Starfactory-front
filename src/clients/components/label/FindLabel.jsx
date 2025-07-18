@@ -1,23 +1,25 @@
 
 import React, { useState,useEffect } from 'react'
 import { useClientsStore } from '../../../hooks/useClientsStore';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useLabelsStore } from '../../../hooks/useLabelsStore';
 
+
+// Componente para buscar y filtrar Labels por nombre
 export const FindLabel = () => {
 
 
   const dispatch  = useDispatch();
-  const navigate = useNavigate();
+ 
 
-  const { startFilteringClients, filter, filteredList } = useClientsStore();
+  const {startFindLabels,filter, filteredList} = useLabelsStore();
   const [showDropdown, setShowDropdown] = useState(false);
 
   
   //Filtrar clientes
   const handleFilterChange = (e) => {
         const value = e.target.value;
-        dispatch(startFilteringClients(value));
+        dispatch(startFindLabels(value));
         setShowDropdown(value.trim().length > 0 && filteredList.length > 0);
   };
 
@@ -31,17 +33,17 @@ export const FindLabel = () => {
   };
 
   // Cuando seleccionas un cliente, navegamos a /clients/:ID
-  const handleSelect = idClient => {
-    navigate(`${idClient}`);
-    setShowDropdown(false);
+  const handleSelect = idLabel => {
+   console.log('Label seleccionado:', idLabel);
   };
+
   return (
     
   <div className="mb-1 col-10 position-relative">
     
             <input
               type="text"
-              placeholder="Buscar..."
+              placeholder="Buscar Label..."
               className='form-control rounded-3 bg-light-subtle p-1'
               style={{ outline: 'none', borderColor: 'gray' }}
               value={filter}
@@ -52,13 +54,13 @@ export const FindLabel = () => {
 
           {showDropdown && (
           <ul className="dropdown-menu show position-absolute w-100 z-3">
-            {filteredList.map(client => (
+            {filteredList.map(label => (
               <li
-                key={client.idClient}
+                key={label.idLabel}
                 className="dropdown-item"
-                onMouseDown={() => handleSelect(client.idClient)}
+                onMouseDown={() => handleSelect(label.idLabel)}
               >
-                {client.name.toUpperCase()} {client.lastName.toUpperCase()}
+                {label.name}
               </li>
             ))}
           </ul>

@@ -16,7 +16,7 @@ export const FindClient = () => {
   const handleFilterChange = (e) => {
     const value = e.target.value.toUpperCase();
     setInputValue(value);
-    if (value.trim().length > 3) {
+    if (value.trim().length > 0) {
       dispatch(startFilteringClients(value.toUpperCase()));
       setShowDropdown(true);
     } else {

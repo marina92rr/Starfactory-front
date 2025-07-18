@@ -5,6 +5,8 @@ import {
   onLoadClients,
   onLoadFilteredLabels,
   onLoadLabelsOfActiveClient,
+  setFilteredClientsByLabel,
+  clearFilteredClientsByLabel,
   onLoadLimitClients,
   onLoadScheduledCancellations,
   onSetActiveClient,
@@ -21,7 +23,7 @@ import { clearActiveClient } from "../store/clients/clientSlice";
 export const useClientsStore = () => {
 
   const dispatch = useDispatch();
-  const { clients, clientsLimit, activeClient, filter, filteredList, isLoadingLabelsClient, isLoadingClients, allClientsLoaded, activeClientLabels, scheduledCancellationClients, filteredLabels } = useSelector(state => state.client);
+  const { clients, clientsLimit, activeClient, filter, filteredList, isLoadingLabelsClient,filteredClientsByLabel, isLoadingClients, allClientsLoaded, activeClientLabels, scheduledCancellationClients, filteredLabels } = useSelector(state => state.client);
   const { idClient } = useParams();
   const filteredLabelsByClient = useSelector(state => state.client.filteredLabelsByClient);
 
@@ -107,7 +109,7 @@ export const useClientsStore = () => {
   }
 
 
-  // Filtrar clientes (se asegura de tener todos)
+  // Filtrar clientes Buscar...
   const startFilteringClients = (searchTerm) => async (dispatch, getState) => {
     const { client } = getState();
 
@@ -143,6 +145,23 @@ export const useClientsStore = () => {
       console.error('Error al cargar filtered labels:', err);
       dispatch(onLoadFilteredLabels({ idClient, labels: [] }));
     }
+  };
+
+  // Filtrar clientes por etiquetas
+  const filterClientsByLabels = async (labelIds) => {
+    try {
+      // labelIds es un array de Number
+      const { data } = await clientsApi.post('/clients/filterlabels', { labelIds });
+       console.log('Recibidos', data.length, 'clientes filtrados');
+      dispatch(setFilteredClientsByLabel(data)); // guardas el resultado en Redux
+    } catch (error) {
+      // Maneja el error a tu manera
+      console.error(error);
+      dispatch(setFilteredClientsByLabel([]));
+    }
+  };
+   const clearFilter = () => {
+    dispatch(clearFilteredClientsByLabel());
   };
 
   //-------Baja------------
@@ -203,6 +222,7 @@ export const useClientsStore = () => {
     activeClientLabels,
     filteredLabels,
     filteredLabelsByClient,
+    filteredClientsByLabel,
 
     //*Metodos
     //Client
@@ -220,6 +240,8 @@ export const useClientsStore = () => {
     startLoadingFilteredLabels,
 
     //Label
+    filterClientsByLabels,
+    clearFilter
   }
 
 }

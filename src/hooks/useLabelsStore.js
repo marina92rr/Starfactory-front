@@ -63,7 +63,7 @@ export const useLabelsStore = () => {
     }
   };
 
-    // Filtrar labels (se asegura de tener todos)
+    // Filtrar labels Buscar...
     const startFindLabels = (searchTerm) => async (dispatch, getState) => {
       const { label } = getState();
   
