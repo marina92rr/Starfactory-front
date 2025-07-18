@@ -4,7 +4,7 @@ import { ClientAddNew, ClientModal } from '../components';
 import { useNavigate } from 'react-router-dom';
 import { LabelClient } from '../components/clientPage/LabelClient';
 import { FilterClientByLabelModal } from '../components/label/FilterClientByLabelModal';
-import { FilterClientsByLabel } from '../components/label/FilterClientsbylabel';
+import { FilterClientsByLabel } from '../components/label/FilterClientsByLabel';
 
 
 
