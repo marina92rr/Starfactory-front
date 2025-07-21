@@ -14,6 +14,12 @@ export const quotaSlice = createSlice({
     onSetActiveQuota: (state, {payload}) =>{
         state.activeQuota = payload;
     },
+    //Resetea cuota
+    onResetQuota: (state) =>{
+        state.activeQuota = null;
+        state.quotas = [];
+    },
+
 
     //Añadir cuota
     onAddNewQuota: (state, {payload}) =>{
@@ -47,6 +53,7 @@ export const quotaSlice = createSlice({
 export const { 
     //*Metodos
   onSetActiveQuota,
+  onResetQuota,
   onAddNewQuota,
   onUpdateQuota,
   onLoadQuota,

@@ -13,6 +13,7 @@ import {
   onSetFilter,
   onToggleClientStatusCancel,
   onUpdateClient,
+  onResetClientsPage,
 } from "../store/clients/clientSlice";
 
 import { clientsApi } from "../api";
@@ -37,6 +38,11 @@ export const useClientsStore = () => {
   const startClearingActiveClient = () => {
     dispatch(clearActiveClient());
   };
+
+  const startResetClientsPage = () => {
+    dispatch(onResetClientsPage());
+  };
+
 
   // Nuevo cliente 
   const startSavingClient = async (clientSave, isEditMode) => {
@@ -227,6 +233,7 @@ export const useClientsStore = () => {
     //*Metodos
     //Client
     setActiveClient,
+    startResetClientsPage,
     starLoadingClients,
     starLoadingLimitClients,
     starLoadingClientByID,

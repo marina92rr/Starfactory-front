@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux"
-import { onAddNewCategory, onDeleteCategory, onLoadCategory, onSetActiveCategory, onUpdateCategory } from "../store/storeFactory/categorySlice";
+import { onAddNewCategory, onDeleteCategory, onLoadCategory, onResetCategory, onSetActiveCategory, onUpdateCategory } from "../store/storeFactory/categorySlice";
 import { clientsApi } from "../api";
 import { normalizeAllTextFields } from "../helpers/normalizeText";
+import { onResetProduct } from "../store/storeFactory/productSlice";
 
 
 
@@ -13,6 +14,11 @@ export const useCategoryStore = () => {
 
 const setActiveCategory = (categoryData) =>{
     dispatch(onSetActiveCategory(categoryData))
+}
+
+const startResetStorePage = () => {
+    dispatch(onResetCategory());
+    dispatch(onResetProduct());
 }
 
 // Actualizar o crear una categoria 
@@ -60,6 +66,7 @@ const setActiveCategory = (categoryData) =>{
 
             //*Metodos
             setActiveCategory,
+            startResetStorePage,
             starLoadingCategories,
             startSavingCategory,
             startDeleteCategory

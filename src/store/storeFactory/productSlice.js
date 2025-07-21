@@ -15,6 +15,12 @@ export const productSlice = createSlice({
       state.activeProduct = payload;
     },
 
+    //resetear categoria
+    onResetProduct: (state) => {  
+      state.activeProduct = null;
+    },
+
+
     //Añadir categoria
     onAddNewProduct: (state, { payload }) => {
       state.products.push(payload);
@@ -48,6 +54,7 @@ export const productSlice = createSlice({
 export const {
   //*Metodos
   onSetActiveProduct,
+  onResetProduct,
   onAddNewProduct,
   onUpdateProduct,
   onDeleteProduct,

@@ -1,7 +1,9 @@
 import { useDispatch, useSelector } from "react-redux"
 import { clientsApi } from "../api";
-import { onAddNewRate, onDeleteRate, onLoadRate, onSetActiveRate, onUpdateRate } from "../store/rates/rateSlice";
+import { onAddNewRate, onDeleteRate, onLoadRate, onResetRate, onSetActiveRate, onUpdateRate } from "../store/rates/rateSlice";
+
 import { normalizeAllTextFields } from "../helpers/normalizeText";
+import { onResetQuota } from "../store/rates/quotaSlice";
 
 
 
@@ -11,8 +13,15 @@ export const useRateStore = () => {
     const { rates, activeRate } = useSelector(state => state.rate);
 
 
+
     const setActiveRate = (rateData) => {
         dispatch(onSetActiveRate(rateData))
+    }
+
+    const startResetRatesPage = () => {
+        dispatch(onResetRate());
+        dispatch(onResetQuota());
+    
     }
 
 
@@ -62,6 +71,7 @@ export const useRateStore = () => {
 
         //*Metodos
         setActiveRate,
+        startResetRatesPage,
         startSavingRate,
         starLoadingRates,
         startDeleteRate

@@ -57,7 +57,7 @@ export const ClientsPage = () => {
           <div className="text-secondary mt-3">No hay clientes que coincidan con el filtro.</div>
         ) : (
           clientsToShow.map((client, i) => {
-            const fullName = `${client.name} ${client.lastName}`.toUpperCase();
+            const fullName = `${client.name} ${client.lastName}`;
             return (
               <div key={i} className="border p-3 text-start">
                 <div className="form">
@@ -73,14 +73,18 @@ export const ClientsPage = () => {
                   </div>
                 </div>
                 <div className='d-flex'>
-                  <div className='text-secondary ps-3 d-flex'>
-                    <i className="bi bi-envelope-fill me-2"></i>
-                    {client.email}
-                  </div>
-                  <div className='text-secondary ps-3 d-flex'>
-                    <i className="bi bi-telephone-fill me-2"></i>
-                    {client.mainPhone}
-                  </div>
+                  {client.email && (
+                    <div className='text-secondary ps-3 d-flex'>
+                      <i className="bi bi-envelope-fill me-2"></i>
+                      {client.email}
+                    </div>
+                  )}
+                  {client.mainPhone && (
+                    <div className='text-secondary ps-3 d-flex'>
+                      <i className="bi bi-telephone-fill me-2"></i>
+                      {client.mainPhone}
+                    </div>
+                  )}
                 </div>
               </div>
             );

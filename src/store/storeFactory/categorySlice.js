@@ -15,6 +15,10 @@ export const categorySlice = createSlice({
     onSetActiveCategory: (state, {payload}) =>{
         state.activeCategory = payload;
     },
+    onResetCategory: (state) => {
+        state.activeCategory = null;
+    },
+
 
     //Añadir categoria
     onAddNewCategory: (state, {payload}) =>{
@@ -53,6 +57,7 @@ export const categorySlice = createSlice({
 export const { 
     //*Metodos
     onSetActiveCategory, 
+    onResetCategory,
     onAddNewCategory, 
     onUpdateCategory,
     onLoadCategory,

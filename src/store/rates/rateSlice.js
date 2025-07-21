@@ -13,6 +13,11 @@ export const rateSlice = createSlice({
     onSetActiveRate: (state, {payload}) =>{
         state.activeRate = payload;
     },
+    //Resetea tarifa
+    onResetRate: (state) =>{
+        state.activeRate = null;
+        state.rates = [];
+    },
 
     //Añadir tarifa
     onAddNewRate: (state, {payload}) =>{
@@ -51,6 +56,7 @@ export const rateSlice = createSlice({
 export const { 
     //*Metodos
     onSetActiveRate,
+    onResetRate,
     onAddNewRate,
     onUpdateRate,
     onLoadRate,

@@ -2,6 +2,9 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { useClientsStore } from '../../hooks/useClientsStore';
+import { useRateStore } from '../../hooks/useRateStore';
+import { useCategoryStore } from '../../hooks/useCategoryStore';
 
 const links = [
   { name: 'Clientes', path: '/' },
@@ -12,6 +15,9 @@ const links = [
 export const Sidebar = () => {
 
   const dispatch = useDispatch();
+  const {startResetClientsPage} = useClientsStore();
+  const {startResetRatesPage} = useRateStore();
+  const {startResetStorePage} = useCategoryStore();
 
   return (
 
@@ -26,6 +32,18 @@ export const Sidebar = () => {
             key={link.path}
             to={link.path}
             style={{ textDecoration: 'none' }}
+            onClick={() => {
+              if (link.name === 'Clientes') {
+                dispatch(startResetClientsPage());
+              }
+              if (link.name === 'Tienda') {
+                dispatch(startResetStorePage());
+              }
+              if (link.name === 'Tarifas') {
+                dispatch(startResetRatesPage());
+              }
+            }
+            }
           >
             {({ isActive }) => (
               <div className='p-3' style={{ background: isActive ? '#007bff' : 'none', color: isActive ? '#ffffff' : '#000000' }}>

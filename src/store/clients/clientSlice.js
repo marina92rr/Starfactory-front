@@ -33,8 +33,15 @@ export const clientSlice = createSlice({
       state.activeClientLabels = [];
     },
 
-    onResetClientsPAge:(state) => {
-      state.activeClient = null;},
+    onResetClientsPage:(state) => {
+      state.activeClient = null;
+      state.activeClientLabels = [];
+      state.filter = '';
+      state.filteredList = [];
+      state.filteredClientsByLabel = [];
+      state.clients = [];
+      state.clientsLimit = [];
+    },
 
     //Filtrar cliente
     onSetFilter: (state, action) => {
@@ -158,6 +165,7 @@ export const {
   //*Client
   onSetActiveClient,
   clearActiveClient,
+  onResetClientsPage, 
   onSetFilter,
   onFilterClient,
   onAddNewClient,
