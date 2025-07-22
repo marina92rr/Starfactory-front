@@ -175,7 +175,6 @@ export const useClientsStore = () => {
   const loadClientsWithScheduledCancellation = async () => {
     try {
       const { data } = await clientsApi.get(`clients/cancelScheduled`);
-      console.log('loadClientsWithScheduledCancellation:', data.clients);
       dispatch(onLoadScheduledCancellations(data.clients));
     } catch (error) {
       console.error('Error al obtener clientes con baja programada:', error);

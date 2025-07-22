@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { LabelClient } from '../components/clientPage/LabelClient';
 import { FilterClientByLabelModal } from '../components/label/FilterClientByLabelModal';
 import { FilterClientsByLabel } from '../components/label/FilterClientsByLabel';
+import { GetClientCancellation } from '../components/clientPage/cancellation/GetClientCancellation';
+import { GetClientCancellationModal } from '../components/clientPage/cancellation/GetClientCancellationModal';
 
 
 
@@ -12,14 +14,12 @@ export const ClientsPage = () => {
 
   const navigate = useNavigate();
 
-  const { clientsLimit, starLoadingLimitClients, filteredClientsByLabel, clearFilter, loadClientsWithScheduledCancellation, scheduledCancellationClients } = useClientsStore();
+  const { clientsLimit, starLoadingLimitClients, filteredClientsByLabel, clearFilter } = useClientsStore();
 
 
   //LCarga de clientes
   useEffect(() => {
     starLoadingLimitClients();
-    loadClientsWithScheduledCancellation(); //Baja programada
-
   }, []);
 
   // Decide qué lista mostrar
@@ -46,9 +46,8 @@ export const ClientsPage = () => {
             </button>
           )}
         </div>
-        <span className="text-nowrap">
-          Bajas programadas ({scheduledCancellationClients.length})
-        </span>
+        <GetClientCancellation/>
+        <GetClientCancellationModal/>
       </div>
 
 

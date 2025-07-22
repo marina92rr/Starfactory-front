@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const uiSlice = createSlice({
   name: 'ui',
-  initialState:{
+  initialState: {
     //Clinte
     isModalClientOpen: false,
     //Etiqueta
@@ -18,98 +18,107 @@ export const uiSlice = createSlice({
     //Tarifa
     isModalRateOpen: false,
     isModalQuotaOpen: false,
-    isModalSaleOpen:false
+    isModalSaleOpen: false,
+    //Cancellation
+    isModalCancellationOpen: false,
 
   },
   reducers: {
-    
+
     //Abrir modal Cliente
-    onOpenClientModal: (state) =>{ state.isModalClientOpen = true;},
+    onOpenClientModal: (state) => { state.isModalClientOpen = true; },
     //Cerrar modal Cliente
-    onCloseClientModal: (state) =>{ state.isModalClientOpen = false;},
+    onCloseClientModal: (state) => { state.isModalClientOpen = false; },
 
-     //Abrir modal Label
-    onOpenLabelModal: (state) =>{ state.isModalLabelOpen = true;},
+    //Abrir modal Label
+    onOpenLabelModal: (state) => { state.isModalLabelOpen = true; },
     //Cerrar modal Label
-    onCloseLabelModal: (state) =>{ state.isModalLabelOpen = false;},
+    onCloseLabelModal: (state) => { state.isModalLabelOpen = false; },
 
-     //Abrir modal Create Label
-    onOpenCreateLabelModal: (state) =>{ state.isModalCreateLabelOpen = true;},
+    //Abrir modal Create Label
+    onOpenCreateLabelModal: (state) => { state.isModalCreateLabelOpen = true; },
     //Cerrar modal Create Label
-    onCloseCreateLabelModal: (state) =>{ state.isModalCreateLabelOpen = false;},
+    onCloseCreateLabelModal: (state) => { state.isModalCreateLabelOpen = false; },
 
-     //Abrir modal Color Label
-    onOpenColorLabelModal: (state) =>{ state.isModalColorLabelOpen = true;},
+    //Abrir modal Color Label
+    onOpenColorLabelModal: (state) => { state.isModalColorLabelOpen = true; },
     //Cerrar modal color Label
-    onCloseColorLabelModal: (state) =>{ state.isModalColorLabelOpen = false;},
+    onCloseColorLabelModal: (state) => { state.isModalColorLabelOpen = false; },
 
     //Abrir modal Filtrar clientes por etiqueta
-    onOpenFilterClientsByLabelModal: (state) =>{ state.isModalFilterClientsByLabelOpen = true;},
+    onOpenFilterClientsByLabelModal: (state) => { state.isModalFilterClientsByLabelOpen = true; },
     //Cerrar modal Filtrar clientes por etiqueta
-    onCloseFilterClientsByLabelModal: (state) =>{ state.isModalFilterClientsByLabelOpen = false;},
+    onCloseFilterClientsByLabelModal: (state) => { state.isModalFilterClientsByLabelOpen = false; },
 
     //Abrir modal Categoria
-    onOpenCategoryModal: (state) =>{ state.isModalCategoryOpen = true;},
+    onOpenCategoryModal: (state) => { state.isModalCategoryOpen = true; },
     //Cerrar modal Categoria
-    onCloseCategoryModal: (state) =>{ state.isModalCategoryOpen = false;},
+    onCloseCategoryModal: (state) => { state.isModalCategoryOpen = false; },
 
     //Abrir modal Producto
-    onOpenProductModal: (state) =>{ state.isModalProductOpen = true;},
+    onOpenProductModal: (state) => { state.isModalProductOpen = true; },
     //Cerrar modal Producto
-    onCloseProductModal: (state) =>{ state.isModalProductOpen = false;},
+    onCloseProductModal: (state) => { state.isModalProductOpen = false; },
 
 
-     //Abrir modal Rate
-     onOpenRateModal: (state) =>{ state.isModalRateOpen = true;},
-     //Cerrar modal Rate
-     onCloseRateModal: (state) =>{ state.isModalRateOpen = false;},
-     //Abrir modal Rate
-     onOpenQuotaModal: (state) =>{ state.isModalQuotaOpen = true;},
-     //Cerrar modal Rate
-     onCloseQuotaModal: (state) =>{ state.isModalQuotaOpen = false;},
+    //Abrir modal Rate
+    onOpenRateModal: (state) => { state.isModalRateOpen = true; },
+    //Cerrar modal Rate
+    onCloseRateModal: (state) => { state.isModalRateOpen = false; },
+    //Abrir modal Rate
+    onOpenQuotaModal: (state) => { state.isModalQuotaOpen = true; },
+    //Cerrar modal Rate
+    onCloseQuotaModal: (state) => { state.isModalQuotaOpen = false; },
 
-     //Venta Modal
-      onOpenSaleModal: (state) =>{ state.isModalSaleOpen = true;},
-     //Cerrar modal Rate
-     onCloseSaleModal: (state) =>{ state.isModalSaleOpen = false;}
+    //Venta Modal
+    onOpenSaleModal: (state) => { state.isModalSaleOpen = true; },
+    //Cerrar modal Rate
+    onCloseSaleModal: (state) => { state.isModalSaleOpen = false; },
+
+    //Abrir modal Cancellation
+    onOpenCancellationModal: (state) => { state.isModalCancellationOpen = true; },
+    //Cerrar modal Cancellation
+    onCloseCancellationModal: (state) => { state.isModalCancellationOpen = false; }
 
 
   },
 })
-export const { 
+export const {
   //*Client
-    onCloseClientModal,
-    onOpenClientModal,
-    
+  onCloseClientModal,
+  onOpenClientModal,
+
   //*Label
-    onOpenLabelModal,
-    onCloseLabelModal,
+  onOpenLabelModal,
+  onCloseLabelModal,
   //*Create Label
-    onOpenCreateLabelModal,
-    onCloseCreateLabelModal,
+  onOpenCreateLabelModal,
+  onCloseCreateLabelModal,
   //*Color Label
-    onOpenColorLabelModal,
-    onCloseColorLabelModal,
+  onOpenColorLabelModal,
+  onCloseColorLabelModal,
   //*Filter Clients by Label
-    onOpenFilterClientsByLabelModal,
-    onCloseFilterClientsByLabelModal,
+  onOpenFilterClientsByLabelModal,
+  onCloseFilterClientsByLabelModal,
 
   //*Category
-    onOpenCategoryModal,
-    onCloseCategoryModal,
+  onOpenCategoryModal,
+  onCloseCategoryModal,
 
   //*Product
-    onOpenProductModal,
-    onCloseProductModal
+  onOpenProductModal,
+  onCloseProductModal
   //*Rate
-    ,onOpenRateModal,
-    onCloseRateModal,
+  , onOpenRateModal,
+  onCloseRateModal,
   //*Quota
-    onOpenQuotaModal,
-    onCloseQuotaModal,
+  onOpenQuotaModal,
+  onCloseQuotaModal,
   //*Venta
-    onOpenSaleModal,
-    onCloseSaleModal
-  
-    
+  onOpenSaleModal,
+  onCloseSaleModal,
+  //*Cancellation
+  onOpenCancellationModal,
+  onCloseCancellationModal
+
 } = uiSlice.actions; //accion

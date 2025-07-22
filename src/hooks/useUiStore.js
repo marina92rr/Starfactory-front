@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseFilterClientsByLabelModal, onCloseLabelModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenFilterClientsByLabelModal, onOpenLabelModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal } from "../store/ui/uiSlice";
+import { onCloseCancellationModal, onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseFilterClientsByLabelModal, onCloseLabelModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onOpenCancellationModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenFilterClientsByLabelModal, onOpenLabelModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal } from "../store/ui/uiSlice";
 
 
 
@@ -17,6 +17,7 @@ export const useUiStore = () => {
       isModalRateOpen,
       isModalQuotaOpen,
       isModalSaleOpen,
+      isModalCancellationOpen
      } = useSelector( state => state.ui);
 
 
@@ -136,7 +137,17 @@ export const useUiStore = () => {
         const closeSaleModal = () =>{
             dispatch(onCloseSaleModal());
         }
+    //*--------------------------------CancellationModal--------------------------------
 
+    //Abrir CancellationModal
+    const openCancellationModal = () =>{
+        dispatch(onOpenCancellationModal());
+    }
+
+    //Cerrar CancellationModal
+    const closeCancellationModal = () =>{
+        dispatch(onCloseCancellationModal());
+    }
 
   return {
     //*Propiedades
@@ -150,7 +161,7 @@ export const useUiStore = () => {
     isModalQuotaOpen,
     isModalSaleOpen,
     isModalFilterClientsByLabelOpen,
-
+    isModalCancellationOpen,
 
     //*Metodos
     openClientModal,
@@ -179,6 +190,9 @@ export const useUiStore = () => {
 
     openSaleModal,
     closeSaleModal,
-    
+
+    openCancellationModal,
+    closeCancellationModal,
+
   }
 }
