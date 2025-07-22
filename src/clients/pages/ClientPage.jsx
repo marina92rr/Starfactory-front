@@ -9,7 +9,7 @@ import { LabelsModal } from '../components/label/LabelsModal'
 import { Labels } from '../components/label/Labels';
 import { SubscribeClient } from '../components/clientPage/SubscribeClient';
 import { getClientStatus } from '../../helpers/getClientStatus';
-import { useLabelsStore } from '../../hooks/useLabelsStore';
+import { capitalizeFirstWord } from '../../helpers/capitalizeFirstWord';
 //import { useFilterLabels } from '../../hooks/useFilterLabels';
 
 
@@ -51,84 +51,91 @@ export const ClientPage = () => {
     navigate('addSales');
   };
 
-
   return (
-    <div className="container-fluid col-7 mt-5 pt-5">
-      <div className="d-flex">
-        <h1 className="me-3">
-          {activeClient.name} {activeClient.lastName}
-        </h1>
-        <div>#{activeClient.idClient}</div>
-      </div>
+    <div className="m-5">
+      <h1 className='pt-5'>
+        {activeClient.name} {activeClient.lastName}
+        <span
+          className="text-secondary ms-2"
+          style={{
+            fontSize: '0.6em',
+            verticalAlign: 'baseline',
+            position: 'relative',
+            top: '0.05em'
+          }}
+        >
+          #{activeClient.idClient}
+        </span>
+      </h1>
       <div className="d-flex align-items-center gap-3 mt-3">
         {activeClient.email && (
           <div className="d-flex align-items-center">
-            <i className="bi bi-envelope-fill me-2"></i>
+            <i className="bi bi-envelope-fill me-2 text-secondary "></i>
             <button type="button" className="btn btn-link p-0 m-0 text-decoration-none">
-              {activeClient.email}
+              {activeClient.email.toLowerCase()}
             </button>
           </div>
         )}
 
         {activeClient.mainPhone && (
           <div className="d-flex align-items-center">
-            <i className="bi bi-telephone-fill me-2"></i>
+            <i className="bi bi-telephone-fill me-2 text-secondary"></i>
             <button type="button" className="btn btn-link p-0 m-0 text-decoration-none">
               {activeClient.mainPhone}
             </button>
           </div>
         )}
-        </div>
-        <div className='w-100 h-30 d-flex  mt-2'>
-
-          {isImmediateCancellation && <p className="bg-danger rounded text-white fw-bold ms-auto">De baja</p>}
-          {isScheduledCancellation && <p className="bg-warning rounded text-white fw-bold ms-auto">Baja programada: {cancelDate.toLocaleDateString()}</p>}
-        </div>
-        <div className="d-flex justify-content-between align-items-start flex-wrap mt-2">
-
-          <LabelsModal idClient={activeClient.idClient} />
-          <Labels idClient={activeClient.idClient} />
-          {/* IZQUIERDA: Etiquetas */}
-          <div className="d-flex flex-wrap align-items-center gap-2" style={{ minHeight: '42px' }}>
-
-
-            <ul className="d-flex gap-2 list-unstyled m-0 p-0">
-              {activeClientLabels.map(label => (
-                <li key={label.idLabel}>
-                  <span
-                    className="badge rounded-pill fw-semibold"
-                    style={{
-                      backgroundColor: label.color,
-                      color: '#222',
-                      fontSize: '1rem',
-                      padding: '8px 18px',
-                      minWidth: 'fit-content',
-                      letterSpacing: '0.02em'
-                    }}
-                  >
-                    {label.name}
-                  </span>
-                </li>
-              ))}
-            </ul>
-
-          </div>
-
-          {/* DERECHA: Botones de acción */}
-          <div className="d-flex gap-2 mt-2 mt-lg-0">
-            <button
-              className="btn btn-success" type="button"
-              style={{ background: '#38b647', color: 'white' }}
-              onClick={() => handleSelect(activeClient.idClient)}>
-              Nueva venta
-            </button>
-            <SubscribeClient idClient={activeClient.idClient} />
-          </div>
-
-        </div>
-
-        <MenuClient />
-        <Outlet />
       </div>
-      );
+      <div className='w-100 h-30 d-flex  mt-2'>
+
+        {isImmediateCancellation && <p className="bg-danger rounded text-white fw-bold ms-auto">De baja</p>}
+        {isScheduledCancellation && <p className="text-secondary rounded ms-auto">Baja programada: {cancelDate.toLocaleDateString()}</p>}
+      </div>
+      <div className="d-flex justify-content-between align-items-start flex-wrap mt-2">
+
+        <LabelsModal idClient={activeClient.idClient} />
+        <Labels idClient={activeClient.idClient} />
+        {/* IZQUIERDA: Etiquetas */}
+        <div className="d-flex flex-wrap align-items-center gap-2" style={{ minHeight: '42px' }}>
+
+
+          <ul className="d-flex gap-2 list-unstyled m-0 p-0">
+            {activeClientLabels.map(label => (
+              <li key={label.idLabel}>
+                <span
+                  className="badge rounded-pill fw-semibold"
+                  style={{
+                    backgroundColor: label.color,
+                    color: '#222',
+                    fontSize: '1rem',
+                    padding: '8px 18px',
+                    minWidth: 'fit-content',
+                    letterSpacing: '0.02em'
+                  }}
+                >
+                  {label.name}
+                </span>
+              </li>
+            ))}
+          </ul>
+
+        </div>
+
+        {/* DERECHA: Botones de acción */}
+        <div className="d-flex gap-2 mt-2 mt-lg-0">
+          <button
+            className="btn btn-success" type="button"
+            style={{ background: '#38b647', color: 'white' }}
+            onClick={() => handleSelect(activeClient.idClient)}>
+            Nueva venta
+          </button>
+          <SubscribeClient idClient={activeClient.idClient} />
+        </div>
+
+      </div>
+
+      <MenuClient />
+      <Outlet />
+    </div>
+  );
 }

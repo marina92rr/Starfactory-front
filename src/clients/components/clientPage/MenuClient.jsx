@@ -9,21 +9,25 @@ export const MenuClient = () => {
     { name: 'Vista general', path: 'overview' },       // ruta índice: /clients/:id
     { name: 'Reservas', path: 'reservations' },
     { name: 'Ventas', path: 'sales' },
-    { name: 'Perfil',        path: 'profile' } // /clients/:ID/profile
+    { name: 'Perfil', path: 'profile' } // /clients/:ID/profile
   ];
 
   return (
-    <nav className="nav mb-4">
-      {links.map(({ name, path }) => (
+    <nav className="nav nav-tabs mb-4">
+      {links.map(({ name, path, badge }) => (
         <NavLink
           key={path}
           to={path}
-          end={path === ''}    // para que solo active en /:id exacto
+          end={path === ''}
           className={({ isActive }) =>
-            `nav-link ${isActive ? 'text-primary' : 'text-secondary'}`
+            `nav-link text-secondary ${isActive ? 'active' : ''}`
           }
+          style={isActive => isActive ? { color: '#6c757d' } : {}}
         >
           {name}
+          {badge ? (
+            <span className="badge bg-danger ms-1">{badge}</span>
+          ) : null}
         </NavLink>
       ))}
     </nav>

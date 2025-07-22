@@ -22,8 +22,7 @@ export const Sidebar = () => {
   return (
 
     <div
-      className="col-1 bg-light pt-5 px-0  "
-      style={{ left: '0', position: 'fixed', minHeight: '100vh', minWidth: '25vh', borderRight: '1px solid #ccc' }}
+      className="bg-light" style={{ minWidth: '220px', maxWidth: '250px', height: '100vh' }}
     >
       <h4 className='p-3'>Star Factory</h4>
       <nav>

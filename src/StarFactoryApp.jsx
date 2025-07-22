@@ -2,7 +2,7 @@
 import { BrowserRouter } from 'react-router-dom'
 import { AppRoutes } from './router/AppRoutes'
 import { Provider } from 'react-redux'
-import {store} from "./store"
+import { store } from "./store"
 import { Sidebar } from './clients/components/Sidebar'
 import { Navbar } from './clients/components/Navbar'
 
@@ -13,11 +13,15 @@ export const StarFactoryApp = () => {
 
     <Provider store={store}>
       <BrowserRouter>
-        <Navbar/>
-        <Sidebar/>
-        <AppRoutes/>
+        <Navbar />
+        <div className="d-flex">
+          <Sidebar />
+          <div className="flex-grow-1 w-100">
+            <AppRoutes />
+          </div>
+        </div>
       </BrowserRouter>
     </Provider>
-    
+
   )
 }

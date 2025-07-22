@@ -29,10 +29,12 @@ export const StorePage = () => {
 
   return (
 
-    <div className='container-fluid col-8 mt-5'>
-      <div className='py-5 d-flex justify-content-between'>
+    <div className='m-5'>
+      <div className='py-5 '>
         <h1>Tienda</h1>
+    <hr />
       </div>
+    
 
       <div className=' d-flex'>
         <div className='col-3' >

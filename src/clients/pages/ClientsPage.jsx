@@ -30,9 +30,9 @@ export const ClientsPage = () => {
   const handleSelect = idClient => { navigate(`${idClient}`); };
   return (
 
-    <div className='container-fluid col-7 mt-5' >
-      <div className='py-5 d-flex justify-content-between align-items-center'>
-        <h1 className='col-9 m-0'>Clientes</h1>
+    <div className=' m-5' >
+      <div className='pt-5 d-flex ' >
+        <h1>Clientes</h1>
         <ClientAddNew />
       </div>
       <ClientModal />
@@ -76,7 +76,7 @@ export const ClientsPage = () => {
                   {client.email && (
                     <div className='text-secondary ps-3 d-flex'>
                       <i className="bi bi-envelope-fill me-2"></i>
-                      {client.email}
+                      {client.email.toLowerCase()}
                     </div>
                   )}
                   {client.mainPhone && (

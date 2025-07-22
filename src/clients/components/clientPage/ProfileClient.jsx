@@ -3,12 +3,13 @@ import { useClientsStore } from '../../../hooks/useClientsStore';
 import { useParams } from 'react-router-dom';
 import { ClientModal } from '../ClientModal';
 import { ClientEddit } from '../ClientEddit';
+import { capitalizeFirstWord } from '../../../helpers/capitalizeFirstWord';
 
 export const ProfileClient = () => {
 
 
   const { idClient } = useParams();
-  const { starLoadingClientByID, activeClient  } = useClientsStore();
+  const { starLoadingClientByID, activeClient } = useClientsStore();
 
 
   useEffect(() => {
@@ -20,58 +21,61 @@ export const ProfileClient = () => {
   return (
     <div className="container mt-5">
       <div className="row border rounded p-4 shadow-sm ">
-        <div className='d-flex justify-content-between align-items-start mb-3'>
-          <h2>Datos personales</h2>
-          <ClientEddit/>
-          <ClientModal/>
+        <div className=' d-flex justify-content-between align-items-start mb-3'>
+          <h4>Datos personales</h4>
+          <div>
+            <ClientEddit />
+            <ClientModal />
+          </div>
+
         </div>
         <div>
 
-      </div>
+        </div>
 
         {/* Columna izquierda */}
         <div className="col-md-4 text-center text-md-start mb-3 mb-md-0">
-          
+
           <div>
-            <strong>Nombre:</strong> 
-            <p>{activeClient.name.toUpperCase()}</p>
+            <strong>Nombre:</strong>
+            <p>{activeClient.name}</p>
           </div>
           <div>
-            <strong>Telefono:</strong> 
-            <p>{activeClient.mainPhone.toUpperCase()}</p>
+            <strong>Telefono:</strong>
+            <p>{activeClient.mainPhone}</p>
           </div>
-          
+
         </div>
 
         {/* Columna central */}
         <div className="col-md-4">
           <div>
-            <strong>Apellido:</strong> 
-            <p>{activeClient.lastName.toUpperCase()}</p>
-          </div>  
+            <strong>Apellido:</strong>
+            <p>{activeClient.lastName}</p>
+          </div>
 
-           <div>
-            <strong>Fecha de alta:</strong> 
-            <p>_</p>
+          <div>
+            <strong>Fecha de alta:</strong>
+            <p>{activeClient.dateCreated}</p>
           </div>
         </div>
 
         {/* Columna derecha */}
         <div className="col-md-4">
           <div>
-            <strong>Correo electrónico:</strong> 
-            <p>{activeClient.email}</p>
+            <strong>Correo electrónico:</strong>
+            <p>{activeClient.email.toLowerCase()}</p>
           </div>
-          
+
           <div>
-            <strong>Código Cliente:</strong> 
+            <strong>Código Cliente:</strong>
             <p>{activeClient.idClient}</p>
           </div>
         </div>
       </div>
 
       {/* Sección de notificaciones */}
-      <div className="mt-4">
+      {/*<div className="mt-4">
         <h5>Notificaciones</h5>
         <div className="form-check">
           <input className="form-check-input" type="checkbox" id="notif1" defaultChecked />
@@ -85,7 +89,7 @@ export const ProfileClient = () => {
             Acepta recibir notificaciones comerciales de terceros
           </label>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
