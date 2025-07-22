@@ -3,8 +3,7 @@ import { useUiStore } from "../../../hooks/useUiStore";
 import { useLabelsStore } from '../../../hooks/useLabelsStore';
 import { useClientsStore } from "../../../hooks/useClientsStore";
 import { useEffect, useState } from "react";
-import { FindLabel } from './FindLabel';
-
+import { LabelSearchInput } from './LabelSearchInput';
 
 
 
@@ -37,6 +36,14 @@ export const FilterClientByLabelModal = () => {
 
   //Create modal
   const [selectedLabels, setSelectedLabels] = useState([]);
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Dentro del render
+const filteredLabels = labels.filter(label =>
+  label.name.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
 
 
   //Nada mas cargar la pag 
@@ -82,13 +89,16 @@ export const FilterClientByLabelModal = () => {
           <h5 className="m-0 px-2">Filtrar por etiqueta</h5>
           <hr className="mt-2 mb-2" />
           <div className='d-flex mb-3'>
-           <FindLabel/>
+           <div className='d-flex mb-3'>
+        <LabelSearchInput onSearch={setSearchTerm} />
+
+      </div>
           </div>
         </div>
 
         {/* CONTENIDO SCROLLABLE */}
         <div style={{ maxHeight: '54vh', overflowY: 'auto', marginBottom: '16px' }}>
-          {labels.map((label) => {
+          {filteredLabels.map((label) => {
             const isChecked = (selectedLabels || []).includes(label.idLabel);
 
             return (

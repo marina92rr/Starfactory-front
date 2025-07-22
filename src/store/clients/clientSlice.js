@@ -43,6 +43,11 @@ export const clientSlice = createSlice({
       state.clientsLimit = [];
     },
 
+    onResetFindLLabels: (state) => {
+      state.filter = '';
+      state.filteredList = [];
+    },
+
     //Filtrar cliente
     onSetFilter: (state, action) => {
       state.filter = action.payload;
@@ -181,5 +186,6 @@ export const {
   onLoadFilteredLabels,
   setFilteredClientsByLabel,
   clearFilteredClientsByLabel,
+  onResetFindLLabels
 
 } = clientSlice.actions; //accion
