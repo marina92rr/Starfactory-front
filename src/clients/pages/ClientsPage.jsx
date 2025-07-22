@@ -31,7 +31,7 @@ export const ClientsPage = () => {
   return (
 
     <div className=' m-5' >
-      <div className='pt-5 d-flex ' >
+      <div className='pt-5 d-flex align-items-center' >
         <h1>Clientes</h1>
         <ClientAddNew />
       </div>
@@ -46,8 +46,8 @@ export const ClientsPage = () => {
             </button>
           )}
         </div>
-        <GetClientCancellation/>
-        <GetClientCancellationModal/>
+        <GetClientCancellation />
+        <GetClientCancellationModal />
       </div>
 
 
