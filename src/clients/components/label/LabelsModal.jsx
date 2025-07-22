@@ -12,7 +12,6 @@ import { FindLabel } from './FindLabel';
 
 Modal.setAppElement('#root');
 
-
 const customStyles = {
   content: {
     top: '50%',
@@ -21,14 +20,11 @@ const customStyles = {
     bottom: 'auto',
     transform: 'translate(-50%, -50%)',
     width: '80vh',
-    maxHeight: '80vh',
-    overflowY: 'auto',
     padding: '20px',
     borderRadius: '10px',
     backgroundColor: '#ffffff',
     color: '#000000',
     boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
-
   },
 };
 
@@ -96,17 +92,19 @@ export const LabelsModal = ({ idClient }) => {
         shouldCloseOnOverlayClick={true} // ✅ esto permite cerrar al pulsar fuera
         contentLabel='Etiquetas'
       >
-        <div>
-        </div>
-        <h1>Editar etiquetas</h1>
-        <hr />
-        <div className='d-flex mb-3'>
-          <FindLabel onSelectLabel={handleToggle} />
-          <div>
-            <LabelAddNew />
-          </div>
-          <hr />
-        </div>
+
+        <div className="position-sticky top-0 bg-white pt-2 pb-2" style={{ zIndex: 12 }}>
+                  <h5 className="m-0 px-2">Editar etiquetas</h5>
+                  <hr className="mt-2 mb-2" />
+                  <div className='d-flex mb-3'>
+                    <div className='d-flex mb-3 w-100'>
+                      <FindLabel onSelectLabel={handleToggle} />
+                       <LabelAddNew />
+        
+                    </div>
+                  </div>
+                </div>
+        <div style={{ maxHeight: '54vh', overflowY: 'auto', marginBottom: '16px' }}>
         {visibleLabels.map((label) => {
           const isChecked = (selectedLabels || []).includes(label.idLabel);
 
@@ -132,11 +130,15 @@ export const LabelsModal = ({ idClient }) => {
             </div>
           );
         })}
+      </div>
 
         <hr />
-        <button className="btn btn-success" onClick={handleSaveLabels}>
-          Guardar
-        </button>
+      {/* FOOTER STICKY */}
+        <div className="position-sticky bottom-0 bg-white py-3" style={{ zIndex: 13 }}>
+          <button className="btn btn-success w-100" onClick={handleSaveLabels}>
+            Guardar
+          </button>
+        </div>
 
 
       </Modal>

@@ -44,7 +44,7 @@ export const FindClient = () => {
   return (
     <div className="mb-1 col-10 position-relative">
       <input
-        type="input"
+        type="text"
         placeholder='Buscar...'
         className='rounded-3 bg-light-subtle p-1'
         style={{ outline: 'none', borderColor: 'gray' }}
@@ -59,11 +59,12 @@ export const FindClient = () => {
           style={{
             maxHeight: '400px',
             overflowY: 'auto',
+            cursor: 'pointer',
           }}>
           {filteredList.map(client => (
             <li
               key={client.idClient}
-              className="dropdown-item"
+              className="dropdown-item cursor-pointer"
               onMouseDown={() => handleSelect(client.idClient)}
             >
               {client.name} {client.lastName}

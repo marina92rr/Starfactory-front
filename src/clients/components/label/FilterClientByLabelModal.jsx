@@ -14,15 +14,12 @@ const customStyles = {
     right: 'auto',
     bottom: 'auto',
     transform: 'translate(-50%, -50%)',
-    width: '70vh',
-    maxHeight: '90vh',
-    overflowY: 'auto',
+    width: '80vh',
     padding: '20px',
     borderRadius: '10px',
     backgroundColor: '#ffffff',
     color: '#000000',
     boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
-
   },
 };
 
@@ -40,9 +37,9 @@ export const FilterClientByLabelModal = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   // Dentro del render
-const filteredLabels = labels.filter(label =>
-  label.name.toLowerCase().includes(searchTerm.toLowerCase())
-);
+  const filteredLabels = labels.filter(label =>
+    label.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
 
 
@@ -89,10 +86,10 @@ const filteredLabels = labels.filter(label =>
           <h5 className="m-0 px-2">Filtrar por etiqueta</h5>
           <hr className="mt-2 mb-2" />
           <div className='d-flex mb-3'>
-           <div className='d-flex mb-3'>
-        <LabelSearchInput onSearch={setSearchTerm} />
+            <div className='d-flex mb-3 w-100'>
+              <LabelSearchInput onSearch={setSearchTerm} />
 
-      </div>
+            </div>
           </div>
         </div>
 

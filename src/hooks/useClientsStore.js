@@ -174,7 +174,7 @@ export const useClientsStore = () => {
   //Obtener clientes con baja programada
   const loadClientsWithScheduledCancellation = async () => {
     try {
-      const { data } = await clientsApi.get('clients/cancelprogram');
+      const { data } = await clientsApi.get(`clients/cancelScheduled`);
       console.log('loadClientsWithScheduledCancellation:', data.clients);
       dispatch(onLoadScheduledCancellations(data.clients));
     } catch (error) {
@@ -186,8 +186,6 @@ export const useClientsStore = () => {
   const toggleClientStatusCancel = async (idClient) => {
     try {
       const { data } = await clientsApi.patch(`clients/cancel/${idClient}`);
-      console.log('onToggleClientStatusCancel:', onToggleClientStatusCancel);
-
       dispatch(onToggleClientStatusCancel(data.client)); // recuerda: el backend devuelve `{ msg, client }`
     } catch (error) {
       console.error('Error al cambiar estado de baja del cliente:', error);

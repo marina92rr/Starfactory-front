@@ -11,7 +11,7 @@ export const LabelSearchInput = ({ onSearch, placeholder = 'Buscar...' }) => {
   return (
     <input
       type="text"
-      className='form-control'
+      className='form-control w-100'
       placeholder={placeholder}
       value={inputValue}
       onChange={handleChange}
