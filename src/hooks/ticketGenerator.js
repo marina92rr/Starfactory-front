@@ -2,10 +2,9 @@ import pdfMake from 'pdfmake/build/pdfmake.js';
 import pdfFonts from 'pdfmake/build/vfs_fonts.js';
 import clientsApi from '../api/clientsApi';
 
-// 💡 Esta es la única forma correcta con Vite + pdfmake
 pdfMake.vfs = pdfFonts.vfs;
 
-export const generateAndSendTicket = (venta) => {
+export const generateAndSendTicket = async (venta, email) => {
   const subtotal = venta.total / 1.21;
   const iva = venta.total - subtotal;
 
@@ -54,22 +53,20 @@ export const generateAndSendTicket = (venta) => {
     }
   };
 
+  // ✅ Imprimir directamente
   pdfMake.createPdf(docDefinition).print();
 
-
- pdfDoc.getBase64(async (base64Data) => {
-      try {
-        await clientsApi.post('/ticket', {
-          to: email,
-          fileName: 'ticket.pdf',
-          pdfBase64: base64Data
-        });
-        resolve();
-      } catch (error) {
-        console.error('Error enviando el ticket por email:', error);
-        reject(error);
-      }
-    });
-  }
-    
-  
+  // ✅ Enviar por email si se quiere
+  pdfMake.createPdf(docDefinition).getBase64(async (base64) => {
+    try {
+      await clientsApi.post('/ticket', {
+        to: email,
+        fileName: 'ticket.pdf',
+        pdfBase64: base64
+      });
+      console.log('Ticket enviado por email');
+    } catch (error) {
+      console.error('Error enviando el ticket por email:', error);
+    }
+  });
+};

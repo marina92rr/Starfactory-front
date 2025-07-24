@@ -6,6 +6,8 @@ export const productSlice = createSlice({
   initialState: {
     isLoadingProduct: false,
     products: [],
+    filter: '',
+    filteredList :[],
     activeProduct: null,
   },
   reducers: {
@@ -47,7 +49,24 @@ export const productSlice = createSlice({
     onLoadProduct: (state, { payload }) => {
       state.isLoadingProduct = false;
       state.products = payload; // ahora sí es un array directamente
-    }
+    },
+
+    //Filtrar productos Busqueda
+    onSetFilterProduct: (state, action) => {
+      state.filter = action.payload;
+
+      const normalize = str => (str || '')
+        .normalize('NFD')                         // Quita tildes
+        .replace(/[\u0300-\u036f]/g, '')          // Elimina marcas de acento
+        .toUpperCase()
+
+      const filter = normalize(state.filter);
+      // Filtrar labels
+      state.filteredList = state.products.filter(product => {
+        const fullName = normalize(`${product.name}`);
+        return fullName.includes(filter);
+      });
+    },
 
   }
 })
@@ -58,6 +77,7 @@ export const {
   onAddNewProduct,
   onUpdateProduct,
   onDeleteProduct,
-  onLoadProduct
+  onLoadProduct,
+  onSetFilterProduct
 
 } = productSlice.actions; //accion

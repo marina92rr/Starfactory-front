@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { clientsApi } from "../api";
-import { onAddNewQuota, onDeleteQuota, onLoadQuota, onSetActiveQuota, onUpdateQuota } from "../store/rates/quotaSlice";
+import { onAddNewQuota, onDeleteQuota, onLoadQuota, onSetActiveQuota, onSetFilterQuota, onUpdateQuota } from "../store/rates/quotaSlice";
 import { normalizeAllTextFields } from "../helpers/normalizeText";
 
 
@@ -8,7 +8,7 @@ import { normalizeAllTextFields } from "../helpers/normalizeText";
 export const useQuotaStore = () => {
 
     const dispatch = useDispatch();
-    const { quotas, activeQuota } = useSelector(state => state.quota);
+    const { quotas, activeQuota,filterQuotas, filteredListQuotas } = useSelector(state => state.quota);
 
     //cuota
     const setActiveQuota = (quotaData) => {
@@ -66,17 +66,33 @@ export const useQuotaStore = () => {
                }
     }
 
+     //Buscador producto
+          // Filtrar labels Buscar...
+          const startFindQuotas = (searchTerm) => async (dispatch) => {
+            try {
+              const { data } = await clientsApi.get('quotas');
+              dispatch(onLoadQuota(data.quotas));
+            } catch (error) {
+              console.error('Error al cargar todas las cuotas', error);
+            }
+            dispatch(onSetFilterQuota(searchTerm));
+          };
+
     return {
         //*Propiedades
         quotas,
         activeQuota,
+        filterQuotas,
+        filteredListQuotas,
+
 
         //*Metodos
         setActiveQuota,
         startSavingQuota,
         startLoadingQuotasByRate,
         starLoadingQuotas,
-        startDeleteQuota
+        startDeleteQuota,
+        startFindQuotas
     }
 
 }

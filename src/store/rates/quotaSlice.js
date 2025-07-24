@@ -6,6 +6,8 @@ export const quotaSlice = createSlice({
   initialState:{
     isLoadingQuota: false,
     quotas: [],
+    filterQuotas: '',
+    filteredListQuotas :[],
     activeQuota: null,
   },
   reducers: {
@@ -48,6 +50,24 @@ export const quotaSlice = createSlice({
         state.activeQuota = null;
       }
     },
+
+    //Filtrar productos Busqueda
+    onSetFilterQuota: (state, action) => {
+      state.filterQuotas = action.payload;
+
+      const normalize = str => (str || '')
+        .normalize('NFD')                         // Quita tildes
+        .replace(/[\u0300-\u036f]/g, '')          // Elimina marcas de acento
+        .toUpperCase()
+
+      const filter = normalize(state.filterQuotas);
+      // Filtrar labels
+      state.filteredListQuotas = state.quotas.filter(quota => {
+        const fullName = normalize(`${quota.name}`);
+        return fullName.includes(filter);
+      });
+    },
+
 }
 })
 export const { 
@@ -57,7 +77,8 @@ export const {
   onAddNewQuota,
   onUpdateQuota,
   onLoadQuota,
-  onDeleteQuota
+  onDeleteQuota,
+  onSetFilterQuota
 
    
 } = quotaSlice.actions; //accion

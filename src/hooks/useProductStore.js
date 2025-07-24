@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { clientsApi } from "../api";
-import { onAddNewProduct, onLoadProduct, onSetActiveProduct, onDeleteProduct, onUpdateProduct } from "../store/storeFactory/productSlice";
+import { onAddNewProduct, onLoadProduct, onSetActiveProduct, onDeleteProduct, onUpdateProduct, onSetFilterProduct } from "../store/storeFactory/productSlice";
 import { normalizeAllTextFields } from "../helpers/normalizeText";
 
 
@@ -8,7 +8,7 @@ import { normalizeAllTextFields } from "../helpers/normalizeText";
 export const useProductStore = () => {
 
     const dispatch = useDispatch();
-    const { products, activeProduct } = useSelector(state => state.product);
+    const { products, activeProduct,filter, filteredList } = useSelector(state => state.product);
 
     //Producto activo
     const setActiveProduct = (productData) => {
@@ -69,17 +69,34 @@ export const useProductStore = () => {
         }
     };
 
+    //Buscador producto
+      // Filtrar products Buscar...
+      const startFindProducts = (searchTerm) => async (dispatch) => {
+        //const { label } = getState();
+        try {
+          const { data } = await clientsApi.get('products');
+          dispatch(onLoadProduct(data.products));
+        } catch (error) {
+          console.error('Error al cargar todos los productos', error);
+        }
+        dispatch(onSetFilterProduct(searchTerm));
+      };
+
     return {
         //*Propiedades
         products,
         activeProduct,
+        filter,
+        filteredList,
 
         //*Metodos
         setActiveProduct,
         startSavingProduct,
         starLoadingProducts,
         startLoadingProductsByCategory,
-        startDeleteProduct
+        startDeleteProduct,
+        startFindProducts
+    
 
     }
 

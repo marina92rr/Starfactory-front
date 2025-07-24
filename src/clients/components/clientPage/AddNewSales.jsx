@@ -4,13 +4,16 @@ import { useQuotaStore } from '../../../hooks/useQuotaStore';
 import { useClientsStore } from '../../../hooks/useClientsStore';
 import { TransactNewSales } from './sales/TransactNewSales';
 import { TransactModalSales } from './sales/TransactModalSales';
+import { FindSales } from './sales/FindSales';
 
 
 export const AddNewSales = () => {
 
-  const { products, starLoadingProducts } = useProductStore();
-  const { quotas, starLoadingQuotas } = useQuotaStore();
+  const { products, starLoadingProducts, filteredList } = useProductStore();
+  const { quotas, starLoadingQuotas, filteredListQuotas } = useQuotaStore();
   const { activeClient } = useClientsStore();
+  const [searchInput, setSearchInput] = useState('');
+
 
   //Seleccionar productos al carrito
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -82,31 +85,36 @@ export const AddNewSales = () => {
       <div className=' d-flex'>
         <div  >
           <div >
-            <input type="text" className='form-control' placeholder='Buscar' />
+            <FindSales onInputChange={setSearchInput} />
           </div>
           <table className="table">
             <tbody>
               <tr>
                 <td >
-                  {products.map((product, i) => {
-                    return (
-                      <div
-                        key={i} className="border p-4 m-2 text-start"
-                        onClick={() => handleAddProduct(product, 'product')}
-                        style={{ cursor: 'pointer' }}
-                      >
-
-                        <div className='d-flex justify-content-between'>
-                          <div className='text  fw-medium'>{product.name}</div>
-                          <div className='text-end  fw-medium'>{product.price}€</div>
-                        </div>
-                        <div className='text-secondary'>{product.description}</div>
-                      </div>
-                    );
-                  })}
-                  {quotas.map((quota, i) => (
+                  {(searchInput.trim()
+                    ? filteredList
+                    : products
+                  ).map((product, i) => (
                     <div
-                      key={i}
+                      key={`p-${i}`}
+                      className="border p-4 m-2 text-start"
+                      onClick={() => handleAddProduct(product, 'product')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <div className='d-flex justify-content-between'>
+                        <div className='text fw-medium'>{product.name}</div>
+                        <div className='text-end fw-medium'>{product.price}€</div>
+                      </div>
+                      <div className='text-secondary'>{product.description}</div>
+                    </div>
+                  ))}
+
+                  {(searchInput.trim()
+                    ? filteredListQuotas
+                    : quotas
+                  ).map((quota, i) => (
+                    <div
+                      key={`q-${i}`}
                       className="border p-4 m-2 text-start"
                       onClick={() => handleAddProduct(quota, 'quota')}
                       style={{ cursor: 'pointer' }}
@@ -147,7 +155,7 @@ export const AddNewSales = () => {
                 selectedProducts.map((product, i) => {
                   return (
                     <tr key={i}>
-                      <td  className='p-3 text-primary text-start ' style={{ minWidth: 50 }}>{product.name}</td>
+                      <td className='p-3 text-primary text-start ' style={{ minWidth: 50 }}>{product.name}</td>
                       <td className='p-3 text-start'>{product.price}</td>
                       <td className='p-3'>
                         <div className='input-group w-50'>

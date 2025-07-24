@@ -4,6 +4,9 @@ import { useUiStore } from '../../../../hooks/useUiStore';
 import { useClientsStore } from '../../../../hooks/useClientsStore';
 import { useProductClientStore } from '../../../../hooks/useProductClientStore';
 import { useNavigate } from 'react-router-dom';
+import { SalesClient } from '../SalesClient';
+import { useDispatch } from 'react-redux';
+import { generateAndSendTicket } from '../../../../hooks/ticketGenerator';
 
 const customStylesModal = {
   content: {
@@ -17,6 +20,7 @@ const customStylesModal = {
 
 export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isModalSaleOpen, closeSaleModal } = useUiStore();
   const { startSavingProductClient } = useProductClientStore();
@@ -35,23 +39,42 @@ export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
   const handleSubmit = async(e) => {
     e.preventDefault()
 
+     const venta = {
+      fecha: new Date(),
+      cliente: `${activeClient.name} ${activeClient.lastName}`,
+      items: selectedProducts.map(p => ({
+        nombre: p.name,
+        cantidad: 1, // si tienes cantidad puedes ajustarlo aquí
+        precio: p.price - (parseFloat(p.discount) || 0)
+      })),
+      total: parseFloat(totalAmount)
+    };
+
     const dataToSend = {
-      idClient:activeClient.idClient,
+      idClient: activeClient.idClient,
       products: productsMapped,
-      price:totalAmount,
+      price: totalAmount,
       paymentMethod: paymentMethod,
       paid: true,
+    };
+
+    try {
+      // Guardar en la base de datos
+      await startSavingProductClient(dataToSend, false);
+
+      // Generar ticket
+      await generateAndSendTicket(venta, activeClient.email);
+
+      // Cerrar modal y redirigir
+      closeSaleModal();
+      navigate(`/${activeClient.idClient}/sales`);
+    } catch (error) {
+      console.error('Error al tramitar la venta o generar el ticket', error);
     }
-    console.log('Venta finalizada:', dataToSend);
-
-    await startSavingProductClient(dataToSend, false); // false = modo crear
-    navigate(`/${activeClient.idClient}/sales`);
-
-    closeSaleModal();
   }
 
   return (
-    <Modal
+   <Modal
       isOpen={isModalSaleOpen}
       onRequestClose={closeSaleModal}
       style={customStylesModal}
@@ -60,10 +83,10 @@ export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
       <h3>Liquidar deuda</h3>
       <hr />
       <form onSubmit={handleSubmit}>
-
         <div className="mb-3">
-          <h2 className='align-items-center justify-content-center d-flex' style={{width:200, height:200}}>{totalAmount} €</h2>
+          <h2 className='align-items-center justify-content-center d-flex' style={{ width: 200, height: 200 }}>{totalAmount} €</h2>
         </div>
+
         <div className="mb-3">
           <label className="form-label">Método de pago</label>
           <select
@@ -73,12 +96,12 @@ export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
           >
             <option value="Efectivo">Efectivo</option>
             <option value="Tarjeta">Tarjeta</option>
-
           </select>
         </div>
+
         <div className="d-flex justify-content-end">
           <button type="submit" className="btn btn-primary">
-            Liquidar deuda
+            tramitar venta
           </button>
         </div>
       </form>

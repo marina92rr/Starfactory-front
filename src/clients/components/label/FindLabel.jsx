@@ -1,6 +1,5 @@
 
-import React, { useState, useEffect } from 'react'
-import { useClientsStore } from '../../../hooks/useClientsStore';
+import  { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useLabelsStore } from '../../../hooks/useLabelsStore';
 
