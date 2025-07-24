@@ -5,6 +5,7 @@ import { useClientsStore } from '../../../hooks/useClientsStore';
 import { TransactNewSales } from './sales/TransactNewSales';
 import { TransactModalSales } from './sales/TransactModalSales';
 import { FindSales } from './sales/FindSales';
+import { capitalizeFirstWord } from '../../../helpers/capitalizeFirstWord';
 
 
 export const AddNewSales = () => {
@@ -74,63 +75,49 @@ export const AddNewSales = () => {
     }
   }
 
-
-
   return (
     <div >
-      <div className=' d-flex justify-content-between'>
+      <div className='mx-2 d-flex justify-content-between'>
         <h1>Añadir producto</h1>
       </div>
 
-      <div className=' d-flex'>
-        <div  >
-          <div >
-            <FindSales onInputChange={setSearchInput} />
-          </div>
-          <table className="table">
-            <tbody>
-              <tr>
-                <td >
-                  {(searchInput.trim()
-                    ? filteredList
-                    : products
-                  ).map((product, i) => (
-                    <div
-                      key={`p-${i}`}
-                      className="border p-4 m-2 text-start"
-                      onClick={() => handleAddProduct(product, 'product')}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <div className='d-flex justify-content-between'>
-                        <div className='text fw-medium'>{product.name}</div>
-                        <div className='text-end fw-medium'>{product.price}€</div>
-                      </div>
-                      <div className='text-secondary'>{product.description}</div>
-                    </div>
-                  ))}
+  <div className='d-flex'>
+  <div>
+    <FindSales onInputChange={setSearchInput} />
 
-                  {(searchInput.trim()
-                    ? filteredListQuotas
-                    : quotas
-                  ).map((quota, i) => (
-                    <div
-                      key={`q-${i}`}
-                      className="border p-4 m-2 text-start"
-                      onClick={() => handleAddProduct(quota, 'quota')}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <div className='d-flex justify-content-between'>
-                        <div className='text fw-medium'>{quota.name}</div>
-                        <div className='text-end fw-medium'>{quota.price}€</div>
-                      </div>
-                      <div className='text-secondary'>{quota.description}</div>
-                    </div>
-                  ))}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+    {/* Scroll solo para el listado */}
+    <div style={{ maxHeight: '50vh', overflowY: 'auto', marginRight: '2rem' }}>
+      {(searchInput.trim() ? filteredList : products).map((product, i) => (
+        <div
+          key={`p-${i}`}
+          className="border my-2 p-3 text-start"
+          onClick={() => handleAddProduct(product, 'product')}
+          style={{ cursor: 'pointer', width: 300 }}
+        >
+          <div className='d-flex justify-content-between'>
+            <div className='text fw-medium'>{product.name}</div>
+            <div className='text-end fw-medium'>{product.price}€</div>
+          </div>
+          <div className='text-secondary fw-light'>{capitalizeFirstWord(product.description)}</div>
         </div>
+      ))}
+
+      {(searchInput.trim() ? filteredListQuotas : quotas).map((quota, i) => (
+        <div
+          key={`q-${i}`}
+          className="border p-4 my-2 text-start"
+          onClick={() => handleAddProduct(quota, 'quota')}
+          style={{ cursor: 'pointer', width: 300 }}
+        >
+          <div className='d-flex justify-content-between'>
+            <div className='text fw-medium'>{quota.name}</div>
+            <div className='text-end fw-medium'>{quota.price}€</div>
+          </div>
+          <div className='text-secondary'>{quota.description}</div>
+        </div>
+      ))}
+    </div>
+  </div>
 
         <div className='col-9' >
           <div className=' px-2'>

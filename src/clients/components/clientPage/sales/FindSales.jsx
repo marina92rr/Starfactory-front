@@ -25,7 +25,8 @@ export const FindSales = ({ onInputChange }) => {
     <input
       type="text"
       placeholder="Buscar producto o cuota..."
-      className="form-control rounded-3 bg-light-subtle p-2 mb-3"
+      className="form-control rounded-1 ms-2 bg-light-subtle my-2 p-2 "
+      style={{ width: 300}}
       value={inputValue}
       onChange={handleFilterChange}
       autoComplete="off"
