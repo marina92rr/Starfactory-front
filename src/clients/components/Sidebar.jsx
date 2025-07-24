@@ -21,9 +21,9 @@ export const Sidebar = () => {
   return (
 
     <div
-      className="bg-light" style={{ minWidth: '220px', maxWidth: '250px', height: '100vh' }}
+      className="bg-light mt-5" style={{ minWidth: '180px', maxWidth: '180px', height: '100vh' }}
     >
-      <h4 className='p-3'>Star Factory</h4>
+      <h4 className='pt-5 p-2'>Star Factory</h4>
       <nav>
         {links.map(link => (
           <NavLink

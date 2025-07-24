@@ -35,7 +35,7 @@ export const SubscribeClient = ({ idClient }) => {
       )}
 
       {isScheduledCancellation && (
-  <button className="btn btn-outline-success" onClick={() => cancelClientScheduledCancellation(idClient)}>
+  <button className="btn btn-outline-danger" onClick={() => cancelClientScheduledCancellation(idClient)}>
     Cancelar baja programada
   </button>
 )}

@@ -30,44 +30,57 @@ export const AddNewSales = () => {
         type,
         idProduct: type === 'product' ? product.idProduct : null,
         idQuota: type === 'quota' ? product.idQuota : null,
-        discount:null // Descuento inicial
+        discount: null // Descuento inicial
       }
     ]);
   };
 
   //Descuento
   const handleDiscountChange = (index, value) => {
-  setSelectedProducts(prev =>
-    prev.map((product, i) =>
-      i === index
-        ? { ...product, discount: parseFloat(value) || 0 }
-        : product
-    )
-  );
-};
+    setSelectedProducts(prev =>
+      prev.map((product, i) =>
+        i === index
+          ? { ...product, discount: parseFloat(value) || 0 }
+          : product
+      )
+    );
+  };
 
-const totalAmount = useMemo(() => {
-  return selectedProducts.reduce((total, product) => {
-    const discountAmount = parseFloat(product.discount) || 0;
-    const finalPrice = product.price - discountAmount;
-    return total + finalPrice;
-  }, 0).toFixed(2);
-}, [selectedProducts]);
+  //Total suma
+  const totalAmount = useMemo(() => {
+    return selectedProducts.reduce((total, product) => {
+      const discountAmount = parseFloat(product.discount) || 0;
+      const finalPrice = product.price - discountAmount;
+      return total + finalPrice;
+    }, 0).toFixed(2);
+  }, [selectedProducts]);
 
   const handleRemoveProduct = (indexToRemove) => {
     setSelectedProducts(prev => prev.filter((_, i) => i !== indexToRemove));
   };
 
+  //Autoventa
+
+  const [valor, setValor] = useState("");
+
+  const handleChange = (opcion) => {
+    if (valor === opcion) {
+      setValor(""); // Si se selecciona el mismo, desmarcar
+    } else {
+      setValor(opcion);
+    }
+  }
+
 
 
   return (
-    <div className='container-fluid  mt-5'>
-      <div className='py-5 d-flex justify-content-between'>
+    <div >
+      <div className=' d-flex justify-content-between'>
         <h1>Añadir producto</h1>
       </div>
 
       <div className=' d-flex'>
-        <div className='col-3' >
+        <div  >
           <div >
             <input type="text" className='form-control' placeholder='Buscar' />
           </div>
@@ -111,62 +124,66 @@ const totalAmount = useMemo(() => {
           </table>
         </div>
 
-        <div className='col-8 ms-4' >
-          <div className=' justify-content-between align-items-center p-3'>
+        <div className='col-9' >
+          <div className=' px-2'>
             <h2 className='text-muted'>Resumen de Venta</h2>
           </div>
           <table className="table border">
+            <thead >
+              <tr >
+                <th scope='col' className="p-3 text-start " style={{ Width: 50 }}>Concepto</th>
+                <th scope='col' className="p-3 text-start">Precio</th>
+                <th scope='col' className="p-3 text-start">Descuento</th>
+                <th scope='col' className="p-3 text-center">Autoventas</th>
+                <th scope='col' className="p-3 text-center">Eliminar</th>
+              </tr>
+            </thead>
             <tbody>
               {selectedProducts.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="text-muted text-center">
-                    <div className='text-muted h-100'>
-                      No hay Productos en esta categoría
-                    </div>
-                    
-                  </td>
+                  <td colSpan={5} className="text-muted text-center">No hay productos en esta Venta</td>
                 </tr>
               ) : (
-                selectedProducts.map((product, i) => (
-                  <tr key={i}>
-                    <td className=' border p-4 m-2 text-start'>
-                      <div className='d-flex  justify-content-between'>
-                        <div className='col-10' >
-                          <div className='d-flex justify-content-between'>
-                            <div className='text fw-medium'>{product.name}</div>
-                            <div className='input-group w-25'>
-                              <input 
-                                type="number" 
-                                className='form-control' 
-                                placeholder='Descuento'
-                                value={product.discount ?? ''}
-                                onChange={(e) => handleDiscountChange(i, e.target.value)} />
-                              <span className='input-group-text'>%</span>
-                            </div>
-                            <div className='text-end  fw-medium'>{product.price}€</div>
-                          </div>
-
-                          <div className='text-secondary'>{product.description}</div>
+                selectedProducts.map((product, i) => {
+                  return (
+                    <tr key={i}>
+                      <td  className='p-3 text-primary text-start ' style={{ minWidth: 50 }}>{product.name}</td>
+                      <td className='p-3 text-start'>{product.price}</td>
+                      <td className='p-3'>
+                        <div className='input-group w-50'>
+                          <input
+                            type="number"
+                            className='form-control'
+                            value={product.discount ?? ''}
+                            onChange={(e) => handleDiscountChange(i, e.target.value)} />
+                          <span className='input-group-text'>€</span>
                         </div>
-                        
-                        <div>
-                          <button
-                            className='btn btn-outline-secondary '
-                            onClick={() => handleRemoveProduct(i)}>
-                            <i className="bi bi-pencil-square "></i>
+                      </td>
+                      <td className='p-3 text-center'>
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          name="respuesta"
+                          id="si"
+                          value="si"
+                          checked={valor === "si"}
+                          onClick={() => handleChange("si")}
+                          readOnly
+                        />
+                      </td>
+                      <td className='p-3 text-center'>
+                        <button
+                          className='btn btn-outline-danger'
+                          onClick={() => handleRemoveProduct(i)}>
+                          <i className="bi bi-trash heading"></i>
+                        </button>
+                      </td>
 
-                          </button>
-                          <button
-                            className='btn btn-outline-danger'
-                            onClick={() => handleRemoveProduct(i)}>
-                            <i className="bi bi-trash heading"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                    </tr>
+                  );
+                })
               )}
+
               <tr>
                 <td className='border p-4 m-2 text-start' colSpan={5}>
                   <div className="d-flex text-end justify-content-end align-items-center  p-3">
@@ -176,10 +193,10 @@ const totalAmount = useMemo(() => {
                     </h4>
                   </div>
                   <div className='d-flex justify-content-end'>
-                    <TransactNewSales/>
-                    <TransactModalSales 
+                    <TransactNewSales />
+                    <TransactModalSales
                       selectedProducts={selectedProducts}
-                      totalAmount={totalAmount} 
+                      totalAmount={totalAmount}
                     />
                   </div>
                 </td>
