@@ -170,6 +170,9 @@ export const useClientsStore = () => {
     dispatch(clearFilteredClientsByLabel());
   };
 
+
+
+
   //-------Baja------------
   //Obtener clientes con baja programada
   const loadClientsWithScheduledCancellation = async () => {

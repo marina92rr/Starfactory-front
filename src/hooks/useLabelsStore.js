@@ -1,6 +1,6 @@
 
 import { useDispatch, useSelector } from "react-redux";
-import { addLabel, onDeleteLabel, onLoadingLabels, onLoadLabels, onSetActiveLabel, onSetFilterLabel, onSetLabels, onUpdateLabel } from "../store/label/labelSlice";
+import { addLabel, onDeleteLabel, onLoadingLabels, onLoadLabels, onSetActiveLabel, onSetFilterLabel, onSetLabels, onUpdateLabel, setActiveFilterLabels } from "../store/label/labelSlice";
 import { clientsApi } from "../api";
 import { useParams } from "react-router-dom";
 import { normalizeAllTextFields } from "../helpers/normalizeText";
@@ -9,7 +9,7 @@ import { normalizeAllTextFields } from "../helpers/normalizeText";
 
 export const useLabelsStore = () => {
   const dispatch = useDispatch();
-  const { labels, filter, filteredList, activeLabel } = useSelector(state => state.labels);
+  const { labels, filter, filteredList, activeLabel, activeFilterLabels } = useSelector(state => state.labels);
   const {idClient} = useParams();
   
   //Activar cliente
@@ -59,6 +59,16 @@ export const useLabelsStore = () => {
       console.error('Error al cargar labels:', error);
     }
   };
+
+  //Guardar etiquetas activas
+  const startActiveFilterLabels = (labels) =>{
+    dispatch(setActiveFilterLabels(labels));
+  }
+
+  //Limpiar etiquetas activas
+  const clearActiveFilterLabels = () => {
+  dispatch(labelSlice.actions.clearActiveFilterLabels());
+};
   
   // Filtrar labels Buscar...
   const startFindLabels = (searchTerm) => async (dispatch, getState) => {
@@ -84,6 +94,7 @@ export const useLabelsStore = () => {
     filter,
     filteredList,
     activeLabel,
+    activeFilterLabels,
     //*Metodos
     
     createLabelAndAssign ,
@@ -91,6 +102,9 @@ export const useLabelsStore = () => {
     setActiveLabel,
     startFilterLabels,
     startDeleteLabel,
-    startFindLabels
+    startFindLabels,
+    startActiveFilterLabels,
+    clearActiveFilterLabels
+  
   };
 };

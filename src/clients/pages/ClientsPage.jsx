@@ -7,15 +7,18 @@ import { FilterClientByLabelModal } from '../components/label/FilterClientByLabe
 import { FilterClientsByLabel } from '../components/label/FilterClientsByLabel';
 import { GetClientCancellation } from '../components/clientPage/cancellation/GetClientCancellation';
 import { GetClientCancellationModal } from '../components/clientPage/cancellation/GetClientCancellationModal';
+import { isColorDark } from '../../helpers/isColorDark';
+import { useLabelsStore } from '../../hooks/useLabelsStore';
+import { useDispatch } from 'react-redux';
 
 
 
 export const ClientsPage = () => {
 
   const navigate = useNavigate();
-
+ const dispatch = useDispatch();
   const { clientsLimit, starLoadingLimitClients, filteredClientsByLabel, clearFilter } = useClientsStore();
-
+  const {activeFilterLabels, labels, clearActiveFilterLabels} = useLabelsStore();
 
   //LCarga de clientes
   useEffect(() => {
@@ -28,6 +31,13 @@ export const ClientsPage = () => {
 
   // Cuando seleccionas un cliente, navegamos a /clients/:ID
   const handleSelect = idClient => { navigate(`${idClient}`); };
+  // Etiquetas filtradas
+const selectedLabels = labels.filter(label => activeFilterLabels.includes(label.idLabel));
+
+ const clearFilterLabels = () => {
+  dispatch(clearFilter());            // Esto es correcto
+  clearActiveFilterLabels();          // ✅ Aquí quita el dispatch
+};
   return (
 
     <div className=' m-5' >
@@ -41,10 +51,17 @@ export const ClientsPage = () => {
           <FilterClientsByLabel />
           <FilterClientByLabelModal />
           {filteredClientsByLabel.length > 0 && (
-            <button className="btn btn-outline-danger" onClick={clearFilter}>
+            <button className="btn btn-outline-danger" onClick={clearFilterLabels}>
               Quitar filtro
             </button>
           )}
+
+           {selectedLabels.map(label => (
+        <span key={label.idLabel} className="badge d-flex align-items-center" style={{ backgroundColor: label.color, color: '#fff' }}>
+          {label.name}
+        </span>
+      ))}
+         
         </div>
         <GetClientCancellation />
         <GetClientCancellationModal />

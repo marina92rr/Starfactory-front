@@ -154,22 +154,7 @@ export const QuotaModal = () => {
               </select>
             </div>
           </div>
-          <div className='mb-3'>
-            <label className="form-label">Tarifa</label>
-            <select
-              className={`form-select ${titleClass}`}
-              name='idRate'
-              value={formValues.idRate}
-              onChange={onInputChange}
-              disabled={true}
-            >
-              {rates.map(rate => (
-                <option key={rate._id} value={rate._id.toString()}>
-                  {rate.name}
-                </option>
-              ))}
-            </select>
-          </div>
+         
           <div className='mb-3'>
             <label className="form-label">PVP</label>
             <input

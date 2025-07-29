@@ -18,6 +18,7 @@ export const clientSlice = createSlice({
     filteredClientsByLabel: [],
     scheduledCancellationClients: [], // 👈 nuevo array Programado
 
+
   },
   reducers: {
 
@@ -143,6 +144,10 @@ export const clientSlice = createSlice({
       state.filteredClientsByLabel = [];
     },
 
+    setActiveFilterLabels:(state, action) =>{
+      state.activeFilterLabels = action.payload;
+    },
+
     //----------Bajas---------------
     // Cargar clientes con baja programada
     onLoadScheduledCancellations: (state, { payload }) => {
@@ -186,6 +191,6 @@ export const {
   onLoadFilteredLabels,
   setFilteredClientsByLabel,
   clearFilteredClientsByLabel,
-  onResetFindLLabels
+  onResetFindLLabels,
 
 } = clientSlice.actions; //accion

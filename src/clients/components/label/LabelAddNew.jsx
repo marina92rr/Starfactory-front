@@ -20,7 +20,7 @@ export const LabelAddNew = () => {
 
   return (
     <button 
-        className='btn'
+        className='btn ms-auto'
         style={{ background: '#38b647', color: 'white' }}
         onClick={handleClickNew}>
         Nueva

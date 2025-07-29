@@ -6,20 +6,21 @@ import { normalizeAllTextFields } from '../../helpers/normalizeText';
 //---------Counter 10 + increment(+1) = 11
 export const labelSlice = createSlice({
   name: 'labels',
-  initialState:{
+  initialState: {
     labels: [],
-     activeLabel: null,
+    activeLabel: null,
     status: 'idle',    // 'idle' | 'loading' | 'succeeded' | 'failed'
     error: null,
     filter: '',
-    filteredList :[],
-    isLoadingLabels: false
-  
+    filteredList: [],
+    isLoadingLabels: false,
+    activeFilterLabels: []
+
   },
   reducers: {
 
-     //Carga una etiqueta
-    onSetActiveLabel :(state, {payload}) =>{
+    //Carga una etiqueta
+    onSetActiveLabel: (state, { payload }) => {
       state.activeLabel = payload;
     },
 
@@ -34,27 +35,27 @@ export const labelSlice = createSlice({
       state.errorMessage = null;
     },
 
-    addLabel: (state, {payload}) => {
+    addLabel: (state, { payload }) => {
       const normalized = normalizeAllTextFields(payload);
       state.labels.push(normalized);
     },
 
-      // Modificar cliente por idClient
-    onUpdateLabel:(state, {payload})=>{
-      state.labels = state.labels.map( label =>{      //Nuevo array del evento
-        if( label.idLabel === payload.idLabel){
+    // Modificar cliente por idClient
+    onUpdateLabel: (state, { payload }) => {
+      state.labels = state.labels.map(label => {      //Nuevo array del evento
+        if (label.idLabel === payload.idLabel) {
           return payload;
         }
         return label;
-      })   
+      })
     },
- 
-    onLoadLabels:(state, {payload}) =>{
+
+    onLoadLabels: (state, { payload }) => {
       state.isLoadingLabels = false;
       state.labels = payload;
-      payload.forEach( label =>{
-        const exist = state.labels.some( dbLabel => dbLabel.id === label.id);
-        if(!exist){
+      payload.forEach(label => {
+        const exist = state.labels.some(dbLabel => dbLabel.id === label.id);
+        if (!exist) {
           state.labels.push(label)
         }
       })
@@ -76,14 +77,23 @@ export const labelSlice = createSlice({
         return fullName.includes(filter);
       });
     },
-    
-    onDeleteLabel:(state) =>{
+
+    setActiveFilterLabels: (state, action) => {
+      state.activeFilterLabels = action.payload;
+    },
+
+    clearActiveFilterLabels: (state) => {
+      state.activeFilterLabels = [];
+    },
+
+
+    onDeleteLabel: (state) => {
       state.labels = state.labels.filter(label => label.idLabel !== state.activeLabel.idLabel);
       state.activeLabel = null;
     },
   }
 })
-export const { 
+export const {
   onSetActiveLabel,
   addLabel,
   onUpdateLabel,
@@ -91,5 +101,6 @@ export const {
   onSetLabels,
   onLoadLabels,
   onLoadingLabels,
-  onDeleteLabel
+  onDeleteLabel,
+  setActiveFilterLabels
 } = labelSlice.actions; //accion

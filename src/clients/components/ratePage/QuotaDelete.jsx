@@ -10,6 +10,8 @@ export const QuotaDelete = ({quota}) => {
   const handleDelete = () => {
     startDeleteQuota(quota);    
     startLoadingQuotasByRate(activeRate._id);
+    window.confirm(`¿Estás seguro de querer eliminar la cuota ${quota.name}?`);
+
   }
   
   return (

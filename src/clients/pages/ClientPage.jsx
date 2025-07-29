@@ -4,15 +4,11 @@ import { useClientsStore } from '../../hooks/useClientsStore';
 import { MenuClient } from '../components/clientPage/MenuClient';
 
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { LabelClient } from '../components/clientPage/LabelClient';
 import { LabelsModal } from '../components/label/LabelsModal'
 import { Labels } from '../components/label/Labels';
 import { SubscribeClient } from '../components/clientPage/SubscribeClient';
 import { getClientStatus } from '../../helpers/getClientStatus';
-import { capitalizeFirstWord } from '../../helpers/capitalizeFirstWord';
 import { isColorDark } from '../../helpers/isColorDark';
-//import { useFilterLabels } from '../../hooks/useFilterLabels';
-
 
 
 export const ClientPage = () => {
@@ -46,7 +42,6 @@ export const ClientPage = () => {
   if (!activeClient) {
     return <p>Cliente no encontrado</p>;
   }
-
 
   const handleSelect = idClient => {
     navigate('addSales');
@@ -89,8 +84,26 @@ export const ClientPage = () => {
       </div>
       <div className='w-100 d-flex '>
 
-        {isImmediateCancellation && <p className="bg-danger rounded text-white fw-bold ms-auto">De baja</p>}
-        {isScheduledCancellation && <p className="text-secondary rounded ms-auto">Baja programada: {cancelDate.toLocaleDateString()}</p>}
+        {isImmediateCancellation && 
+          <span 
+            className="badge ms-auto bg-danger"
+            style={{
+              fontSize: '0.75rem',
+              padding: '5px 10px',
+              borderRadius: '12px',
+              lineHeight: '1.2',
+              fontWeight: 600,               // O el grosor que prefieras
+            }}>DE BAJA</span>}
+        {isScheduledCancellation && 
+          <p 
+            className="text-secondary rounded ms-auto"
+            style={{
+                fontSize: '0.75rem',
+                padding: '5px 10px',
+                borderRadius: '12px',
+                lineHeight: '1.2',
+                fontWeight: 600,               // O el grosor que prefieras
+            }}>Baja programada: {cancelDate.toLocaleDateString()}</p>}
       </div>
       <div className="d-flex justify-content-between align-items-start flex-wrap mt-2">
         {/* IZQUIERDA: Etiquetas */}
@@ -129,12 +142,23 @@ export const ClientPage = () => {
 
         {/* DERECHA: Botones de acción */}
         <div className="d-flex gap-2 mt-2 mt-lg-0 align-items-center">
-          <button
+          {!isImmediateCancellation 
+
+          ?  <button
             className="btn btn-success" type="button"
             style={{ background: '#38b647', color: 'white' }}
             onClick={() => handleSelect(activeClient.idClient)}>
             Nueva venta
           </button>
+          : <button
+            className="btn btn-success" type="button"
+           
+            disabled>
+            Nueva venta
+          </button>
+          }
+          
+          
           <SubscribeClient idClient={activeClient.idClient} />
         </div>
 

@@ -122,21 +122,7 @@ if(isEditMode){
             value={formValues.description}
             onChange={onInputChange}
           />
-          <label className="form-label">Categoría</label>
-          <select
-            className="form-select"
-            name="idCategory"
-            value={formValues.idCategory}
-            onChange={onInputChange}
-            disabled={true}
-          >
-                 
-            {categories.map(category => (
-              <option key={category._id} value={category._id.toString()}>
-                {category.name}
-              </option>
-            ))}
-          </select>
+          
 
           <div className='mb-3'>
             <label className="form-label">PVP</label>

@@ -28,7 +28,7 @@ export const FilterClientByLabelModal = () => {
 
   //Abrir modal addNewLabel
   const { isModalFilterClientsByLabelOpen, closeFilterClientByLabelModal } = useUiStore();             //Abrir/ cerrar modal
-  const { labels, starLoadingLabels } = useLabelsStore();      //Lectura todos los Labels
+  const { labels, starLoadingLabels, startActiveFilterLabels, activeFilterLabels } = useLabelsStore();      //Lectura todos los Labels
   const { activeClient, filterClientsByLabels } = useClientsStore();                   //Cliente activo en clientPage
 
   //Create modal
@@ -66,7 +66,9 @@ export const FilterClientByLabelModal = () => {
   //Guardar etiqueta
   const handleSaveLabels = async () => {
     // selectedLabels es array de idLabel
-    await filterClientsByLabels(selectedLabels.map(Number));
+    const labelIds = selectedLabels.map(Number);
+    await filterClientsByLabels(labelIds);
+    startActiveFilterLabels(labelIds); //Guardamos
     closeFilterClientByLabelModal();
   };
 

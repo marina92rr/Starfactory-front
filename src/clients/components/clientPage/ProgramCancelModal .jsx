@@ -64,7 +64,7 @@ export const ProgramCancelModal = ({idClient}) => {
             Cancelar
           </button>
           <button type="submit" className="btn btn-success">
-            Confirmar baja
+            Confirmar fecha
           </button>
         </div>
       </form>

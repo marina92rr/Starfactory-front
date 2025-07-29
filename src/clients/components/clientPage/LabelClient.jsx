@@ -20,7 +20,7 @@ export const LabelClient = ({ idClient }) => {
   const labels = filteredLabelsByClient[idClient] || [];
 
   return (
-    <div className="d-flex flex-wrap mt-1 ms-2">
+    <div className="d-flex flex-wrap  ms-2">
       <ul className="d-flex gap-2 list-unstyled m-0 p-0">
         {labels.map(label => {
           const isDark = isColorDark(label.color);

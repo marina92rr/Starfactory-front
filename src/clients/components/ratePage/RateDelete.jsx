@@ -6,7 +6,9 @@ export const RateDelete = () => {
   const { startDeleteRate, activeRate } = useRateStore();
 
   const handleDelete = () => {
-    startDeleteRate(activeRate);    
+    startDeleteRate(activeRate); 
+     window.confirm(`¿Estás seguro de querer eliminar La tarifa ${activeRate.name}?`);
+   
   }
   
   return (

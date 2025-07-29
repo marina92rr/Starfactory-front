@@ -29,7 +29,6 @@ export const ClientModal = () => {
     email: '',
     mainPhone: '',
     optionalPhone: '',
-    isTeacher: true,
   });
 
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -47,7 +46,6 @@ export const ClientModal = () => {
           email: '',
           mainPhone: '',
           optionalPhone: '',
-          isTeacher: true,
         });
       }
       setFormSubmitted(false);
@@ -155,20 +153,6 @@ export const ClientModal = () => {
               onChange={onInputChange}
             />
           </div>
-        </div>
-
-        <div className='d-flex gap-3 mb-3'>
-          <input
-            className="form-check-input"
-            type="checkbox"
-            name="isTeacher"
-            id="isTeacherCheckbox"
-            checked={formValues.isTeacher || false}
-            onChange={onInputChange}
-          />
-          <label className="form-check-label" htmlFor="isTeacherCheckbox">
-            Es profesor
-          </label>
         </div>
 
         <button type='submit' className='btn btn-primary btn-block'>

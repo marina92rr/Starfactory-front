@@ -7,6 +7,8 @@ export const CategoryDelete = () => {
 
       const handleDelete = () => {
         startDeleteCategory(activeCategory);
+                window.confirm(`¿Estás seguro de querer eliminar La categoría ${activeCategory.name}?`);
+
   }
   
   return (

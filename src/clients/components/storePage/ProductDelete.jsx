@@ -9,9 +9,9 @@ export const ProductDelete = ({product}) => {
 
       const handleDelete = () => {
         startDeleteProduct(product);
-        startLoadingProductsByCategory(activeCategory._id);        
-        
-        
+        startLoadingProductsByCategory(activeCategory._id);    
+        window.confirm(`¿Estás seguro de querer eliminar el producto ${product.name}?`);
+       
   }
   
   return (
