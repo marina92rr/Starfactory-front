@@ -7,7 +7,7 @@ import {
   onLoadLabelsOfActiveClient,
   setFilteredClientsByLabel,
   clearFilteredClientsByLabel,
-  onLoadLimitClients,
+  onLoadLimitPageClients,
   onLoadScheduledCancellations,
   onSetActiveClient,
   onSetFilter,
@@ -25,7 +25,7 @@ import { normalizeAllTextFields } from "../helpers/normalizeText";
 export const useClientsStore = () => {
 
   const dispatch = useDispatch();
-  const { clients, clientsLimit, activeClient, filter, filteredList, isLoadingLabelsClient,filteredClientsByLabel, isLoadingClients, allClientsLoaded, activeClientLabels, scheduledCancellationClients, filteredLabels } = useSelector(state => state.client);
+  const { clients, clientsLimit, activeClient, filter, filteredList,totalPages, isLoadingLabelsClient,filteredClientsByLabel, isLoadingClients, allClientsLoaded, activeClientLabels, scheduledCancellationClients, filteredLabels } = useSelector(state => state.client);
   const { idClient } = useParams();
   const filteredLabelsByClient = useSelector(state => state.client.filteredLabelsByClient);
 
@@ -83,21 +83,19 @@ export const useClientsStore = () => {
   }
 
   //Lectura de 30 clientes
-  const starLoadingLimitClients = async () => {
+ const starLoadingLimitPageClients = async (page = 1) => {
+  try {
+    const { data } = await clientsApi.get(`clients/limit?page=${page}`);
+    const clients = data.clients;
+    const totalPages = data.totalPages;
 
-    try {
-      //const {data} = await axios.get('http://localhost:4001/api/clients');
-      const { data } = await clientsApi.get('clients/limit');
-      const client = data.clients;
+    dispatch(onLoadLimitPageClients({ clients, totalPages }));
 
-      dispatch(onLoadLimitClients(client));
-      //console.log({client});
-
-    } catch (error) {
-      console.log('Error al cargar los eventos');
-      console.log(error);
-    }
+  } catch (error) {
+    console.log('Error al cargar los clientes');
+    console.log(error);
   }
+};
 
   //Lectura de cliente
   const starLoadingClientByID = async () => {
@@ -230,13 +228,14 @@ export const useClientsStore = () => {
     filteredLabels,
     filteredLabelsByClient,
     filteredClientsByLabel,
+    totalPages,
 
     //*Metodos
     //Client
     setActiveClient,
     startResetClientsPage,
     starLoadingClients,
-    starLoadingLimitClients,
+    starLoadingLimitPageClients,
     starLoadingClientByID,
     startSavingClient,
     startFilteringClients,

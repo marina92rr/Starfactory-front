@@ -17,13 +17,16 @@ export const ClientsPage = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { clientsLimit, starLoadingLimitClients, filteredClientsByLabel, clearFilter } = useClientsStore();
+  const { clientsLimit, filteredClientsByLabel, clearFilter, totalPages, starLoadingLimitPageClients } = useClientsStore();
   const { activeFilterLabels, labels, setClearActiveFilterLabels } = useLabelsStore();
+
+  const [currentPage, setCurrentPage] = useState(1);  //Paginación
+
 
   //LCarga de clientes
   useEffect(() => {
-    starLoadingLimitClients();
-  }, []);
+    starLoadingLimitPageClients(currentPage);
+  }, [currentPage]);
 
   // Decide qué lista mostrar
   const clientsToShow = filteredClientsByLabel.length > 0 ? filteredClientsByLabel : clientsLimit;
@@ -32,7 +35,7 @@ export const ClientsPage = () => {
   // Cuando seleccionas un cliente, navegamos a /clients/:ID
   const handleSelect = idClient => { navigate(`${idClient}`); };
   // Etiquetas filtradas
-const selectedLabels = labels.filter(label => activeFilterLabels.includes(label.idLabel));
+  const selectedLabels = labels.filter(label => activeFilterLabels.includes(label.idLabel));
 
   const clearFilterLabels = () => {
     clearFilter();
@@ -105,6 +108,30 @@ const selectedLabels = labels.filter(label => activeFilterLabels.includes(label.
               </div>
             );
           })
+        )}
+
+        {filteredClientsByLabel.length === 0 && (
+          <div className="d-flex justify-content-center gap-3 mt-4">
+            <button
+              className="btn btn-outline-primary"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(currentPage - 1)}
+            >
+              &lt; Anterior
+            </button>
+
+            <span className="align-self-center">
+               {currentPage} de {totalPages}
+            </span>
+
+            <button
+              className="btn btn-outline-primary"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(currentPage + 1)}
+            >
+              Siguiente &gt;
+            </button>
+          </div>
         )}
       </div>
     </div>

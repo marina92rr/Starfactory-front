@@ -8,6 +8,7 @@ export const clientSlice = createSlice({
     allClientsLoaded: false,
     clients: [],
     clientsLimit: [],
+    totalPages: 1,
     activeClient: null,
     filter: '',
     filteredList: [],
@@ -34,7 +35,7 @@ export const clientSlice = createSlice({
       state.activeClientLabels = [];
     },
 
-    onResetClientsPage:(state) => {
+    onResetClientsPage: (state) => {
       state.activeClient = null;
       state.activeClientLabels = [];
       state.filter = '';
@@ -107,15 +108,19 @@ export const clientSlice = createSlice({
     },
 
     //Lectura clientes
-    onLoadLimitClients: (state, { payload = [] }) => {
-      state.isLoadingClients = false,
-        state.clientsLimit = payload;
-      payload.forEach(client => {
+    onLoadLimitPageClients: (state, { payload = [] }) => {
+      const { clients, totalPages } = payload;
+
+      state.isLoadingClients = false;
+      state.clientsLimit = clients;
+      state.totalPages = totalPages;
+
+      clients.forEach(client => {
         const exists = state.clients.some(dbClient => dbClient.idClient === client.idClient);
         if (!exists) {
-          state.clients.push(client)
+          state.clients.push(client);
         }
-      })
+      });
     },
 
     //Lectura Cliente
@@ -137,14 +142,14 @@ export const clientSlice = createSlice({
       state.activeClientLabels = action.payload; // array de labels completos
     },
 
-     setFilteredClientsByLabel: (state, action) => {
+    setFilteredClientsByLabel: (state, action) => {
       state.filteredClientsByLabel = action.payload;
     },
     clearFilteredClientsByLabel: (state) => {
       state.filteredClientsByLabel = [];
     },
 
-    setActiveFilterLabels:(state, action) =>{
+    setActiveFilterLabels: (state, action) => {
       state.activeFilterLabels = action.payload;
     },
 
@@ -175,7 +180,7 @@ export const {
   //*Client
   onSetActiveClient,
   clearActiveClient,
-  onResetClientsPage, 
+  onResetClientsPage,
   onSetFilter,
   onFilterClient,
   onAddNewClient,
@@ -183,7 +188,7 @@ export const {
   onDeleteClient,
   onLoadClients,
   onLoadClientByID,
-  onLoadLimitClients,
+  onLoadLimitPageClients,
   onToggleClientStatusCancel,
   onLoadScheduledCancellations,
   //*Labels
