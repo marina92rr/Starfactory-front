@@ -8,9 +8,11 @@ export const QuotaDelete = ({quota}) => {
   const {activeRate} = useRateStore();
   
   const handleDelete = () => {
+    const confirmDelete =  window.confirm(`¿Estás seguro de querer eliminar la cuota ${quota.name}?`);
+    if(!confirmDelete) return;
+    
     startDeleteQuota(quota);    
     startLoadingQuotasByRate(activeRate._id);
-    window.confirm(`¿Estás seguro de querer eliminar la cuota ${quota.name}?`);
 
   }
   

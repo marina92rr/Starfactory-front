@@ -2,25 +2,28 @@ import React from 'react'
 import { useProductStore } from '../../../hooks/useProductStore';
 import { useCategoryStore } from '../../../hooks/useCategoryStore';
 
-export const ProductDelete = ({product}) => {
+export const ProductDelete = ({ product }) => {
 
-    const {startDeleteProduct, startLoadingProductsByCategory } = useProductStore();
-    const {activeCategory} = useCategoryStore();
+  const { startDeleteProduct, startLoadingProductsByCategory } = useProductStore();
+  const { activeCategory } = useCategoryStore();
 
-      const handleDelete = () => {
-        startDeleteProduct(product);
-        startLoadingProductsByCategory(activeCategory._id);    
-        window.confirm(`¿Estás seguro de querer eliminar el producto ${product.name}?`);
-       
+  const handleDelete = async() => {
+
+    const confirmDelete = window.confirm(`¿Estás seguro de querer eliminar el producto ${product.name}?`);
+    if (!confirmDelete) return;
+
+    await startDeleteProduct(product);
+    startLoadingProductsByCategory(activeCategory._id);
+
   }
-  
+
   return (
-   
-        <button 
-          className='btn btn-danger'
-          onClick={handleDelete}>
-            <i className="bi bi-trash-fill"></i>
-        </button>
-  
+
+    <button
+      className='btn btn-danger'
+      onClick={handleDelete}>
+      <i className="bi bi-trash-fill"></i>
+    </button>
+
   )
 }

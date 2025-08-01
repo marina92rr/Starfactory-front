@@ -6,9 +6,9 @@ export const CategoryDelete = () => {
     const {startDeleteCategory, activeCategory} = useCategoryStore();
 
       const handleDelete = () => {
+        const confirmDelete = window.confirm(`¿Estás seguro de querer eliminar La categoría ${activeCategory.name}?`);
+        if(!confirmDelete) return;
         startDeleteCategory(activeCategory);
-                window.confirm(`¿Estás seguro de querer eliminar La categoría ${activeCategory.name}?`);
-
   }
   
   return (
