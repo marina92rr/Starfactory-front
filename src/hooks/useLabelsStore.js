@@ -1,6 +1,6 @@
 
 import { useDispatch, useSelector } from "react-redux";
-import { addLabel, onDeleteLabel, onLoadingLabels, onLoadLabels, onSetActiveLabel, onSetFilterLabel, onSetLabels, onUpdateLabel, setActiveFilterLabels } from "../store/label/labelSlice";
+import { addLabel, onDeleteLabel, onLoadLabels, onSetActiveLabel, onSetFilterLabel, onSetLabels, setActiveFilterLabels, clearActiveFilterLabels } from "../store/label/labelSlice";
 import { clientsApi } from "../api";
 import { useParams } from "react-router-dom";
 import { normalizeAllTextFields } from "../helpers/normalizeText";
@@ -66,8 +66,8 @@ export const useLabelsStore = () => {
   }
 
   //Limpiar etiquetas activas
-  const clearActiveFilterLabels = () => {
-  dispatch(labelSlice.actions.clearActiveFilterLabels());
+  const setClearActiveFilterLabels = (labels) => {
+  dispatch(clearActiveFilterLabels(labels));
 };
   
   // Filtrar labels Buscar...
@@ -104,7 +104,7 @@ export const useLabelsStore = () => {
     startDeleteLabel,
     startFindLabels,
     startActiveFilterLabels,
-    clearActiveFilterLabels
+    setClearActiveFilterLabels
   
   };
 };

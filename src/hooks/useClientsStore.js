@@ -14,12 +14,13 @@ import {
   onToggleClientStatusCancel,
   onUpdateClient,
   onResetClientsPage,
+  clearActiveClient
 } from "../store/clients/clientSlice";
+
 
 import { clientsApi } from "../api";
 import { useParams } from "react-router-dom";
 import { normalizeAllTextFields } from "../helpers/normalizeText";
-import { clearActiveClient } from "../store/clients/clientSlice";
 
 export const useClientsStore = () => {
 

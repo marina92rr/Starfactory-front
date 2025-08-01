@@ -102,5 +102,6 @@ export const {
   onLoadLabels,
   onLoadingLabels,
   onDeleteLabel,
-  setActiveFilterLabels
+  setActiveFilterLabels,
+  clearActiveFilterLabels
 } = labelSlice.actions; //accion

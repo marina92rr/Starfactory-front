@@ -16,9 +16,9 @@ import { useDispatch } from 'react-redux';
 export const ClientsPage = () => {
 
   const navigate = useNavigate();
- const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { clientsLimit, starLoadingLimitClients, filteredClientsByLabel, clearFilter } = useClientsStore();
-  const {activeFilterLabels, labels, clearActiveFilterLabels} = useLabelsStore();
+  const { activeFilterLabels, labels, setClearActiveFilterLabels } = useLabelsStore();
 
   //LCarga de clientes
   useEffect(() => {
@@ -34,10 +34,10 @@ export const ClientsPage = () => {
   // Etiquetas filtradas
 const selectedLabels = labels.filter(label => activeFilterLabels.includes(label.idLabel));
 
- const clearFilterLabels = () => {
-  dispatch(clearFilter());            // Esto es correcto
-  clearActiveFilterLabels();          // ✅ Aquí quita el dispatch
-};
+  const clearFilterLabels = () => {
+    clearFilter();
+    setClearActiveFilterLabels();
+  };
   return (
 
     <div className=' m-5' >
@@ -56,12 +56,12 @@ const selectedLabels = labels.filter(label => activeFilterLabels.includes(label.
             </button>
           )}
 
-           {selectedLabels.map(label => (
-        <span key={label.idLabel} className="badge d-flex align-items-center" style={{ backgroundColor: label.color, color: '#fff' }}>
-          {label.name}
-        </span>
-      ))}
-         
+          {selectedLabels.map(label => (
+            <span key={label.idLabel} className="badge d-flex align-items-center" style={{ backgroundColor: label.color, color: '#fff' }}>
+              {label.name}
+            </span>
+          ))}
+
         </div>
         <GetClientCancellation />
         <GetClientCancellationModal />
