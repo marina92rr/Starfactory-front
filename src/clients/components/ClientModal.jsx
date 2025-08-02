@@ -13,6 +13,10 @@ const customStyles = {
     bottom: 'auto',
     transform: 'translate(-50%, -50%)',
   },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // oscuridad del fondo
+    zIndex: 9999,                          // asegura que está por encima
+  }
 };
 
 export const ClientModal = () => {

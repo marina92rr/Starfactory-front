@@ -54,10 +54,10 @@ export const SalesClient = () => {
   return (
 
     <div>
+      
       <div>
-        <h4>Ventas pagadas</h4>
-      </div>
-      <div>
+      <h4 className="border rounded-top br-3 d-flex align-items-center p-3 bg-light m-0">Ventas pagadas</h4>
+
       <table className="table border col-12">
             <thead >
               <tr >

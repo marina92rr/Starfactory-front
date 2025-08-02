@@ -17,6 +17,10 @@ const customStylesModal = {
     width: '600px',
     height: 'auto',
   },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // oscuridad del fondo
+    zIndex: 9999,                          // asegura que está por encima
+  }
 };
 
 export const RateModal = () => {

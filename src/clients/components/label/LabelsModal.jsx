@@ -26,6 +26,10 @@ const customStyles = {
     color: '#000000',
     boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
   },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // oscuridad del fondo
+    zIndex: 9999,                          // asegura que está por encima
+  }
 };
 
 

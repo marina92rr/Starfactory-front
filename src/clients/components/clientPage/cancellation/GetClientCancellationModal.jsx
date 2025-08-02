@@ -12,6 +12,10 @@ const customStylesModal = {
         bottom: 'auto',
         transform: 'translate(-50%, -50%)',
     },
+    overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // oscuridad del fondo
+    zIndex: 9999,                          // asegura que está por encima
+  }
 };
 
 
@@ -39,8 +43,8 @@ export const GetClientCancellationModal = () => {
             contentLabel='Clientes con Baja Programada' >
 
             <div className="position-sticky top-0 bg-white pt-2 pb-2" style={{ zIndex: 12 }}>
-                <h2 className="m-0 px-2">Clientes con Baja programada</h2>
-                <hr className="mt-2 mb-2" />
+                <h2 className="m-0 p-2">Clientes con Baja programada</h2>
+                <hr className="mt-2 mb-3" />
                 <div className=' mb-3'>
                     {scheduledCancellationClients.map(client => (
                         <div 

@@ -34,7 +34,8 @@ export const AddNewSales = () => {
         type,
         idProduct: type === 'product' ? product.idProduct : null,
         idQuota: type === 'quota' ? product.idQuota : null,
-        discount: null // Descuento inicial
+        discount: null, // Descuento inicial
+        selfSale: false
       }
     ]);
   };
@@ -81,43 +82,47 @@ export const AddNewSales = () => {
         <h1>Añadir producto</h1>
       </div>
 
-  <div className='d-flex'>
-  <div>
-    <FindSales onInputChange={setSearchInput} />
+      <div className='d-flex'>
+        <div>
+          <FindSales onInputChange={setSearchInput} />
 
-    {/* Scroll solo para el listado */}
-    <div style={{ maxHeight: '50vh', overflowY: 'auto', marginRight: '2rem' }}>
-      {(searchInput.trim() ? filteredList : products).map((product, i) => (
-        <div
-          key={`p-${i}`}
-          className="border my-2 p-3 text-start"
-          onClick={() => handleAddProduct(product, 'product')}
-          style={{ cursor: 'pointer', width: 300 }}
-        >
-          <div className='d-flex justify-content-between'>
-            <div className='text fw-medium'>{product.name}</div>
-            <div className='text-end fw-medium'>{product.price}€</div>
-          </div>
-          <div className='text-secondary fw-light'>{capitalizeFirstWord(product.description)}</div>
-        </div>
-      ))}
+          {/* Scroll solo para el listado */}
+          <div style={{ maxHeight: '50vh', overflowY: 'auto', marginRight: '2rem' }}>
+            {(searchInput.trim() ? filteredList : products).map((product, i) => (
+              <div
+                key={`p-${i}`}
+                className="border my-2 p-3 text-start"
+                onClick={() => handleAddProduct(product, 'product')}
+                style={{ cursor: 'pointer', width: 300 }}
+              >
+                <div className='d-flex justify-content-between'>
+                  <div className='text fw-medium'>{product.name}</div>
+                  <div className='text-end fw-medium'>{product.price}€</div>
+                </div>
+                <div className='text-secondary fw-light'>{capitalizeFirstWord(product.description)}</div>
+              </div>
+            ))}
 
-      {(searchInput.trim() ? filteredListQuotas : quotas).map((quota, i) => (
-        <div
-          key={`q-${i}`}
-          className="border p-4 my-2 text-start"
-          onClick={() => handleAddProduct(quota, 'quota')}
-          style={{ cursor: 'pointer', width: 300 }}
-        >
-          <div className='d-flex justify-content-between'>
-            <div className='text fw-medium'>{quota.name}</div>
-            <div className='text-end fw-medium'>{quota.price}€</div>
+            {(searchInput.trim() ? filteredListQuotas : quotas).map((quota, i) => {
+              console.log('🧾 Cuota recibida:', quota); // 👈 AÑADE AQUÍ
+
+              return (
+                <div
+                  key={`q-${i}`}
+                  className="border p-4 my-2 text-start"
+                  onClick={() => handleAddProduct(quota, 'quota')}
+                  style={{ cursor: 'pointer', width: 300 }}
+                >
+                  <div className='d-flex justify-content-between'>
+                    <div className='text fw-medium'>{quota.name}</div>
+                    <div className='text-end fw-medium'>{quota.price}€</div>
+                  </div>
+                  <div className='text-secondary'>{quota.description}</div>
+                </div>
+              );
+            })}
           </div>
-          <div className='text-secondary'>{quota.description}</div>
         </div>
-      ))}
-    </div>
-  </div>
 
         <div className='col-9' >
           <div className=' px-2'>
@@ -126,10 +131,10 @@ export const AddNewSales = () => {
           <table className="table border">
             <thead >
               <tr >
-                <th scope='col' className="p-3 text-start " style={{ Width: 50 }}>Concepto</th>
-                <th scope='col' className="p-3 text-start">Precio</th>
-                <th scope='col' className="p-3 text-start">Descuento</th>
-                <th scope='col' className="p-3 text-center">Autoventas</th>
+                <th scope='col' className="p-3 text-start col-4">Concepto</th>
+                <th scope='col' className="p-3 text-start col-2">Precio</th>
+                <th scope='col' className="p-3 text-start col-3">Descuento</th>
+                <th scope='col' className="p-3 text-center col-2">Autoventas</th>
                 <th scope='col' className="p-3 text-center">Eliminar</th>
               </tr>
             </thead>
@@ -142,8 +147,8 @@ export const AddNewSales = () => {
                 selectedProducts.map((product, i) => {
                   return (
                     <tr key={i}>
-                      <td className='p-3 text-primary text-start ' style={{ minWidth: 50 }}>{product.name}</td>
-                      <td className='p-3 text-start'>{product.price}</td>
+                      <td className='p-3 text-primary text-start'>{product.name}</td>
+                      <td className='p-3 text-start'>{product.price} €</td>
                       <td className='p-3'>
                         <div className='input-group w-50'>
                           <input
@@ -155,16 +160,28 @@ export const AddNewSales = () => {
                         </div>
                       </td>
                       <td className='p-3 text-center'>
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          name="respuesta"
-                          id="si"
-                          value="si"
-                          checked={valor === "si"}
-                          onClick={() => handleChange("si")}
-                          readOnly
-                        />
+                        {product.type === 'quota' ? (
+                          <input
+                            type="checkbox"
+                            style={{
+                              width: '20px',
+                              height: '20px',
+                              border: '1px solid #00000097', // color primario de Bootstrap
+                              cursor: 'pointer'
+                            }}
+                            className="form-check-input"
+                            checked={product.selfSale}
+                            onChange={(e) => {
+                              const updatedProducts = [...selectedProducts];
+                              updatedProducts[i].selfSale = e.target.checked;
+                              setSelectedProducts(updatedProducts);
+                            }}
+                          />
+                        ) : (
+                          <span className="text-secondary" title="Solo disponible en cuotas">
+                            <i className="bi bi-lock-fill"></i>
+                          </span>
+                        )}
                       </td>
                       <td className='p-3 text-center'>
                         <button

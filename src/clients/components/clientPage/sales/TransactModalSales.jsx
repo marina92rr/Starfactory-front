@@ -15,7 +15,12 @@ const customStylesModal = {
     right: 'auto',
     bottom: 'auto',
     transform: 'translate(-50%, -50%)',
+    width: '400px', height: '450px'
   },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // oscuridad del fondo
+    zIndex: 9999,                          // asegura que está por encima
+  }
 };
 
 export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
@@ -25,21 +30,21 @@ export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
   const { isModalSaleOpen, closeSaleModal } = useUiStore();
   const { startSavingProductClient } = useProductClientStore();
   const [paymentMethod, setPaymentMethod] = useState('Efectivo')
-  const {activeClient} = useClientsStore();
+  const { activeClient } = useClientsStore();
 
 
   const productsMapped = selectedProducts.map(item => ({
     name: item.name,
     idProduct: item.idProduct ?? item.idQuota,
     isProduct: item.idProduct ? true : false,
-    price:item.price,
-    discount:item.discount
+    price: item.price,
+    discount: item.discount,
+    selfSale: item.selfSale ?? false
   }));
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-
-     const venta = {
+    const venta = {
       fecha: new Date(),
       cliente: `${activeClient.name} ${activeClient.lastName}`,
       items: selectedProducts.map(p => ({
@@ -59,6 +64,8 @@ export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
     };
 
     try {
+      console.log('📦 Payload final:', dataToSend);
+
       // Guardar en la base de datos
       await startSavingProductClient(dataToSend, false);
 
@@ -74,23 +81,25 @@ export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
   }
 
   return (
-   <Modal
+    <Modal
       isOpen={isModalSaleOpen}
       onRequestClose={closeSaleModal}
       style={customStylesModal}
       contentLabel='Tramitar Venta' >
 
-      <h3>Liquidar deuda</h3>
+      <h3 className='py-1'>Liquidar deuda</h3>
       <hr />
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <h2 className='align-items-center justify-content-center d-flex' style={{ width: 200, height: 200 }}>{totalAmount} €</h2>
+      <form  onSubmit={handleSubmit}>
+        <div className="mb-3 ">
+          <h2
+            className='align-items-center justify-content-center d-flex w-100'
+            style={{  height: 120, background: '#e9e9e963' }}>{totalAmount} €</h2>
         </div>
 
-        <div className="mb-3">
+        <div className="mb-3 py-3">
           <label className="form-label">Método de pago</label>
           <select
-            className="form-select"
+            className="form-select py-3"
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
           >
@@ -98,10 +107,13 @@ export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
             <option value="Tarjeta">Tarjeta</option>
           </select>
         </div>
-
-        <div className="d-flex justify-content-end">
-          <button type="submit" className="btn btn-primary">
-            tramitar venta
+        <hr />
+        <div className="d-flex justify-content-center">
+          <button
+            type="submit"
+            style={{ background: '#38b647', color: 'white' }}
+            className="btn btn-success p-2 w-100 ">
+            Liquidar deuda
           </button>
         </div>
       </form>

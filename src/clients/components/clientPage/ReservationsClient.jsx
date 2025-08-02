@@ -7,7 +7,7 @@ export const ReservationsClient = () => {
     <div>
 
       
-          <h4 className="border rounded-top br-3 d-flex align-items-center p-3 bg-light m-0">Autocompras</h4>
+          <h4 className="border rounded-top br-3 d-flex align-items-center p-3 bg-light m-0">Reservas</h4>
           <table className='table border'>
             <thead>
               <tr>

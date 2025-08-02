@@ -9,6 +9,8 @@ import { Labels } from '../components/label/Labels';
 import { SubscribeClient } from '../components/clientPage/SubscribeClient';
 import { getClientStatus } from '../../helpers/getClientStatus';
 import { isColorDark } from '../../helpers/isColorDark';
+import userPhoto from '../../assets/user.png';
+
 
 
 export const ClientPage = () => {
@@ -48,124 +50,128 @@ export const ClientPage = () => {
   };
 
   return (
-    <div className="m-5">
-      <h1 className='pt-5'>
-        {activeClient.name} {activeClient.lastName}
-        <span
-          className="text-secondary ms-2"
-          style={{
-            fontSize: '0.6em',
-            verticalAlign: 'baseline',
-            position: 'relative',
-            top: '0.05em'
-          }}
-        >
-          #{activeClient.idClient}
-        </span>
-      </h1>
-      <div className="d-flex align-items-center gap-3 mt-3">
-        {activeClient.email && (
-          <div className="d-flex align-items-center">
-            <i className="bi bi-envelope-fill me-2 text-secondary "></i>
-            <button type="button" className="btn btn-link p-0 m-0 text-decoration-none">
-              {activeClient.email.toLowerCase()}
-            </button>
+    <div style={{ marginTop: '100px' }}>
+
+      <div className='m-5'>
+        <div className='d-flex align-items-center gap-3 my-4 ' >
+
+          {/* Imagen */}
+          <img
+            src={userPhoto}
+            className="rounded-circle mt-1"
+            alt="Usuario"
+            style={{ width: '80px', height: '80px', objectFit: 'cover' }}
+          />
+
+          {/* Info general */}
+          <div className="d-flex flex-column">
+
+            {/* Nombre + ID */}
+            <div className="d-flex align-items-center flex-wrap">
+              <h1 className='mb-1 me-2'>
+                {activeClient.name} {activeClient.lastName}
+              </h1>
+              <span className="text-secondary" style={{ fontSize: '1rem' }}>
+                #{activeClient.idClient}
+              </span>
+            </div>
+
+            {/* Email + Teléfono */}
+            <div className="d-flex align-items-center flex-wrap gap-3 mt-1">
+              {activeClient.email && (
+                <div className="d-flex align-items-center">
+                  <i className="bi bi-envelope-fill me-1 text-secondary"></i>
+                  <button type="button" className="btn btn-link p-0 m-0 text-decoration-none">
+                    {activeClient.email.toLowerCase()}
+                  </button>
+
+                </div>
+              )}
+
+              {activeClient.mainPhone && (
+                <div className="d-flex align-items-center">
+                  <i className="bi bi-telephone-fill me-1 text-secondary"></i>
+                  <button type="button" className="btn btn-link p-0 m-0 text-decoration-none">
+                    {activeClient.mainPhone}
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-        )}
-
-        {activeClient.mainPhone && (
-          <div className="d-flex align-items-center">
-            <i className="bi bi-telephone-fill me-2 text-secondary"></i>
-            <button type="button" className="btn btn-link p-0 m-0 text-decoration-none">
-              {activeClient.mainPhone}
-            </button>
-          </div>
-        )}
-      </div>
-      <div className='w-100 d-flex '>
-
-        {isImmediateCancellation && 
-          <span 
-            className="badge ms-auto bg-danger"
-            style={{
-              fontSize: '0.75rem',
-              padding: '5px 10px',
-              borderRadius: '12px',
-              lineHeight: '1.2',
-              fontWeight: 600,               // O el grosor que prefieras
-            }}>DE BAJA</span>}
-        {isScheduledCancellation && 
-          <p 
-            className="text-secondary rounded ms-auto"
-            style={{
-                fontSize: '0.75rem',
-                padding: '5px 10px',
-                borderRadius: '12px',
-                lineHeight: '1.2',
-                fontWeight: 600,               // O el grosor que prefieras
-            }}>Baja programada: {cancelDate.toLocaleDateString()}</p>}
-      </div>
-      <div className="d-flex justify-content-between align-items-start flex-wrap mt-2">
-        {/* IZQUIERDA: Etiquetas */}
-        <div className="d-flex flex-wrap align-items-center gap-2" >
-          <LabelsModal idClient={activeClient.idClient} />
-          <Labels idClient={activeClient.idClient} />
-          <ul className="d-flex gap-2 list-unstyled m-0 p-0">
-            {activeClientLabels.map(label => {
-              const isDark = isColorDark(label.color); 
-              const textColor = isDark ? '#fff' : '#222';
-              return (
-                <li key={label.idLabel}>
-                  <span
-                    className="badge rounded-pill"
-                    style={{
-                      backgroundColor: label.color,
-                      color: textColor,              // <-- Color automático según fondo
-                      fontSize: '0.75rem',
-                      padding: '5px 10px',
-                      minWidth: 'fit-content',
-                      letterSpacing: '0.01em',
-                      borderRadius: '12px',
-                      lineHeight: '1.2',
-                      marginRight: '4px',
-                      fontWeight: 600,               // O el grosor que prefieras
-                    }}
-                  >
-                    {label.name}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-
         </div>
 
-        {/* DERECHA: Botones de acción */}
-        <div className="d-flex gap-2 mt-2 mt-lg-0 align-items-center">
-          {!isImmediateCancellation 
-
-          ?  <button
-            className="btn btn-success" type="button"
-            style={{ background: '#38b647', color: 'white' }}
-            onClick={() => handleSelect(activeClient.idClient)}>
-            Nueva venta
-          </button>
-          : <button
-            className="btn btn-success" type="button"
-           
-            disabled>
-            Nueva venta
-          </button>
-          }
-          
-          
-          <SubscribeClient idClient={activeClient.idClient} />
+        {/* Estado de cancelación */}
+        <div className='w-100 d-flex'>
+          {isImmediateCancellation &&
+            <span className="badge ms-auto bg-danger" style={{ fontSize: '0.75rem', padding: '5px 10px', borderRadius: '12px', lineHeight: '1.2', fontWeight: 600 }}>
+              DE BAJA
+            </span>}
+          {isScheduledCancellation &&
+            <p className="text-secondary rounded ms-auto" style={{ fontSize: '0.75rem', padding: '5px 10px', borderRadius: '12px', lineHeight: '1.2', fontWeight: 600 }}>
+              Baja programada: {cancelDate.toLocaleDateString()}
+            </p>}
         </div>
+
+        {/* Etiquetas y acciones */}
+        <div className="d-flex justify-content-between align-items-start flex-wrap mt-2">
+
+          {/* IZQUIERDA: Etiquetas */}
+          <div className="d-flex flex-wrap align-items-center gap-2">
+            <LabelsModal idClient={activeClient.idClient} />
+            <Labels idClient={activeClient.idClient} />
+            <ul className="d-flex gap-2 list-unstyled m-0 p-0">
+              {activeClientLabels.map(label => {
+                const isDark = isColorDark(label.color);
+                const textColor = isDark ? '#fff' : '#222';
+                return (
+                  <li key={label.idLabel}>
+                    <span
+                      className="badge rounded-pill"
+                      style={{
+                        backgroundColor: label.color,
+                        color: textColor,
+                        fontSize: '0.75rem',
+                        padding: '5px 10px',
+                        minWidth: 'fit-content',
+                        letterSpacing: '0.01em',
+                        borderRadius: '12px',
+                        lineHeight: '1.2',
+                        marginRight: '4px',
+                        fontWeight: 600,
+                      }}
+                    >
+                      {label.name}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          {/* DERECHA: Botones de acción */}
+          <div className="d-flex gap-2 mt-2 mt-lg-0 align-items-center">
+            {!isImmediateCancellation ? (
+              <button
+                className="btn btn-success"
+                style={{ background: '#38b647', color: 'white' }}
+                onClick={() => handleSelect(activeClient.idClient)}>
+                Nueva venta
+              </button>
+            ) : (
+              <button className="btn btn-success" disabled>
+                Nueva venta
+              </button>
+            )}
+            <SubscribeClient idClient={activeClient.idClient} />
+          </div>
+        </div>
+
+        <MenuClient />
+        <Outlet />
 
       </div>
 
-      <MenuClient />
-      <Outlet />
+
     </div>
   );
 }
