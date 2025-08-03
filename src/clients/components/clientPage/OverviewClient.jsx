@@ -1,33 +1,56 @@
 
-import React from 'react'
+import React, { use, useEffect } from 'react'
+import { useClientsStore } from '../../../hooks/useClientsStore'
+import { useSuscriptionClientStore } from '../../../hooks/useSuscriptionClientStore';
+import { getNextPurchaseDate } from '../../../helpers/getNextPurchaseDate';
+import { capitalizeFirstWord } from '../../../helpers/capitalizeFirstWord';
 
 export const OverviewClient = () => {
+
+  const { activeClient, setActiveClient } = useClientsStore();
+  const { suscriptionClients, startLoadingSuscriptionsByClient } = useSuscriptionClientStore();
+
+
+  useEffect(() => {
+    if (activeClient?.idClient) {
+      startLoadingSuscriptionsByClient(activeClient.idClient);
+    }
+  }, [activeClient]);
+
   return (
     <>
-       
-              
-          <h4 className="border rounded-top br-3 d-flex align-items-center p-3 bg-light m-0">Autocompras</h4>
-          <table className='table border'>
-            <thead>
-              <tr>
-                <th className='py-3' scope='col'>Concepto</th>
-                <th className='py-3' scope='col'>Fecha (Próxima compra)</th>
-                <th className='py-3' scope='col'>Total</th>
-                <th className='py-3' scope='col'>Método Pago</th>
-                <th className='py-3' scope='col'>Caducidad</th>
-              </tr>
-            </thead>
-            <tbody >
-              <tr >
-                <td className='py-3'>1 Sesión/semana (Media hora)</td>
-                <td className='py-3'>30/04/2025</td>
-                <td className='py-3'>25€</td>
-                <td className='py-3'>Tarjeta</td>
-                <td className='py-3'>Siempre</td>
-              </tr>
-            </tbody>
-          </table>
-        
+
+
+      <h4 className="border rounded-top br-3 d-flex align-items-center p-3 bg-light m-0">Autocompras</h4>
+      <table className='table border'>
+        <thead>
+          <tr>
+            <th className='py-3' scope='col'>Concepto</th>
+            <th className='py-3' scope='col'>Fecha (Próxima compra)</th>
+            <th className='py-3' scope='col'>Total</th>
+            <th className='py-3' scope='col'>Método Pago</th>
+            <th className='py-3' scope='col'>Caducidad</th>
+          </tr>
+        </thead>
+        <tbody >
+        {(suscriptionClients?.length ?? 0) === 0 ? (
+            <tr><td colSpan={5}>No hay suscripciones</td></tr>
+          ) : (
+            suscriptionClients.map((suscriptions, i) => {
+              return (
+                <tr key={i}>
+                  <td className='py-3'>{capitalizeFirstWord(suscriptions.name)}</td>
+                  <td className='py-3'>Se intentará la próxima compra el {getNextPurchaseDate()}</td>
+                  <td className='py-3'>{suscriptions.price} €</td>
+                  <td className='py-3'>{suscriptions.paymentMethod}</td>
+                  <td className='py-3'>Siempre</td>
+                </tr>
+              );
+            })
+          )}
+        </tbody>
+      </table>
+
     </>
   )
 }

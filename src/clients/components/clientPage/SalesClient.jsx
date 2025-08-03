@@ -8,15 +8,7 @@ import { IVAProduct } from '../../../helpers/IVAProduct';
 import { capitalizeFirstWord } from '../../../helpers/capitalizeFirstWord';
 import { formatDate } from '../../../helpers/formatDate';
 
-const venta = {
-  fecha: new Date(),
-  cliente: 'Jesús',
-  items: [
-    { nombre: 'Clase Salsa', cantidad: 1, precio: 25 },
-    { nombre: 'Clase Bachata', cantidad: 1, precio: 25 }
-  ],
-  total: 50
-};
+
 
 export const SalesClient = () => {
 
