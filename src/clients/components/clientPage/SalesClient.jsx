@@ -65,7 +65,7 @@ export const SalesClient = () => {
             <tbody>
               {productClients.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="text-muted text-center">No hay Productos en esta categoría</td>
+                  <td colSpan={5} className="text-muted">No hay Productos en esta categoría</td>
                 </tr>
               ) : (
                 productClients.map((products, i) => {

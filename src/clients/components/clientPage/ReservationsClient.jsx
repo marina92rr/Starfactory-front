@@ -20,7 +20,7 @@ export const ReservationsClient = () => {
             </thead>
             <tbody >
               <tr >
-                <td className='py-3'>No tiene reservas actualmente.</td>
+                <td className='text-muted'>No tiene reservas actualmente</td>
                 <td className='py-3'></td>
                 <td className='py-3'></td>
                 <td className='py-3'></td>

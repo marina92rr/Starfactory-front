@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import { ClientModal } from '../ClientModal';
 import { ClientEddit } from '../ClientEddit';
 import { capitalizeFirstWord } from '../../../helpers/capitalizeFirstWord';
+import userPhoto from '../../../assets/user.png';
+
 
 export const ProfileClient = () => {
 
@@ -29,12 +31,21 @@ export const ProfileClient = () => {
           </div>
 
         </div>
-        <div>
-
+        <div className='pb-4'>
+          <strong>Foto:</strong>
+          <br />
+          {/* Imagen */}
+          <img
+            src={userPhoto}
+            className="rounded-circle mt-1"
+            alt="Usuario"
+            style={{ width: '80px', height: '80px', objectFit: 'cover' }}
+          />
         </div>
 
         {/* Columna izquierda */}
         <div className="col-md-4 text-center text-md-start mb-3 mb-md-0">
+
 
           <div>
             <strong>Nombre:</strong>

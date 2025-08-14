@@ -71,7 +71,7 @@ export const ClientPage = () => {
               <h1 className='mb-1 me-2'>
                 {activeClient.name} {activeClient.lastName}
               </h1>
-              <span className="text-secondary" style={{ fontSize: '1rem' }}>
+              <span className="text-secondary" style={{ fontSize: '2rem' }}>
                 #{activeClient.idClient}
               </span>
             </div>

@@ -81,7 +81,7 @@ export const RatesPage = () => {
               <h3>{activeRate.description}</h3>
             )
               : (
-                <h2 className='text-muted'>Cuotas</h2>
+                <h3 className='text-muted'>Cuotas</h3>
               )}
           </div>
 
@@ -113,7 +113,7 @@ export const RatesPage = () => {
             <tbody>
               {quotas.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="text-muted text-center">No hay cuotas en esta tarifa</td>
+                  <td colSpan={5} className="text-muted">No hay cuotas en esta tarifa</td>
                 </tr>
               ) : (
                 quotas.map((quota,i) => {

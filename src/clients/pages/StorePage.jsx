@@ -87,7 +87,7 @@ export const StorePage = () => {
               <h3>{activeCategory.name}</h3>
             )
               : (
-                <h2 className='text-muted'>Productos</h2>
+                <h3 className='text-muted'>Productos</h3>
               )}
           </div>
           {activeCategory ? (
@@ -116,7 +116,7 @@ export const StorePage = () => {
             <tbody>
               {products.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="text-muted text-center">No hay Productos en esta categoría</td>
+                  <td colSpan={5} className="text-muted">No hay Productos en esta categoría</td>
                 </tr>
               ) : (
                 products.map((product, i) => {

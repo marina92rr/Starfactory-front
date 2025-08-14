@@ -34,7 +34,7 @@ export const OverviewClient = () => {
         </thead>
         <tbody >
         {(suscriptionClients?.length ?? 0) === 0 ? (
-            <tr><td colSpan={5}>No hay suscripciones</td></tr>
+            <tr><td colSpan={5} className='text-muted'>No hay suscripciones</td></tr>
           ) : (
             suscriptionClients.map((suscriptions, i) => {
               return (

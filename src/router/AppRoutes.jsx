@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { OverviewClient, ReservationsClient, SalesClient, ProfileClient} from '../clients/components/clientPage'
 import { ClientPage, ClientsPage, StorePage,RatesPage } from '../clients/pages'
 import { AddNewSales } from '../clients/components/clientPage/AddNewSales'
@@ -13,7 +13,7 @@ export const AppRoutes = () => {
         {/* ----------------------Cliente---------------------- */}
         <Route path=":idClient" element={<ClientPage />}>
           {/* Ruta índice: /clients/:dni */}
-          <Route index element={<OverviewClient />} />
+           <Route index element={<Navigate to="overview" replace />} />
           {/* Vista general */}
           <Route path="overview" element={<OverviewClient />} />
           {/* Reservas */}
