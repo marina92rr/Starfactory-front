@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { useClientsStore } from '../../hooks/useClientsStore';
 import { useRateStore } from '../../hooks/useRateStore';
 import { useCategoryStore } from '../../hooks/useCategoryStore';
+import logo from "../../assets/logo.png";
 
 const links = [
   { name: 'Clientes', path: '/' },
@@ -34,8 +35,13 @@ export const Sidebar = () => {
           zIndex: 1000, // para que esté encima de otros elementos si hace falta
           overflowY: 'auto'
         }}>
-        <h4 className='pt-5 p-2'
-        >Star Factory</h4>
+        <div className="text-center pt-5 p-3">
+          <img
+            src={logo}
+            alt="Star Factory Logo"
+            style={{ width: "100px", height: "auto" }}
+          />
+        </div>
         <nav>
           {links.map(link => (
             <NavLink
