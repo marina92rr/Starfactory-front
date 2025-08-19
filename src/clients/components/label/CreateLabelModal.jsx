@@ -1,4 +1,4 @@
-import Modal  from 'react-modal'
+import Modal from 'react-modal'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLabelsStore } from '../../../hooks/useLabelsStore';
@@ -15,13 +15,14 @@ const customStylesModal = {
     bottom: 'auto',
     transform: 'translate(-50%, -50%)',
     width: '500px',
-    height:'auto',
+    height: 'auto',
     padding: '20px',
     overflow: 'visible', //Para que sobresalga
-    zIndex: 1001 },
-    overlay: {
-      zIndex: 1000
-    },
+    zIndex: 1001
+  },
+  overlay: {
+    zIndex: 1000
+  },
 };
 
 //Colores por defecto:
@@ -35,15 +36,18 @@ const colors = [
 
 export const CreateLabelModal = () => {
 
-  const { isModalCreateLabelOpen, closeCreateLabelModal} = useUiStore();
-  const { activeLabel, createLabelAndAssign } = useLabelsStore();
-  const {activeClient} = useClientsStore();
+  const { isModalCreateLabelOpen, closeCreateLabelModal } = useUiStore();
+  const { activeLabel, createLabelAndAssign, startUpdateLabel, createLabelGlobal } = useLabelsStore();
+  const { activeClient } = useClientsStore();
 
-  //Estado valor
+  const clientId = activeClient?.idClient ?? null;   // ✅ seguro
+  const isEdit = !!activeLabel?.idLabel;          // ✅ modo editar si existe idLabel
+
+  //Estado valor inicial del formulario
   const [formValues, setFormValues] = useState({
     name: '',
-    color: '#087990' ,
-    idClient: activeClient.idClient
+    color: '#087990',
+    idClient: null
     //Color por defecto
   });
 
@@ -51,50 +55,61 @@ export const CreateLabelModal = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);    //Subir formulario
   const [selectedColor, setSelectedColor] = useState('#087990');  //Guardar color(aleatorio, personalizado y color)
   const [showPalette, setShowPalette] = useState(false);  //Abrir paleta de colores
-    const [errors, setErrors] = useState({}); // para guardar errores por campo
+  const [errors, setErrors] = useState({}); // para guardar errores por campo
 
 
 
-//Cargar formulario base
   useEffect(() => {
-      setFormValues({ 
-        name: '', 
+    if (isEdit) {
+      setFormValues({
+        name: activeLabel?.name ?? '',
+        color: activeLabel?.color ?? '#087990',
+        idClient: null, // en edición NO se usa
+      });
+      setSelectedColor(activeLabel?.color ?? '#087990');
+    } else {
+      setFormValues({
+        name: '',
         color: '#087990',
-        idClient: activeClient.idClient
-      })
-  }, [activeLabel, activeClient]);
+        idClient: clientId, // puede ser null si vienes de LabelsPage
+      });
+      setSelectedColor('#087990');
+    }
+    setErrors({});
+    setFormSubmitted(false);
+  }, [isEdit, activeLabel, clientId]);
 
 
   const titleClass = useMemo(() => {
-          if (!formSubmitted) return '';
-          return formValues.name.trim().length > 0 ? 'is-valid' : 'is-invalid';
+    if (!formSubmitted) return '';
+    return formValues.name.trim().length > 0 ? 'is-valid' : 'is-invalid';
   }, [formValues.name, formSubmitted]);
 
-//Valor de inpus
- const onInputChange = ({ target }) => {
-        const { name, value } = target;
-         // sincroniza también el color seleccionado
-        if (name === 'color') {
-          setSelectedColor(value);
-        }
-           setFormValues((prev) => ({
-          ...prev,
-          [name]: value,
-        }));
+  //Valor de inpus
+  const onInputChange = ({ target }) => {
+    const { name, value } = target;
+    // sincroniza también el color seleccionado
+    if (name === 'color') {
+      setSelectedColor(value);
+    }
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
 
-        // Limpiar el error del campo al escribir
-        if (errors[name]) {
-        setErrors((prev) => ({ ...prev, [name]: null }));
+    // Limpiar el error del campo al escribir
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: null }));
     }
   };
 
-//Seleccionar color
+  //Seleccionar color
   const handleColorClick = (color) => {
     setSelectedColor(color);
     setFormValues(prev => ({
-    ...prev,
-    color: color
-  }));
+      ...prev,
+      color: color
+    }));
     setShowPalette(false);
   };
 
@@ -102,43 +117,46 @@ export const CreateLabelModal = () => {
   const handleRandom = () => {
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
     setSelectedColor(randomColor);
-     setFormValues(prev => ({
-    ...prev,
-    color: randomColor
-  }));
+    setFormValues(prev => ({
+      ...prev,
+      color: randomColor
+    }));
     setShowPalette(false);
   };
 
   const onSubmit = async (e) => {
-  e.preventDefault();
-  setErrors({});
-  setFormSubmitted(true);
+    e.preventDefault();
+    setErrors({});
+    setFormSubmitted(true);
+    if (!formValues.name.trim()) return;
 
-  if (formValues.name.trim().length === 0) return;
+    let err = null;
 
-  const resultErrors = await createLabelAndAssign(formValues);
+    if (isEdit) {
+      // EDITAR (no usa cliente)
+      err = await startUpdateLabel({
+        idLabel: activeLabel.idLabel,
+        name: formValues.name,
+        color: formValues.color,
+      });
+    } else if (clientId) {
+      // CREAR + ASIGNAR (desde ficha de cliente)
+      err = await createLabelAndAssign({
+        name: formValues.name,
+        color: formValues.color,
+        idClient: clientId,
+      });
+    } else {
+      // CREAR GLOBAL (desde LabelsPage)
+      err = await createLabelGlobal({
+        name: formValues.name,
+        color: formValues.color,
+      });
+    }
 
-  if (resultErrors) {
-    setErrors(resultErrors); // muestra errores en pantalla
-    setFormSubmitted(false);
-    return;
-  }
-
-  // Solo si no hay errores:
-  setFormValues({
-    name: '',
-    color: '#087990',
-    idClient: activeClient.idClient
-  });
-
-   window.location.reload();
-  closeCreateLabelModal();
-  setFormSubmitted(false);
-  
-
-
-};
-
+    if (err) { setErrors(err); setFormSubmitted(false); return; }
+    closeCreateLabelModal(); // no recargues toda la página
+  };
 
   return (
     <Modal
@@ -148,7 +166,7 @@ export const CreateLabelModal = () => {
       shouldCloseOnOverlayClick={true} // ✅ esto permite cerrar al pulsar fuera
       contentLabel="Nueva Etiqueta"
     >
-      <h2 className='modal-title'>Nueva Etiqueta</h2>
+      <h2 className='modal-title'>{isEdit ? 'Editar etiqueta' : 'Nueva Etiqueta'}</h2>
       <hr />
       <form onSubmit={onSubmit}>
         <div className="form-group mb-2">
@@ -164,98 +182,99 @@ export const CreateLabelModal = () => {
           {errors.name && <span className="text-danger">{errors.name.msg}</span>}
 
         </div>
-       
+
         <div className="form-group">
           <div>
             <label htmlFor='color' className="form-label">Color</label>
-          <div  style={{ position: 'relative' }} className="d-flex mb-2">
-            <div
-              onClick={() => setShowPalette(!showPalette)}
-              style={{
-                backgroundColor: selectedColor,
-                width: '40px',
-                height: '40px',
-                borderRadius: '5px',
-                border: '1px solid #ccc',
-                cursor: 'pointer'
-              }}
-            ></div>
-             <input
-              type="text"
-              className="form-control mb-3 ms-2"
-              style={{width: '150px'}}
-              value={formValues.color}
-              onChange={onInputChange}
-            />
-
-            {showPalette && (
+            <div style={{ position: 'relative' }} className="d-flex mb-2">
               <div
+                onClick={() => setShowPalette(!showPalette)}
                 style={{
-                  position: 'absolute',
-                  background: '#fff',
+                  backgroundColor: selectedColor,
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '5px',
                   border: '1px solid #ccc',
-                  padding: '10px',
-                  zIndex: 100,
-                  width: 'fit-content',
-                  top: '50px'
+                  cursor: 'pointer'
                 }}
-              >
+              ></div>
+              <input
+                type="text"
+                name='color'
+                className="form-control mb-3 ms-2"
+                style={{ width: '150px' }}
+                value={formValues.color}
+                onChange={onInputChange}
+              />
+
+              {showPalette && (
                 <div
                   style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(11, 30px)',
-                    gap: '1px',
-                    marginBottom: '10px'
+                    position: 'absolute',
+                    background: '#fff',
+                    border: '1px solid #ccc',
+                    padding: '10px',
+                    zIndex: 100,
+                    width: 'fit-content',
+                    top: '50px'
                   }}
                 >
-                  {colors.map((color) => (
-                    <div
-                      key={color}
-                      onClick={() => handleColorClick(color)}
-                      style={{
-                        backgroundColor: color,
-                        width: '20px',
-                        height: '20px',
-                        cursor: 'pointer',
-                        margin:'0',
-                        border: 'none'
-                        
-                      }}
-                    />
-                  ))}
-                </div>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(11, 30px)',
+                      gap: '1px',
+                      marginBottom: '10px'
+                    }}
+                  >
+                    {colors.map((color) => (
+                      <div
+                        key={color}
+                        onClick={() => handleColorClick(color)}
+                        style={{
+                          backgroundColor: color,
+                          width: '20px',
+                          height: '20px',
+                          cursor: 'pointer',
+                          margin: '0',
+                          border: 'none'
 
-                <div className="d-flex justify-content-between px-2">
-                  <button className="btn btn-link p-0" onClick={handleRandom}>Aleatorio</button>
-                  <div className='d-flex align-items-center'>
-                    <input
-                      type="color"
-                      id="color"
-                      name="color"
-                      className="form-control form-control-color"
-                      value={formValues.color}
-                      onChange={onInputChange}
-                    />
-                    <label className="cursor" htmlFor="color">Personalizado</label>
+                        }}
+                      />
+                    ))}
                   </div>
-                  
+
+                  <div className="d-flex justify-content-between px-2">
+                    <button className="btn btn-link p-0" onClick={handleRandom}>Aleatorio</button>
+                    <div className='d-flex align-items-center'>
+                      <input
+                        type="color"
+                        id="color"
+                        name="color"
+                        className="form-control form-control-color"
+                        value={formValues.color}
+                        onChange={onInputChange}
+                      />
+                      <label className="cursor" htmlFor="color">Personalizado</label>
+                    </div>
+
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
 
           </div>
           <div className='mb-2'>
-            
+
           </div>
-          
+
         </div>
         <button type="submit" className="btn btn-primary">
-         Crear
+          {isEdit ? 'Editar' : 'Crear'}
         </button>
-        
+
       </form>
     </Modal>
-  
+
   )
 }

@@ -32,7 +32,7 @@ export const FilterClientByLabelModal = () => {
 
   //Abrir modal addNewLabel
   const { isModalFilterClientsByLabelOpen, closeFilterClientByLabelModal } = useUiStore();             //Abrir/ cerrar modal
-  const { labels, starLoadingLabels, startActiveFilterLabels, activeFilterLabels } = useLabelsStore();      //Lectura todos los Labels
+  const { labels, starLoadingLabels, startActiveFilterLabels } = useLabelsStore();      //Lectura todos los Labels
   const { activeClient, filterClientsByLabels } = useClientsStore();                   //Cliente activo en clientPage
 
   //Create modal

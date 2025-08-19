@@ -40,16 +40,6 @@ export const labelSlice = createSlice({
       state.labels.push(normalized);
     },
 
-    // Modificar cliente por idClient
-    onUpdateLabel: (state, { payload }) => {
-      state.labels = state.labels.map(label => {      //Nuevo array del evento
-        if (label.idLabel === payload.idLabel) {
-          return payload;
-        }
-        return label;
-      })
-    },
-
     onLoadLabels: (state, { payload }) => {
       state.isLoadingLabels = false;
       state.labels = payload;
@@ -86,21 +76,38 @@ export const labelSlice = createSlice({
       state.activeFilterLabels = [];
     },
 
+    onUpdateLabel: (state, { payload }) => {
+      const id = payload.idLabel;
+      state.labels = state.labels.map(label => {
+        if (label.idLabel === id) {
+          // fusiona para no perder campos como memberCount u otros
+          return { ...label, ...payload };
+        }
+        return label;
+      });
+      // si estás editando la etiqueta activa, actualízala también
+      if (state.activeLabel?.idLabel === id) {
+        state.activeLabel = { ...state.activeLabel, ...payload };
+      }
+    },
 
-    onDeleteLabel: (state) => {
-      state.labels = state.labels.filter(label => label.idLabel !== state.activeLabel.idLabel);
-      state.activeLabel = null;
+    onDeleteLabel: (state, { payload }) => {
+      const id = payload?.idLabel ?? payload; // admite number o { idLabel }
+      state.labels = state.labels.filter(l => l.idLabel !== id);
+      if (state.activeLabel?.idLabel === id) {
+        state.activeLabel = null;
+      }
     },
   }
 })
 export const {
   onSetActiveLabel,
   addLabel,
-  onUpdateLabel,
   onSetFilterLabel,
   onSetLabels,
   onLoadLabels,
   onLoadingLabels,
+  onUpdateLabel,
   onDeleteLabel,
   setActiveFilterLabels,
   clearActiveFilterLabels

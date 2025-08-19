@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { OverviewClient, ReservationsClient, SalesClient, ProfileClient} from '../clients/components/clientPage'
 import { ClientPage, ClientsPage, StorePage,RatesPage } from '../clients/pages'
 import { AddNewSales } from '../clients/components/clientPage/AddNewSales'
+import { LabelsPage } from '../clients/pages/LabelsPage'
 
 
 export const AppRoutes = () => {
@@ -31,6 +32,9 @@ export const AppRoutes = () => {
         
         {/* ----------------------Servicios---------------------- */}
         <Route path='/rates' element={<RatesPage/>}/>
+
+         {/* ----------------------Etiquetas---------------------- */}
+        <Route path='/labels' element={<LabelsPage/>}/>
         
     </Routes>
   )
