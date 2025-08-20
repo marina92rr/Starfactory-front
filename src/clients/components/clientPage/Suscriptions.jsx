@@ -1,0 +1,50 @@
+import { useEffect } from "react";
+import { useClientsStore } from "../../../hooks/useClientsStore";
+import { useSuscriptionClientStore } from "../../../hooks/useSuscriptionClientStore";
+import { getNextPurchaseDate } from "../../../helpers/getNextPurchaseDate";
+import { capitalizeFirstWord } from "../../../helpers/capitalizeFirstWord";
+import { CancellationProduct } from "./productSusciption/CancellationProduct";
+
+
+export const Suscriptions = () => {
+
+     const { activeClient } = useClientsStore();
+      const { suscriptionClients, startLoadingSuscriptionsByClient } = useSuscriptionClientStore();
+    
+    
+      useEffect(() => {
+        if (activeClient?.idClient) {
+          startLoadingSuscriptionsByClient(activeClient.idClient);
+        }
+      }, [activeClient]);
+   
+  return (
+     <div>
+      <h4 className="border rounded-top br-3 d-flex align-items-center p-3 bg-light m-0">Suscripciones</h4>
+            <table className='table border'>
+              <thead>
+                <tr>
+                  <th className='py-3' scope='col'>Concepto</th>
+                  <th className='py-3' scope='col'>Fecha (Próxima compra)</th>
+                  <th className='py-3' scope='col'>Suscripción</th>
+                </tr>
+              </thead>
+              <tbody >
+              {(suscriptionClients?.length ?? 0) === 0 ? (
+                  <tr><td colSpan={5} className='text-muted'>No hay suscripciones</td></tr>
+                ) : (
+                  suscriptionClients.map((suscriptions, i) => {
+                    return (
+                      <tr key={i}>
+                        <td className='py-3'>{capitalizeFirstWord(suscriptions.name)}</td>
+                        <td className='py-3'>Se intentará la próxima compra el {getNextPurchaseDate()}</td>
+                        <td className='py-3'><CancellationProduct suscription={suscriptions}/></td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+    </div>
+  )
+}

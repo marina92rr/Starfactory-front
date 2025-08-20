@@ -104,7 +104,7 @@ export const AddNewSales = () => {
             ))}
 
             {(searchInput.trim() ? filteredListQuotas : quotas).map((quota, i) => {
-              console.log('🧾 Cuota recibida:', quota); // 👈 AÑADE AQUÍ
+            
 
               return (
                 <div

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { clientsApi } from "../api";
-import { onLoadSuscriptionClient, onStartLoadingSuscriptions } from '../store/sales/suscriptionClientSlice';
+import { onDeleteSuscriptionClient, onLoadSuscriptionClient, onStartLoadingSuscriptions } from '../store/sales/suscriptionClientSlice';
 
 export const useSuscriptionClientStore = () => {
 
@@ -22,6 +22,21 @@ export const useSuscriptionClientStore = () => {
     }
   };
 
+ const starDeleteSuscription = async (idSuscriptionClient) => {
+     try {
+      await clientsApi.delete(`/suscriptions/${idSuscriptionClient}`);
+      if (activeClient?.idClient) {
+        await startLoadingSuscriptionsByClient(activeClient.idClient);
+      }
+    } catch (error) {
+      console.error('Error al eliminar suscripción', error);
+      if (activeClient?.idClient) {
+        await startLoadingSuscriptionsByClient(activeClient.idClient);
+      }
+      throw error;
+    }
+  };
+
   
   return {
     //* Propiedades
@@ -31,6 +46,7 @@ export const useSuscriptionClientStore = () => {
 
     //* Métodos
     startLoadingSuscriptionsByClient,
+    starDeleteSuscription
   };
 
  
