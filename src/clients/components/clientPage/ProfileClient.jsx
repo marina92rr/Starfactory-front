@@ -67,7 +67,7 @@ export const ProfileClient = () => {
 
           <div>
             <strong>Fecha de alta:</strong>
-            <p>{activeClient.dateCreated}</p>
+            <p>{activeClient.dateRegistration}</p>
           </div>
         </div>
 
