@@ -19,7 +19,6 @@ export const LabelsPage = () => {
       <div className='pt-5 align-items-center'>
         <h1 className='mb-4'>Etiquetas</h1>
         <LabelAddNew />
-        <CreateLabelModal/>
       </div>
 
       <div className="d-flex flex-column mt-3">
@@ -56,8 +55,9 @@ export const LabelsPage = () => {
                 </span>
 
                 <div className='ms-auto d-flex gap-1'>
+                   <LabelEdit label={label} />
                   <LabelDelete label={label} />
-                  <LabelEdit label={label} />
+                 
                 </div>
               </div>
             </div>
