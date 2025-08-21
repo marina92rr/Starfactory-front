@@ -3,8 +3,8 @@ import { useClientsStore } from '../../../hooks/useClientsStore';
 import { useParams } from 'react-router-dom';
 import { ClientModal } from '../ClientModal';
 import { ClientEddit } from '../ClientEddit';
-import { capitalizeFirstWord } from '../../../helpers/capitalizeFirstWord';
 import userPhoto from '../../../assets/user.png';
+import  {formatDate}  from '../../../helpers/formatDate';
 
 
 export const ProfileClient = () => {
@@ -67,7 +67,7 @@ export const ProfileClient = () => {
 
           <div>
             <strong>Fecha de alta:</strong>
-            <p>{activeClient.dateRegistration}</p>
+            <p>{formatDate(activeClient.dateRegistration)}</p>
           </div>
         </div>
 

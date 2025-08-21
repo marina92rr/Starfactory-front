@@ -21,9 +21,7 @@ export const store = configureStore({
         rate: rateSlice.reducer,
         quota: quotaSlice.reducer,
         productClient: productClientSlice.reducer,
-        suscriptionClient: suscriptionClientSlice.reducer
-    
-       
+        suscriptionClient: suscriptionClientSlice.reducer  
     },
 
     middleware: (getDefaultMiddleware) =>

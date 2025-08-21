@@ -1,0 +1,19 @@
+
+html, body, #root { height: 100%; margin:0; }
+
+:root { --navbar-h: 56px; } /* ajusta a tu Navbar */
+
+.app-shell{
+  height: calc(100vh - var(--navbar-h));
+  overflow: hidden;         /* sin scroll global */
+}
+
+.app-content{
+  flex: 1 1 auto;
+  min-width: 0;             /* evita desbordos por tablas anchas */
+  height: 100%;
+  overflow-y: auto;         /* scroll solo aquí */
+}
+
+/* opcional si quieres scroll en el menú largo */
+.sidebar { overflow-y: auto; max-height: 100%; }

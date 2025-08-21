@@ -21,6 +21,8 @@ export const uiSlice = createSlice({
     isModalSaleOpen: false,
     //Cancellation
     isModalCancellationOpen: false,
+    //SuscriptionClient / autocompras
+    isModalSuscriptionClientOpen: false,
 
   },
   reducers: {
@@ -75,10 +77,16 @@ export const uiSlice = createSlice({
     //Cerrar modal Rate
     onCloseSaleModal: (state) => { state.isModalSaleOpen = false; },
 
-    //Abrir modal Cancellation
+    //Abrir modal Baja
     onOpenCancellationModal: (state) => { state.isModalCancellationOpen = true; },
+    //Cerrar modal Baja
+    onCloseCancellationModal: (state) => { state.isModalCancellationOpen = false; },
+
+    //------------- SUSCRIPTION CLIENT ----------------
+     //Abrir modal Cancellation
+    onOpenSuscriptionClientModal: (state) => { state.isModalSuscriptionClientOpen = true; },
     //Cerrar modal Cancellation
-    onCloseCancellationModal: (state) => { state.isModalCancellationOpen = false; }
+    onCloseSuscriptionClientModal: (state) => { state.isModalSuscriptionClientOpen = false; },
 
 
   },
@@ -117,8 +125,11 @@ export const {
   //*Venta
   onOpenSaleModal,
   onCloseSaleModal,
-  //*Cancellation
+  //*Baja
   onOpenCancellationModal,
-  onCloseCancellationModal
+  onCloseCancellationModal,
+  //*SuscriptionClient
+  onOpenSuscriptionClientModal,
+  onCloseSuscriptionClientModal,
 
 } = uiSlice.actions; //accion

@@ -3,27 +3,39 @@ import { createSlice } from '@reduxjs/toolkit';
 //---------Counter 10 + increment(+1) = 11
 export const suscriptionClientSlice = createSlice({
   name: 'suscriptionClient',
-  initialState:{
-   activeSuscriptionClient:null,
+  initialState: {
+    activeSuscriptionClient: null,
     suscriptionClients: [], // registros guardados
     isLoadingSuscription: false,
   },
   reducers: {
-   //Seleccion categoria
+    //Seleccion categoria
     onSetActiveSuscriptionClient: (state, { payload }) => {
       state.activeSuscriptionClient = payload;
     },
 
-     onStartLoadingSuscriptions: (state) => {
+    onStartLoadingSuscriptions: (state) => {
       state.isLoadingSuscription = true;
     },
 
+     // Modificar cliente por dni
+    onUpdateSuscriptionClient:(state, {payload})=>{
+      state.suscriptionClients = state.suscriptionClients.map( suscription =>{      //Nuevo array del evento
+        if( suscription.idSuscriptionClient === payload.idSuscriptionClient){
+          return payload;
+        }
+        return suscription;
+      })   
+    },
+
     onDeleteSuscriptionClient: (state) => {
-      if(state.activeSuscriptionClient){
-        state.suscriptionClients = state.suscriptionClients.filter(suscriptionClient => suscriptionClient.idSuscriptionClient !== state.activeSuscriptionClient.idSuscriptionClient);
+      if (state.activeSuscriptionClient) {
+        state.suscriptionClients = state.suscriptionClients.filter(
+          (suscriptionClient) =>
+            suscriptionClient.idSuscriptionClient !== state.activeSuscriptionClient.idSuscriptionClient
+        );
         state.activeSuscriptionClient = null;
       }
-      
     },
 
     onLoadSuscriptionClient: (state, { payload }) => {
@@ -34,4 +46,10 @@ export const suscriptionClientSlice = createSlice({
   },
 })
 
-export const {onSetActiveSuscriptionClient, onDeleteSuscriptionClient, onLoadSuscriptionClient,onStartLoadingSuscriptions } = suscriptionClientSlice.actions; //accion
+export const { 
+  onSetActiveSuscriptionClient, 
+  onUpdateSuscriptionClient,
+  onDeleteSuscriptionClient, 
+  onLoadSuscriptionClient, 
+  onStartLoadingSuscriptions 
+} = suscriptionClientSlice.actions; //accion

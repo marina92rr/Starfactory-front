@@ -4,7 +4,6 @@ import { NavLink, useParams } from 'react-router-dom';
 
   const links = [
     { name: 'Vista general', path: 'overview' },       // ruta índice: /clients/:id
-    {name: 'Suscripciones', path: 'subscriptions'}, // /clients/:ID/subscriptions
     { name: 'Reservas', path: 'reservations' },
     { name: 'Ventas', path: 'sales' },
     { name: 'Perfil', path: 'profile' } // /clients/:ID/profile

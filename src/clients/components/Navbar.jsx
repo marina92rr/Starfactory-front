@@ -1,7 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
 import { FindClient } from "./FindClient"
-import { useClientsStore } from "../../hooks/useClientsStore";
-import { useCallback, useState } from "react";
+
 
 
 export const Navbar = () => {

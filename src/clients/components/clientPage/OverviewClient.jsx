@@ -4,6 +4,9 @@ import { useClientsStore } from '../../../hooks/useClientsStore'
 import { useSuscriptionClientStore } from '../../../hooks/useSuscriptionClientStore';
 import { getNextPurchaseDate } from '../../../helpers/getNextPurchaseDate';
 import { capitalizeFirstWord } from '../../../helpers/capitalizeFirstWord';
+import { DeleteSuscriptionClient } from './productSusciption/DeleteSuscriptionClient';
+import { EditSuscriptionClient } from './productSusciption/EditSuscriptionClient';
+import { SuscriptionClientModal } from './productSusciption/SuscriptionClientModal';
 
 export const OverviewClient = () => {
 
@@ -28,6 +31,7 @@ export const OverviewClient = () => {
             <th className='py-3' scope='col'>Total</th>
             <th className='py-3' scope='col'>Método Pago</th>
             <th className='py-3' scope='col'>Caducidad</th>
+            <th className='py-3' scope='col'>Editar</th>
           </tr>
         </thead>
         <tbody >
@@ -42,12 +46,19 @@ export const OverviewClient = () => {
                   <td className='py-3'>{suscriptions.price} €</td>
                   <td className='py-3'>{suscriptions.paymentMethod}</td>
                   <td className='py-3'>Siempre</td>
+                  <td className='d-flex py-3 align-items-center gap-2'>
+                   <EditSuscriptionClient suscription={suscriptions}/>
+                   <SuscriptionClientModal suscription={suscriptions}/>
+                   <DeleteSuscriptionClient suscription={suscriptions}/>
+                  </td>
                 </tr>
               );
             })
           )}
         </tbody>
       </table>
+      
+
 
     </>
   )

@@ -3,7 +3,6 @@ import { OverviewClient, ReservationsClient, SalesClient, ProfileClient} from '.
 import { ClientPage, ClientsPage, StorePage,RatesPage } from '../clients/pages'
 import { AddNewSales } from '../clients/components/clientPage/AddNewSales'
 import { LabelsPage } from '../clients/pages/LabelsPage'
-import { Suscriptions } from '../clients/components/clientPage/Suscriptions'
 
 
 export const AppRoutes = () => {
@@ -18,8 +17,6 @@ export const AppRoutes = () => {
            <Route index element={<Navigate to="overview" replace />} />
           {/* Vista general */}
           <Route path="overview" element={<OverviewClient />} />
-           {/* suscripciones */}
-          <Route path="subscriptions" element={<Suscriptions/>} />
           {/* Reservas */}
           <Route path="reservations" element={<ReservationsClient/>} />
           {/* Ventas */}

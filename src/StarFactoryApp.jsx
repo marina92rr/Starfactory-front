@@ -11,12 +11,12 @@ import { Navbar } from './clients/components/Navbar'
 export const StarFactoryApp = () => {
   return (
 
-    <Provider store={store}>
+   <Provider store={store}>
       <BrowserRouter>
         <Navbar />
-        <div className="d-flex">
+        <div className="app-shell d-flex">
           <Sidebar />
-          <div className="flex-grow-1 w-100">
+          <div className="app-content">
             <AppRoutes />
           </div>
         </div>

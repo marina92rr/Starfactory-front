@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { onCloseCancellationModal, onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseFilterClientsByLabelModal, onCloseLabelModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onOpenCancellationModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenFilterClientsByLabelModal, onOpenLabelModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal } from "../store/ui/uiSlice";
+import { onCloseCancellationModal, onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseFilterClientsByLabelModal, onCloseLabelModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onCloseSuscriptionClientModal, onOpenCancellationModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenFilterClientsByLabelModal, onOpenLabelModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal, onOpenSuscriptionClientModal } from "../store/ui/uiSlice";
 
 
 
@@ -17,7 +17,8 @@ export const useUiStore = () => {
       isModalRateOpen,
       isModalQuotaOpen,
       isModalSaleOpen,
-      isModalCancellationOpen
+      isModalCancellationOpen,
+      isModalSuscriptionClientOpen,
      } = useSelector( state => state.ui);
 
 
@@ -137,7 +138,7 @@ export const useUiStore = () => {
         const closeSaleModal = () =>{
             dispatch(onCloseSaleModal());
         }
-    //*--------------------------------CancellationModal--------------------------------
+    //*--------------------------------Baja--------------------------------
 
     //Abrir CancellationModal
     const openCancellationModal = () =>{
@@ -147,6 +148,18 @@ export const useUiStore = () => {
     //Cerrar CancellationModal
     const closeCancellationModal = () =>{
         dispatch(onCloseCancellationModal());
+    }
+
+    //*--------------------------------Suscripcion/autocompras--------------------------------
+
+    //Abrir CancellationModal
+    const openSuscriptionClientModal = () =>{
+        dispatch(onOpenSuscriptionClientModal());
+    }
+
+    //Cerrar CancellationModal
+    const closeSuscriptionClientModal = () =>{
+        dispatch(onCloseSuscriptionClientModal());
     }
 
   return {
@@ -162,6 +175,7 @@ export const useUiStore = () => {
     isModalSaleOpen,
     isModalFilterClientsByLabelOpen,
     isModalCancellationOpen,
+    isModalSuscriptionClientOpen,
 
     //*Metodos
     openClientModal,
@@ -193,6 +207,9 @@ export const useUiStore = () => {
 
     openCancellationModal,
     closeCancellationModal,
+
+    openSuscriptionClientModal,
+    closeSuscriptionClientModal
 
   }
 }

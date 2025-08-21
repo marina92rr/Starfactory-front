@@ -12,14 +12,14 @@ export const generateAndSendTicket = async (venta, email) => {
     pageSize: { width: 226.77, height: 'auto' },
     pageMargins: [10, 10, 10, 10],
     content: [
-      { text: 'STAR FACTORY VENTAS', alignment: 'center', style: 'header' },
+      { text: 'STAR FACTORY SEVILLA', alignment: 'center', style: 'header' },
       { text: `Fecha: ${new Date(venta.fecha).toLocaleString()}`, style: 'small' },
       { text: `Cliente: ${venta.cliente}`, style: 'small' },
       { text: '-----------------------------', alignment: 'center' },
       ...venta.items.map(item => ({
         columns: [
-          { text: `${item.nombre} x${item.cantidad}`, width: '70%' },
-          { text: `€${(item.precio * item.cantidad).toFixed(2)}`, width: '30%', alignment: 'right' }
+          { text: `${item.name}`, width: '70%' },
+          { text: `€${(item.price - item.discount).toFixed(2)}`, width: '30%', alignment: 'right' }
         ]
       })),
       { text: '-----------------------------', alignment: 'center' },
@@ -55,7 +55,7 @@ export const generateAndSendTicket = async (venta, email) => {
 
   // ✅ Imprimir directamente
   pdfMake.createPdf(docDefinition).print();
-
+/*
   // ✅ Enviar por email si se quiere
   pdfMake.createPdf(docDefinition).getBase64(async (base64) => {
     try {
@@ -68,5 +68,5 @@ export const generateAndSendTicket = async (venta, email) => {
     } catch (error) {
       console.error('Error enviando el ticket por email:', error);
     }
-  });
+  });*/
 };

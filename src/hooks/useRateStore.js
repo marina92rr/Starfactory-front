@@ -45,9 +45,7 @@ export const useRateStore = () => {
 
     //Lectura de categorias
     const starLoadingRates = async () => {
-
         try {
-            //const {data} = await axios.get('http://localhost:4001/api/store');
             const { data } = await clientsApi.get('rates');
             const rate = data.rates;
 

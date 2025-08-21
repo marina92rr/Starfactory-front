@@ -47,11 +47,7 @@ export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
     const venta = {
       fecha: new Date(),
       cliente: `${activeClient.name} ${activeClient.lastName}`,
-      items: selectedProducts.map(p => ({
-        nombre: p.name,
-        cantidad: 1, // si tienes cantidad puedes ajustarlo aquí
-        precio: p.price - (parseFloat(p.discount) || 0)
-      })),
+      items: selectedProducts,
       total: parseFloat(totalAmount)
     };
 
@@ -64,7 +60,6 @@ export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
     };
 
     try {
-      console.log('📦 Payload final:', dataToSend);
 
       // Guardar en la base de datos
       await startSavingProductClient(dataToSend, false);
