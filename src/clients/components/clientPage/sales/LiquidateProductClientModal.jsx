@@ -22,7 +22,7 @@ const customStylesModal = {
 
 export const LiquidateProductClientModal = ({ unpaid }) => {
   const { isModalProductClientUnpaidOpen, closeProductClientUnpaidModal } = useUiStore()
-  const { activeProductClient, startUpdateProductClient, startLoadingProductsClientUnpaid } = useProductClientStore();
+  const { activeProductClient, startUpdateProductClient, startLoadingProductsClientUnpaid, startLoadingProductsClientPaid } = useProductClientStore();
 
 
 
@@ -64,6 +64,8 @@ export const LiquidateProductClientModal = ({ unpaid }) => {
     await startUpdateProductClient(payload, true);
     closeProductClientUnpaidModal();
     await startLoadingProductsClientUnpaid(activeProductClient?.idClient);
+    await startLoadingProductsClientPaid(activeProductClient?.idClient);
+
     setFormValues({ paymentMethod: '', paid: '' });
     setSubmitted(false);
   };
