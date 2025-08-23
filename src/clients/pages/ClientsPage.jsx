@@ -16,12 +16,13 @@ import { isColorDark } from '../../helpers/isColorDark';
 export const ClientsPage = () => {
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { clientsLimit, filteredClientsByLabel, clearFilter, totalPages, starLoadingLimitPageClients, startLoadingLabelsOfClient } = useClientsStore();
   const { activeFilterLabels, labels, setClearActiveFilterLabels } = useLabelsStore();
 
   const [currentPage, setCurrentPage] = useState(1);  //Paginación
 
+  // Decide qué lista mostrar
+  const clientsToShow = filteredClientsByLabel.length > 0 ? filteredClientsByLabel : clientsLimit;
 
   //LCarga de clientes
   useEffect(() => {
@@ -29,12 +30,13 @@ export const ClientsPage = () => {
    
   }, [currentPage]);
 
-
-
-
-  // Decide qué lista mostrar
-  const clientsToShow = filteredClientsByLabel.length > 0 ? filteredClientsByLabel : clientsLimit;
-
+  // Carga de etiquetas para los clientes visibles
+  useEffect(() => {
+    // Para cada cliente visible, nos aseguramos de que sus etiquetas estén cargadas.
+    clientsToShow.forEach(client => {
+      startLoadingLabelsOfClient(client.idClient);
+    });
+  }, [clientsToShow]); // Se ejecuta cuando la lista de clientes a mostrar cambia.
 
   // Cuando seleccionas un cliente, navegamos a /clients/:ID
   const handleSelect = idClient => { navigate(`${idClient}`); };
@@ -101,12 +103,12 @@ export const ClientsPage = () => {
         {clientsToShow.length === 0 ? (
           <div className="text-secondary mt-3">No hay clientes que coincidan con el filtro.</div>
         ) : (
-          clientsToShow.map((client, i) => {
+          clientsToShow.map((client) => {
 
             const fullName = `${client.name} ${client.lastName}`;
 
             return (
-              <div key={i} className="border p-4 rounded ">
+              <div key={client.idClient} className="border p-4 rounded ">
                 <div className="d-flex align-items-center gap-3">
 
                   {/* Imagen */}
