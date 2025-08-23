@@ -10,6 +10,7 @@ import { SubscribeClient } from '../components/clientPage/SubscribeClient';
 import { getClientStatus } from '../../helpers/getClientStatus';
 import { isColorDark } from '../../helpers/isColorDark';
 import userPhoto from '../../assets/user.png';
+import { DeleteClient } from '../components/clientPage/DeleteClient';
 
 
 
@@ -163,6 +164,11 @@ export const ClientPage = () => {
               </button>
             )}
             <SubscribeClient idClient={activeClient.idClient} />
+               {!isImmediateCancellation ? (
+             <></>
+            ) : (
+              <DeleteClient/>
+            )}
           </div>
         </div>
 

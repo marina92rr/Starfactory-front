@@ -14,7 +14,8 @@ import {
   onToggleClientStatusCancel,
   onUpdateClient,
   onResetClientsPage,
-  clearActiveClient
+  clearActiveClient,
+  onDeleteClient
 } from "../store/clients/clientSlice";
 
 
@@ -57,8 +58,6 @@ export const useClientsStore = () => {
         const { data } = await clientsApi.post('/clients', normalizedClient);
         dispatch(onAddNewClient(data));
       } 
-
-
     } catch (error) {
       console.error('Error al guardar cliente', error);
     }
@@ -152,6 +151,11 @@ export const useClientsStore = () => {
     }
   };
 
+   const  startDeleteClient = async()=>{
+              const {data} = await clientsApi.delete(`/clients/${activeClient.idClient}`);
+              dispatch(onDeleteClient(data));
+    }
+
   // Filtrar clientes por etiquetas
   const filterClientsByLabels = async (labelIds) => {
     try {
@@ -238,6 +242,7 @@ export const useClientsStore = () => {
     starLoadingLimitPageClients,
     starLoadingClientByID,
     startSavingClient,
+    startDeleteClient,
     startFilteringClients,
     toggleClientStatusCancel,
     programClientCancellation,

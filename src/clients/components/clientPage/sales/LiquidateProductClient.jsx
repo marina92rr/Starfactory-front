@@ -5,13 +5,13 @@ import{ useProductClientStore } from '../../../../hooks/useProductClientStore';
 
 export const LiquidateProductClient= ({unpaid}) => {
 
-  //const {openSuscriptionClientModal} = useUiStore();
+  const {openProductClientUnpaidModal} = useUiStore();
   const {setActiveProductClient} = useProductClientStore(); 
 
   const handleClickNew = () => {
 
     setActiveProductClient(unpaid); // Reset active quota
-   // openSuscriptionClientModal(); 
+    openProductClientUnpaidModal(); 
 
   }
 

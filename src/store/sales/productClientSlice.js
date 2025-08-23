@@ -25,6 +25,11 @@ export const productClientSlice = createSlice({
     },
 
 
+    onLoadAllProductsClient: (state, { payload }) => {
+      state.isLoadingProduct = false;
+      state.productClients = payload; // ahora sí es un array directamente
+    },
+
     onLoadProductsClient: (state, { payload }) => {
       state.isLoadingProduct = false;
       state.productClients = payload; // ahora sí es un array directamente
@@ -63,6 +68,7 @@ export const productClientSlice = createSlice({
 export const {
   onSetActiveProductClient,
   onLoadProductsClient,
+  onLoadAllProductsClient,
   onLoadProductsClientPaid,
   onLoadProductsClientUnpaid,
   onAddNewProductClient,

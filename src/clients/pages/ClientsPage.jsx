@@ -17,7 +17,7 @@ export const ClientsPage = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { clientsLimit, filteredClientsByLabel, clearFilter, totalPages, starLoadingLimitPageClients } = useClientsStore();
+  const { clientsLimit, filteredClientsByLabel, clearFilter, totalPages, starLoadingLimitPageClients, startLoadingLabelsOfClient } = useClientsStore();
   const { activeFilterLabels, labels, setClearActiveFilterLabels } = useLabelsStore();
 
   const [currentPage, setCurrentPage] = useState(1);  //Paginación
@@ -26,7 +26,11 @@ export const ClientsPage = () => {
   //LCarga de clientes
   useEffect(() => {
     starLoadingLimitPageClients(currentPage);
+   
   }, [currentPage]);
+
+
+
 
   // Decide qué lista mostrar
   const clientsToShow = filteredClientsByLabel.length > 0 ? filteredClientsByLabel : clientsLimit;
@@ -65,26 +69,26 @@ export const ClientsPage = () => {
           {selectedLabels.map(label => {
             const isDark = isColorDark(label.color);
             const textColor = isDark ? '#fff' : '#222';
-           return (
-            <li className="list-unstyled" key={label.idLabel}>
-              <span
-                className="badge rounded-pill fw-semibold"
-                style={{
-                  backgroundColor: label.color,
-                  color: textColor,
-                  fontSize: '0.75rem',
-                  padding: '5px 10px',
-                  minWidth: 'fit-content',
-                  letterSpacing: '0.01em',
-                  borderRadius: '12px',
-                  lineHeight: '1.2',
-                  marginRight: '4px'
-                }}
-              >
-                {label.name}
-              </span>
-            </li>
-          )
+            return (
+              <li className="list-unstyled" key={label.idLabel}>
+                <span
+                  className="badge rounded-pill fw-semibold"
+                  style={{
+                    backgroundColor: label.color,
+                    color: textColor,
+                    fontSize: '0.75rem',
+                    padding: '5px 10px',
+                    minWidth: 'fit-content',
+                    letterSpacing: '0.01em',
+                    borderRadius: '12px',
+                    lineHeight: '1.2',
+                    marginRight: '4px'
+                  }}
+                >
+                  {label.name}
+                </span>
+              </li>
+            )
           })}
         </div>
 

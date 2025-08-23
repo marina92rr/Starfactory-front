@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { clientsApi } from "../api";
 import { normalizeAllTextFields } from "../helpers/normalizeText";
-import { onAddNewProductClient, onDeleteProductClient, onLoadProductsClient, onLoadProductsClientPaid, onLoadProductsClientUnpaid, onSetActiveProductClient, onUpdateProductClient } from "../store/sales/productClientSlice";
+import { onAddNewProductClient, onDeleteProductClient, onLoadAllProductsClient, onLoadProductsClient, onLoadProductsClientPaid, onLoadProductsClientUnpaid, onSetActiveProductClient, onUpdateProductClient } from "../store/sales/productClientSlice";
 import { useClientsStore } from "./useClientsStore";
 
 
@@ -15,6 +15,18 @@ export const useProductClientStore = () => {
     const setActiveProductClient = (productclientData) => {
         dispatch(onSetActiveProductClient(productclientData))
     }
+    
+    //Lectura de productos por fecha
+    const getAllProductsClientByDate = async (date) => {
+        try {
+            const { data } = await clientsApi.get(`/productclient/date/${date}`);
+            dispatch(onLoadAllProductsClient(data.productsClient)); // ¡Ojo! Asegúrate del nombre exacto del action
+        
+          } catch (error) {
+            console.error('❌ Error cargando productos por fecha:', error);
+          }
+    };
+
 
     //Lectura de productos por cliente
     const startLoadingProductsByClient = async (idClient) => {
@@ -77,7 +89,7 @@ export const useProductClientStore = () => {
         const p = normalizeAllTextFields(unpaid);
         const { data } = await clientsApi.put(`/productclient/unpaid/${p.idProductClient}`, p);
         const updated = data?.suscription ?? data ?? p;
-        dispatch(onUpdateSuscriptionClient(updated));
+        dispatch(onUpdateProductClient(updated));
         return updated;
       } catch (e) {
         console.error('Error actualizando suscripción:', e);
@@ -110,6 +122,7 @@ const startDeleteProductClient = async (unpaid) => {
         //*Metodos
        startSavingProductClient,
        setActiveProductClient,
+       getAllProductsClientByDate,
        startLoadingProductsByClient,
        startLoadingProductsClientPaid,
        startLoadingProductsClientUnpaid,

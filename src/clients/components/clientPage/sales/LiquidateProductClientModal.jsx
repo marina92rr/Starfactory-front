@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useSuscriptionClientStore } from '../../../../hooks/useSuscriptionClientStore'
 import { useUiStore } from '../../../../hooks/useUiStore'
 import { capitalizeFirstWord } from '../../../../helpers/capitalizeFirstWord'
+import { useProductClientStore } from '../../../../hooks/useProductClientStore'
 
 Modal.setAppElement('#root')
 
@@ -14,43 +15,35 @@ const customStylesModal = {
     right: 'auto',
     bottom: 'auto',
     transform: 'translate(-50%, -50%)',
+    width: '400px',
   },
   overlay: { backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999 }
 }
 
 export const LiquidateProductClientModal = ({ unpaid }) => {
- // const { isModalSuscriptionClientOpen, closeSuscriptionClientModal } = useUiStore()
-  const { activeSuscriptionClient, startUpdateSuscription, startLoadingSuscriptionsByClient } = useSuscriptionClientStore()
+  const { isModalProductClientUnpaidOpen, closeProductClientUnpaidModal } = useUiStore()
+  const { activeProductClient, startUpdateProductClient, startLoadingProductsClientUnpaid } = useProductClientStore();
 
 
 
-  const isEdit = !!activeSuscriptionClient?.idSuscriptionClient
+  const isEdit = !!activeProductClient?.idProductClient
 
   const [formValues, setFormValues] = useState({
-    price: '',
-    discount: '',
     paymentMethod: '',
-    startDate: '',
+    paid: '',
   })
   const [submitted, setSubmitted] = useState(false)
 
   useEffect(() => {
     if (isEdit) {
       setFormValues({
-        price: activeSuscriptionClient.price ?? '',
-        discount: activeSuscriptionClient.discount ?? '',
-        paymentMethod: activeSuscriptionClient.paymentMethod ?? '',
-        startDate: activeSuscriptionClient.startDate?.slice(0, 10) ?? '',
+        paymentMethod: activeProductClient.paymentMethod ?? '',
+        paid: activeProductClient.paid ?? '',
       })
     } else {
-      setFormValues({ price: '', discount:'', paymentMethod: '', startDate: '' })
+      setFormValues({ paymentMethod: '', paid: '' }) // Reset form values when not editing
     }
-  }, [isEdit, activeSuscriptionClient])
-
-  const priceClass = useMemo(() => {
-    if (!submitted) return ''
-    return String(formValues.price).trim().length ? 'is-valid' : 'is-invalid'
-  }, [formValues.price, submitted])
+  }, [isEdit, activeProductClient])
 
   const onInputChange = (e) => {
     const { name, value } = e.target
@@ -58,69 +51,38 @@ export const LiquidateProductClientModal = ({ unpaid }) => {
   }
 
   const onSubmit = async (e) => {
-  e.preventDefault();
-  setSubmitted(true);
-  if (!String(formValues.price).trim().length) return;
+    e.preventDefault();
+    setSubmitted(true);
+  
 
-  const payload = {
-    ...formValues,
-    idSuscriptionClient: activeSuscriptionClient?.idSuscriptionClient, // <-- AQUI
+    const payload = {
+      ...formValues,
+      idProductClient: activeProductClient?.idProductClient, // <-- AQUI
+      paid: true,
+    };
+
+    await startUpdateProductClient(payload, true);
+    closeProductClientUnpaidModal();
+    await startLoadingProductsClientUnpaid(activeProductClient?.idClient);
+    setFormValues({ paymentMethod: '', paid: '' });
+    setSubmitted(false);
   };
-
-  await startUpdateSuscription(payload, true);
-  closeSuscriptionClientModal();
-  await startLoadingSuscriptionsByClient(activeSuscriptionClient?.idClient);
-  setFormValues({ price: '', discount: '', paymentMethod: '', startDate: '' });
-  setSubmitted(false);
-};
 
   return (
     <Modal
-      isOpen={isModalSuscriptionClientOpen}
-      onRequestClose={closeSuscriptionClientModal}
+      isOpen={isModalProductClientUnpaidOpen}
+      onRequestClose={closeProductClientUnpaidModal}
       style={customStylesModal}
       contentLabel="Editar Compra automática"
     >
-      <h4>Editar compra automática</h4>
+      <h4 className='ps-4'>Liquidar deuda</h4>
       <hr />
 
       <form className="container mb-3 " onSubmit={onSubmit}>
         <div className='mb-3'>
-          <label className='border p-3 w-100'>{suscription.name}</label>
+          <label className='border p-3 w-100'>{unpaid.name}</label>
         </div>
-        <div className='d-flex'>
-          <div className="mb-3 pe-3">
-          <label className="form-label">Próximo precio</label>
-          <div className='input-group'>
-            <input
-              className={`form-control ${priceClass}`}
-              name="price"
-              type="number"
-              step="0.01"
-              value={formValues.price}
-              onChange={onInputChange}
-            />
-            <span className='input-group-text'>€</span>
-          </div>
-         
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Próximo descuento</label>
-          <div className='input-group'>
-            <input
-            className={`form-control `}
-            name="discount"
-            type="number"
-            step="0.01"
-            value={formValues.discount}
-            onChange={onInputChange}
-          />
-          <span className='input-group-text'>€</span>
-          </div>
-        
-        </div>
-        </div>
-
+        {/*metodo de pago  */}
         <div className="mb-3 py-3">
           <label className="form-label">Método de pago</label>
           <select
@@ -129,27 +91,15 @@ export const LiquidateProductClientModal = ({ unpaid }) => {
             value={formValues.paymentMethod}
             onChange={onInputChange}
           >
-            <option value={formValues.paymentMethod}>{capitalizeFirstWord(formValues.paymentMethod)}</option>
-            {formValues.paymentMethod === 'EFECTIVO' ? <option value="tarjeta">Tarjeta</option> : <option value="efectivo">Efectivo</option>}
+             <option value="tarjeta">Tarjeta</option> 
+             <option value="efectivo">Efectivo</option>
           </select>
         </div>
-        {/*Fechas  */}
-        <div className='d-flex'>
-          <div className="mb-3 mx-1">
-            <label className="form-label">Próxima fecha</label>
-            <input
-              className="form-control"
-              name="startDate"
-              type="date"
-              value={formValues.startDate}
-              onChange={onInputChange}
-            />
-          </div>
-        </div>
+        
 
-
-        <div className="d-flex gap-2 mb-3 justify-content-end">
-          <button type="submit" className="btn btn-success">Guardar</button>
+        <div className="d-flex gap-2 mb-3 justify-content-between align-items-center">
+          <h4 className='ps-1'>{unpaid.price} €</h4>
+          <button type="submit" className="btn btn-success ">Liquidar deuda</button>
 
         </div>
       </form>

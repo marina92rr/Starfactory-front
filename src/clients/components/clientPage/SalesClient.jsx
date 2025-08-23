@@ -7,6 +7,7 @@ import { capitalizeFirstWord } from '../../../helpers/capitalizeFirstWord'
 import { formatDate } from '../../../helpers/formatDate'
 import { DeleteProductClientUnpaid } from './sales/DeleteProductClientUnpaid'
 import { LiquidateProductClient } from './sales/LiquidateProductClient'
+import { LiquidateProductClientModal } from './sales/LiquidateProductClientModal'
 
 export const SalesClient = () => {
   const { activeClient, setActiveClient } = useClientsStore()
@@ -61,6 +62,7 @@ export const SalesClient = () => {
                     <td className='p-3'>
                       <div className='d-flex align-items-center'>
                         <LiquidateProductClient unpaid={unpaid} />
+                        <LiquidateProductClientModal unpaid={unpaid}/>
                         <DeleteProductClientUnpaid unpaid = {unpaid}/>
                       </div>
                       
