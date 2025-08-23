@@ -43,8 +43,8 @@ export const OverviewClient = () => {
                 <tr key={i}>
                   <td className='py-3'>{capitalizeFirstWord(suscriptions.name)}</td>
                   <td className='py-3'>Se intentará la próxima compra el {getNextPurchaseDate()}</td>
-                  <td className='py-3'>{suscriptions.price} €</td>
-                  <td className='py-3'>{suscriptions.paymentMethod}</td>
+                  <td className='py-3'>{suscriptions.price - suscriptions.discount} €</td>
+                  <td className='py-3'>{capitalizeFirstWord(suscriptions.paymentMethod)}</td>
                   <td className='py-3'>Siempre</td>
                   <td className='d-flex py-3 align-items-center gap-2'>
                    <EditSuscriptionClient suscription={suscriptions}/>

@@ -18,7 +18,7 @@ export const suscriptionClientSlice = createSlice({
       state.isLoadingSuscription = true;
     },
 
-     // Modificar cliente por dni
+     // Modificar suscripcion por idSuscripcion
     onUpdateSuscriptionClient:(state, {payload})=>{
       state.suscriptionClients = state.suscriptionClients.map( suscription =>{      //Nuevo array del evento
         if( suscription.idSuscriptionClient === payload.idSuscriptionClient){

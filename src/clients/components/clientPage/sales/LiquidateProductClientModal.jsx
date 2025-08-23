@@ -18,8 +18,8 @@ const customStylesModal = {
   overlay: { backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999 }
 }
 
-export const SuscriptionClientModal = ({ suscription }) => {
-  const { isModalSuscriptionClientOpen, closeSuscriptionClientModal } = useUiStore()
+export const LiquidateProductClientModal = ({ unpaid }) => {
+ // const { isModalSuscriptionClientOpen, closeSuscriptionClientModal } = useUiStore()
   const { activeSuscriptionClient, startUpdateSuscription, startLoadingSuscriptionsByClient } = useSuscriptionClientStore()
 
 

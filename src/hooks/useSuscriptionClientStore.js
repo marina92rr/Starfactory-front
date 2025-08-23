@@ -2,6 +2,8 @@ import React from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { clientsApi } from "../api";
 import { onDeleteSuscriptionClient, onLoadSuscriptionClient, onStartLoadingSuscriptions, onSetActiveSuscriptionClient, onUpdateSuscriptionClient } from '../store/sales/suscriptionClientSlice';
+import { normalizeAllTextFields } from '../helpers/normalizeText';
+
 
 export const useSuscriptionClientStore = () => {
 
@@ -26,21 +28,20 @@ export const useSuscriptionClientStore = () => {
   };
 
   //Actualizar suscripción
-  // Nuevo cliente 
-      const startUpdateSuscription = async (suscriptionClientSave, isEditMode) => {
-          try {
-              const normalizedRate = normalizeAllTextFields(rateSave); //  normalizar todos los campos string
-  
-              if (isEditMode) {
-                  await clientsApi.put(`/suscriptions/${normalizedRate.idSuscriptionClient}`, normalizedRate);
-                  dispatch(onUpdateSuscriptionClient(suscriptionClientSave));
-                  return;
-              }
-             
-          } catch (error) {
-              console.log(error);
-          }
-      }
+const startUpdateSuscription = async (suscription) => {
+  try {
+    const p = normalizeAllTextFields(suscription);
+    const { data } = await clientsApi.put(`/suscriptions/${p.idSuscriptionClient}`, p);
+    const updated = data?.suscription ?? data ?? p;
+    dispatch(onUpdateSuscriptionClient(updated));
+    return updated;
+  } catch (e) {
+    console.error('Error actualizando suscripción:', e);
+    throw e;
+  }
+};
+
+
   const startDeleteSuscriptionClient = async (suscription) => {
     try {
       const { data } = await clientsApi.delete(`/suscriptions/${suscription.idSuscriptionClient}`);

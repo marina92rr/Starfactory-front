@@ -4,8 +4,6 @@ import { useUiStore } from '../../../../hooks/useUiStore';
 import { useClientsStore } from '../../../../hooks/useClientsStore';
 import { useProductClientStore } from '../../../../hooks/useProductClientStore';
 import { useNavigate } from 'react-router-dom';
-import { SalesClient } from '../SalesClient';
-import { useDispatch } from 'react-redux';
 import { generateAndSendTicket } from '../../../../hooks/ticketGenerator';
 
 const customStylesModal = {
@@ -25,7 +23,6 @@ const customStylesModal = {
 
 export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isModalSaleOpen, closeSaleModal } = useUiStore();
   const { startSavingProductClient } = useProductClientStore();
@@ -54,7 +51,6 @@ export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
     const dataToSend = {
       idClient: activeClient.idClient,
       products: productsMapped,
-      price: totalAmount,
       paymentMethod: paymentMethod,
       paid: true,
     };
