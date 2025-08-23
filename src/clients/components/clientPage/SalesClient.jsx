@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { generateAndSendTicket } from '../../../hooks/ticketGenerator'
 import { useClientsStore } from '../../../hooks/useClientsStore'
 import { useProductClientStore } from '../../../hooks/useProductClientStore'
@@ -26,6 +26,15 @@ export const SalesClient = () => {
     }
   }, [activeClient])
 
+
+   // --- paginación ventas pagadas ---
+  const PAID = 30;    // productos por página
+  const [paidPage, setPaidPage] = useState(1)   // página actual
+  const totalPaidPages = Math.max(1, Math.ceil(productsClientPaid.length / PAID))           // total páginas
+  const paidSlice = productsClientPaid.slice((paidPage - 1) * PAID, paidPage * PAID)       // productos a mostrar en la página actual
+  const prevPage = () => setPaidPage(p => Math.max(1, p - 1))                              // –
+  const nextPage = () => setPaidPage(p => Math.min(totalPaidPages, p + 1))                 // +
+
   return (
     <div>
       {/* Pendientes */}
@@ -40,11 +49,11 @@ export const SalesClient = () => {
         <table className="table border col-12">
           <thead>
             <tr>
-              <th className="p-3">Concepto</th>
-              <th className="p-3">Precio</th>
-              <th className="p-3">IVA</th>
-              <th className="p-3">Fecha</th>
-              <th className="p-3">Deuda</th>
+              <th className="p-3 col-4">Concepto</th>
+              <th className="p-3 col-1">Precio</th>
+              <th className="p-3 col-1">IVA</th>
+              <th className="p-3 col-2">Fecha</th>
+              <th className="p-3 col-2">Deuda</th>
             </tr>
           </thead>
           <tbody>
@@ -55,7 +64,7 @@ export const SalesClient = () => {
                 const { iva, total } = IVAProduct(unpaid.price)
                 return (
                   <tr key={i}>
-                    <td className='text-primary p-3'>{capitalizeFirstWord(unpaid.name)}</td>
+                    <td className='text-primary p-3 col-4'>{capitalizeFirstWord(unpaid.name)}</td>
                     <td className="p-3">{total}€</td>
                     <td className="p-3">{iva}€</td>
                     <td className='p-3'>{formatDate(unpaid.buyDate)}</td>
@@ -87,22 +96,22 @@ export const SalesClient = () => {
         <table className="table border col-12">
           <thead>
             <tr>
-              <th className="p-3">Concepto</th>
-              <th className="p-3">Precio</th>
-              <th className="p-3">IVA</th>
-              <th className="p-3">Fecha</th>
-              <th className="p-3">Pago</th>
-              <th className="p-3">Método de pago</th>
+              <th className="p-3 col-4">Concepto</th>
+              <th className="p-3 col-1">Precio</th>
+              <th className="p-3 col-1">IVA</th>
+              <th className="p-3 col-2">Fecha</th>
+              <th className="p-3 col-1">Pago</th>
+              <th className="p-3 col-2">Método de pago</th>
             </tr>
           </thead>
           <tbody>
             {productsClientPaid.length === 0 ? (
               <tr><td colSpan={6} className="text-muted">No hay Productos en esta categoría</td></tr>
             ) : (
-              productsClientPaid.map((p, i) => {
+              paidSlice.map((p) => {
                 const { iva, total } = IVAProduct(p.price)
                 return (
-                  <tr key={i}>
+                  <tr key={p.idProductClient || p._id}>
                     <td className='text-primary p-3'>{capitalizeFirstWord(p.name)}</td>
                     <td className="p-3">{total}€</td>
                     <td className="p-3">{iva}€</td>
@@ -115,6 +124,14 @@ export const SalesClient = () => {
             )}
           </tbody>
         </table>
+        {/* Controles – / + */}
+        {productsClientPaid.length > 0 && totalPaidPages > 1 && (
+          <div className="d-flex justify-content-center align-items-center gap-3 mt-3">
+            <button className="btn btn-outline-primary" onClick={prevPage} disabled={paidPage === 1}>–</button>
+            <span>{paidPage} de {totalPaidPages}</span>
+            <button className="btn btn-outline-primary" onClick={nextPage} disabled={paidPage === totalPaidPages}>+</button>
+          </div>
+        )}
       </div>
     </div>
   )
