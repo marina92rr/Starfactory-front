@@ -8,14 +8,14 @@ import { LabelEdit } from '../components/label/LabelEdit';
 
 export const LabelsPage = () => {
 
-    const { labels, starLoadingLabels } = useLabelsStore();
+  const { labels, starLoadingLabels } = useLabelsStore();
 
-    useEffect(() => {
-        starLoadingLabels();
-    }, []);
+  useEffect(() => {
+    starLoadingLabels();
+  }, []);
 
-    return (
-         <div className='m-5'>
+  return (
+    <div className='m-5'>
       <div className='pt-5 align-items-center'>
         <h1 className='mb-4'>Etiquetas</h1>
         <LabelAddNew />
@@ -55,9 +55,9 @@ export const LabelsPage = () => {
                 </span>
 
                 <div className='ms-auto d-flex gap-1'>
-                   <LabelEdit label={label} />
+                  <LabelEdit label={label} />
                   <LabelDelete label={label} />
-                 
+
                 </div>
               </div>
             </div>
@@ -68,5 +68,5 @@ export const LabelsPage = () => {
       {/* 👇 ÚNICO modal para crear/editar */}
       <CreateLabelModal />
     </div>
-    )
+  )
 }

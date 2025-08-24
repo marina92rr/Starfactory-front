@@ -3,6 +3,7 @@ import { OverviewClient, ReservationsClient, SalesClient, ProfileClient} from '.
 import { ClientPage, ClientsPage, StorePage,RatesPage } from '../clients/pages'
 import { AddNewSales } from '../clients/components/clientPage/AddNewSales'
 import { LabelsPage } from '../clients/pages/LabelsPage'
+import { Accounting } from '../clients/pages/Accounting'
 
 
 export const AppRoutes = () => {
@@ -35,6 +36,9 @@ export const AppRoutes = () => {
 
          {/* ----------------------Etiquetas---------------------- */}
         <Route path='/labels' element={<LabelsPage/>}/>
+
+         {/* ----------------------Contabilidad---------------------- */}
+        <Route path='/accounting' element={<Accounting/>}/>
         
     </Routes>
   )

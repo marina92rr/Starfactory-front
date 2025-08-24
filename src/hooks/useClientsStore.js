@@ -97,6 +97,18 @@ export const useClientsStore = () => {
 };
 
   //Lectura de cliente
+  const getClientbyClientID = async () => {
+    try {
+      const { data } = await clientsApi.get(`clients/${idClient}`);
+      const client = data.client;
+      dispatch(onLoadClientByID(client));
+
+    } catch (error) {
+      console.error('Error al cargar el cliente:', error);
+    }
+  }
+
+  //Lectura de cliente
   const starLoadingClientByID = async () => {
     try {
       const { data } = await clientsApi.get(`clients/${idClient}`);
@@ -240,6 +252,7 @@ export const useClientsStore = () => {
     startResetClientsPage,
     starLoadingClients,
     starLoadingLimitPageClients,
+    getClientbyClientID,
     starLoadingClientByID,
     startSavingClient,
     startDeleteClient,

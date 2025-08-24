@@ -10,7 +10,8 @@ const links = [
   { name: 'Clientes', path: '/' },
   { name: 'Tienda', path: '/store' },
   { name: 'Tarifas', path: '/rates' },
-  { name: 'Etiquetas', path: '/labels'}
+  { name: 'Etiquetas', path: '/labels'},
+  { name: 'Contabilidad', path: '/accounting' }
 ]
 
 export const Sidebar = () => {

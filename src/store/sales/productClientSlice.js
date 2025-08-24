@@ -11,6 +11,8 @@ export const productClientSlice = createSlice({
     isLoadingProductsClientPaid: false,
     productsClientPaid: [],
     activeProductClient: null,
+    selectedDate: null, // string 'YYYY-MM-DD'
+    productsClientDate: [] // productos filtrados por fecha
   },
   reducers: {
     //Seleccion categoria
@@ -63,6 +65,15 @@ export const productClientSlice = createSlice({
         state.activeProductClient = null;
       }
     },
+
+    //Filtrar productos por Fecha
+    onSetSelectedDate: (state, { payload }) => {
+      state.selectedDate = payload; // string 'YYYY-MM-DD'
+    },
+    onLoadProductsByDate: (state, { payload }) => {
+      state.isLoadingProduct = false;
+      state.productsClientDate = payload;     // array de productClient
+    },
   },
 })
 export const {
@@ -73,5 +84,8 @@ export const {
   onLoadProductsClientUnpaid,
   onAddNewProductClient,
   onUpdateProductClient,
-  onDeleteProductClient
+  onDeleteProductClient,
+
+  onSetSelectedDate,  
+  onLoadProductsByDate
 } = productClientSlice.actions; //accion
