@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useProductClientStore } from "../../hooks/useProductClientStore";
 import { DateNavigator } from "../../helpers/DateNavigator";
-import 'react-datepicker/dist/react-datepicker.css';
 import { formatDate } from "../../helpers/formatDate";
 import { capitalizeFirstWord } from "../../helpers/capitalizeFirstWord";
 import { ClientName } from "../components/clientPage/sales/ClientName";
