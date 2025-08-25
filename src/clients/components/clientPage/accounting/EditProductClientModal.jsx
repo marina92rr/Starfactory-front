@@ -40,7 +40,6 @@ export const EditProductClientModal = ({ productClient }) => {
       setFormValues({
         name: activeProductClient.name,
         price: activeProductClient.price,
-        paymentDate: activeProductClient.paymentDate,
         paymentDate: activeProductClient.paymentDate
           ? formatDate(new Date(activeProductClient.paymentDate), 'yyyy-MM-dd')
           : '', // deja vacío si no hay fecha
