@@ -4,15 +4,17 @@ import { useClientsStore } from '../../../../hooks/useClientsStore'
 
 export const ClientName = ({idClient}) => {
 
-  const { getClientbyClientID } = useClientsStore();
+  const { getClientbyClientID, clientsName } = useClientsStore();
 
-  //useEffect(() => {
-  //  getClientbyClientID(idClient);
-  //}, []);
+  useEffect(() => {
+    getClientbyClientID(idClient);
+  }, [idClient]);
+
+  const client = clientsName[idClient];
 
   return (
-    <div>
-        <p></p>
-    </div>
+    
+    <div className='text-primary'> {client?.name} {client?.lastName} </div>
+    
   )
 }

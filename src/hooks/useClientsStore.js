@@ -15,7 +15,8 @@ import {
   onUpdateClient,
   onResetClientsPage,
   clearActiveClient,
-  onDeleteClient
+  onDeleteClient,
+  onLoadClientsName
 } from "../store/clients/clientSlice";
 
 
@@ -26,7 +27,7 @@ import { normalizeAllTextFields } from "../helpers/normalizeText";
 export const useClientsStore = () => {
 
   const dispatch = useDispatch();
-  const { clients, clientsLimit, activeClient, filter, filteredList,totalPages, isLoadingLabelsClient,filteredClientsByLabel, isLoadingClients, allClientsLoaded, activeClientLabels, scheduledCancellationClients, filteredLabels } = useSelector(state => state.client);
+  const { clients, clientsLimit, activeClient, filter, filteredList,totalPages, isLoadingLabelsClient,filteredClientsByLabel, isLoadingClients, allClientsLoaded, activeClientLabels, scheduledCancellationClients, filteredLabels, clientsName } = useSelector(state => state.client);
   const { idClient } = useParams();
   const filteredLabelsByClient = useSelector(state => state.client.filteredLabelsByClient);
 
@@ -97,11 +98,11 @@ export const useClientsStore = () => {
 };
 
   //Lectura de cliente
-  const getClientbyClientID = async () => {
+  const getClientbyClientID = async (idClient) => {
     try {
       const { data } = await clientsApi.get(`clients/${idClient}`);
       const client = data.client;
-      dispatch(onLoadClientByID(client));
+      dispatch(onLoadClientsName(client));
 
     } catch (error) {
       console.error('Error al cargar el cliente:', error);
@@ -245,6 +246,7 @@ export const useClientsStore = () => {
     filteredLabelsByClient,
     filteredClientsByLabel,
     totalPages,
+    clientsName,
 
     //*Metodos
     //Client
@@ -263,6 +265,7 @@ export const useClientsStore = () => {
     loadClientsWithScheduledCancellation,
     startLoadingLabelsOfClient,
     startLoadingFilteredLabels,
+    
 
     //Label
     filterClientsByLabels,

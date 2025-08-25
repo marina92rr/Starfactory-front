@@ -33,6 +33,7 @@ export const ClientModal = () => {
     email: '',
     mainPhone: '',
     optionalPhone: '',
+    whatsappPhone: ''
   });
 
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -50,6 +51,7 @@ export const ClientModal = () => {
           email: '',
           mainPhone: '',
           optionalPhone: '',
+          whatsappPhone: ''
         });
       }
       setFormSubmitted(false);
@@ -154,6 +156,16 @@ export const ClientModal = () => {
               name='optionalPhone'
               type="text"
               value={formValues.optionalPhone || ''}
+              onChange={onInputChange}
+            />
+          </div>
+          <div>
+            <label className="form-label">Teléfono whatsapp</label>
+            <input
+              className='form-control'
+              name='whatsappPhone'
+              type="text"
+              value={formValues.whatsappPhone || ''}
               onChange={onInputChange}
             />
           </div>

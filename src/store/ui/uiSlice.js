@@ -25,6 +25,8 @@ export const uiSlice = createSlice({
     isModalSuscriptionClientOpen: false,
     //ProductClientUnpaid
     isModalProductClientUnpaidOpen: false,
+    //ProductClientUnpaid
+    isModalProductClientOpen: false,
 
   },
   reducers: {
@@ -91,10 +93,15 @@ export const uiSlice = createSlice({
     onCloseSuscriptionClientModal: (state) => { state.isModalSuscriptionClientOpen = false; },
 
         //------------- PRODUCTCLIENT ----------------
-     //Abrir modal Cancellation
+     //Abrir modal unpaid
     onOpenProductClientUnpaidModal: (state) => { state.isModalProductClientUnpaidOpen = true; },
-    //Cerrar modal Cancellation
+    //Cerrar modal unpaid
     onCloseProductClientUnpaidModal: (state) => { state.isModalProductClientUnpaidOpen = false; },
+
+    //Abrir modal allProductClient
+    onOpenProductClientModal: (state) => { state.isModalProductClientOpen = true; },
+    //Cerrar modal allProductClient
+    onCloseProductClientModal: (state) => { state.isModalProductClientOpen = false; },
 
 
 
@@ -143,5 +150,7 @@ export const {
   //*ProductClientUnpaid
   onOpenProductClientUnpaidModal,
   onCloseProductClientUnpaidModal,
+  onOpenProductClientModal,
+  onCloseProductClientModal,
 
 } = uiSlice.actions; //accion

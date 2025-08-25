@@ -10,8 +10,6 @@ export const LabelClient = ({ idClient }) => {
 
   const { filteredLabelsByClient, startLoadingFilteredLabels } = useClientsStore();
 
- 
-
   useEffect(() => {
     startLoadingFilteredLabels(idClient);
   }, []); // Mejor añadir dependencias

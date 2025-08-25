@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { onCloseCancellationModal, onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseFilterClientsByLabelModal, onCloseLabelModal, onCloseProductClientUnpaidModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onCloseSuscriptionClientModal, onOpenCancellationModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenFilterClientsByLabelModal, onOpenLabelModal, onOpenProductClientUnpaidModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal, onOpenSuscriptionClientModal } from "../store/ui/uiSlice";
+import { onCloseCancellationModal, onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseFilterClientsByLabelModal, onCloseLabelModal, onCloseProductClientModal, onCloseProductClientUnpaidModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onCloseSuscriptionClientModal, onOpenCancellationModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenFilterClientsByLabelModal, onOpenLabelModal, onOpenProductClientModal, onOpenProductClientUnpaidModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal, onOpenSuscriptionClientModal } from "../store/ui/uiSlice";
 
 
 
@@ -19,7 +19,8 @@ export const useUiStore = () => {
       isModalSaleOpen,
       isModalCancellationOpen,
       isModalSuscriptionClientOpen,
-      isModalProductClientUnpaidOpen
+      isModalProductClientUnpaidOpen,
+      isModalProductClientOpen,
      } = useSelector( state => state.ui);
 
 
@@ -166,14 +167,23 @@ export const useUiStore = () => {
     
     //*--------------------------------ProductClient/Ventas--------------------------------
 
-    //Abrir CancellationModal
+    //Abrir Unpaid
     const openProductClientUnpaidModal = () =>{
         dispatch(onOpenProductClientUnpaidModal());
     }
 
-    //Cerrar CancellationModal
+    //Cerrar Unpaid
     const closeProductClientUnpaidModal = () =>{
         dispatch(onCloseProductClientUnpaidModal());
+    }
+        //Abrir AllProductClient
+    const openProductClientModal = () =>{
+        dispatch(onOpenProductClientModal());
+    }
+
+    //Cerrar AllProductClient
+    const closeProductClientModal = () =>{
+        dispatch(onCloseProductClientModal());
     }
 
   return {
@@ -191,6 +201,7 @@ export const useUiStore = () => {
     isModalCancellationOpen,
     isModalSuscriptionClientOpen,
     isModalProductClientUnpaidOpen,
+    isModalProductClientOpen,
 
     //*Metodos
     openClientModal,
@@ -228,6 +239,9 @@ export const useUiStore = () => {
 
     openProductClientUnpaidModal,
     closeProductClientUnpaidModal,
+
+    openProductClientModal,
+    closeProductClientModal,
 
   }
 }

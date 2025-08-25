@@ -35,12 +35,15 @@ export const ProfileClient = () => {
           <strong>Foto:</strong>
           <br />
           {/* Imagen */}
-          <img
+          <button className='btn'>
+            <img
             src={userPhoto}
             className="rounded-circle mt-1"
             alt="Usuario"
             style={{ width: '80px', height: '80px', objectFit: 'cover' }}
           />
+          </button>
+          
         </div>
 
         {/* Columna izquierda */}
@@ -52,9 +55,15 @@ export const ProfileClient = () => {
             <p>{activeClient.name}</p>
           </div>
           <div>
-            <strong>Telefono:</strong>
-            <p>{activeClient.mainPhone}</p>
+            <strong>Teléfono:</strong>
+            <p>{activeClient.mainPhone  ? activeClient.mainPhone : '-'}</p>
           </div>
+           <div>
+            <strong>Fecha de alta:</strong>
+            <p>{formatDate(activeClient.dateRegistration)}</p>
+          </div>
+         
+         
 
         </div>
 
@@ -62,26 +71,44 @@ export const ProfileClient = () => {
         <div className="col-md-4">
           <div>
             <strong>Apellido:</strong>
-            <p>{activeClient.lastName}</p>
+            <p>{activeClient.lastName ? activeClient.lastName : '-'}</p>
           </div>
 
-          <div>
-            <strong>Fecha de alta:</strong>
-            <p>{formatDate(activeClient.dateRegistration)}</p>
+           <div>
+            <strong>2 Teléfono:</strong>
+            <p>{activeClient.optionalPhone ? activeClient.optionalPhone : '-'}</p>
           </div>
+          <div>
+            <strong>Código Cliente:</strong>
+            <p>{activeClient.idClient}</p>
+          </div>
+          
         </div>
 
         {/* Columna derecha */}
         <div className="col-md-4">
           <div>
             <strong>Correo electrónico:</strong>
-            <p>{activeClient.email.toLowerCase()}</p>
+            <p>{activeClient.email.toLowerCase() ? activeClient.email.toLowerCase() : '-'}</p>
           </div>
 
           <div>
-            <strong>Código Cliente:</strong>
-            <p>{activeClient.idClient}</p>
+            <strong>Teléfono Whattsapp:</strong>
+            <p>
+    {activeClient.whatsappPhone ? (
+      <a
+        href={`https://wa.me/${activeClient.whatsappPhone}?text=Hola%20soy%20${encodeURIComponent('StarFactory')}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {activeClient.whatsappPhone}
+      </a>
+    ) : (
+      '-'
+    )}
+  </p>
           </div>
+          
         </div>
       </div>
 
