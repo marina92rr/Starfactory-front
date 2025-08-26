@@ -1,6 +1,5 @@
 import pdfMake from 'pdfmake/build/pdfmake.js';
 import pdfFonts from 'pdfmake/build/vfs_fonts.js';
-import clientsApi from '../api/clientsApi';
 
 pdfMake.vfs = pdfFonts.vfs;
 

@@ -8,6 +8,7 @@ import { formatDate } from '../../../helpers/formatDate'
 import { DeleteProductClientUnpaid } from './sales/DeleteProductClientUnpaid'
 import { LiquidateProductClient } from './sales/LiquidateProductClient'
 import { LiquidateProductClientModal } from './sales/LiquidateProductClientModal'
+import { CreateTicket } from './sales/CreateTicket'
 
 export const SalesClient = () => {
   const { activeClient, setActiveClient } = useClientsStore()
@@ -27,7 +28,7 @@ export const SalesClient = () => {
   }, [activeClient])
 
 
-   // --- paginación ventas pagadas ---
+  // --- paginación ventas pagadas ---
   const PAID = 30;    // productos por página
   const [paidPage, setPaidPage] = useState(1)   // página actual
   const totalPaidPages = Math.max(1, Math.ceil(productsClientPaid.length / PAID))           // total páginas
@@ -71,10 +72,10 @@ export const SalesClient = () => {
                     <td className='p-3'>
                       <div className='d-flex align-items-center'>
                         <LiquidateProductClient unpaid={unpaid} />
-                        <LiquidateProductClientModal unpaid={unpaid}/>
-                        <DeleteProductClientUnpaid unpaid = {unpaid}/>
+                        <LiquidateProductClientModal unpaid={unpaid} />
+                        <DeleteProductClientUnpaid unpaid={unpaid} />
                       </div>
-                      
+
                     </td>
                   </tr>
                 )
@@ -102,6 +103,7 @@ export const SalesClient = () => {
               <th className="p-3 col-2">Fecha</th>
               <th className="p-3 col-1">Pago</th>
               <th className="p-3 col-2">Método de pago</th>
+              <th className="p-3 col-2">ticket</th>
             </tr>
           </thead>
           <tbody>
@@ -118,6 +120,13 @@ export const SalesClient = () => {
                     <td className='p-3'>{formatDate(p.buyDate)}</td>
                     <td className='p-3'>{formatDate(p.paymentDate)}</td>
                     <td className='p-3'>{capitalizeFirstWord(p.paymentMethod)}</td>
+                    <td className='p-3'>
+                      <CreateTicket
+                        idSalesClient={p.idSalesClient}
+                        products={productsClientPaid}
+                      />
+                    </td>
+
                   </tr>
                 )
               })

@@ -54,7 +54,6 @@ export const LiquidateProductClientModal = ({ unpaid }) => {
     e.preventDefault();
     setSubmitted(true);
   
-
     const payload = {
       ...formValues,
       idProductClient: activeProductClient?.idProductClient, // <-- AQUI

@@ -89,7 +89,19 @@ export const ProfileClient = () => {
         <div className="col-md-4">
           <div>
             <strong>Correo electrónico:</strong>
-            <p>{activeClient.email.toLowerCase() ? activeClient.email.toLowerCase() : '-'}</p>
+             <p>
+    {activeClient.email ? (
+      <a 
+        href={`mailto:${activeClient.email}?subject=${encodeURIComponent("Consulta desde StarFactory")}&body=${encodeURIComponent("Hola, te escribo porque...")}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {activeClient.email.toLowerCase()}
+      </a>
+    ) : (
+      '-'
+    )}
+  </p>
           </div>
 
           <div>
