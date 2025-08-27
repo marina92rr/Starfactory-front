@@ -10,7 +10,7 @@ export const SubscribeClient = ({ idClient }) => {
   const { openCancelSuscribeClientModal, openClientModal } = useUiStore();
 
   const { isActive, isImmediateCancellation, isScheduledCancellation, cancelDate } = getClientStatus(activeClient?.dateCancellation);
-  const [removeSales, setRemoveSales] = useState();
+  const [removeSales, setRemoveSales] = useState(false);
 
 
   const handleCancelClient = async () => {

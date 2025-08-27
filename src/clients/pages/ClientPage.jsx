@@ -11,7 +11,7 @@ import { getClientStatus } from '../../helpers/getClientStatus';
 import { isColorDark } from '../../helpers/isColorDark';
 import userPhoto from '../../assets/user.png';
 import { DeleteClient } from '../components/clientPage/DeleteClient';
-import { CancelSuscribeClientModal } from '../components/clientPage/CancelSuscribeclientModal';
+import { CancelSuscribeClientModal } from '../components/clientPage/CancelSuscribeClientModal';
 
 
 
