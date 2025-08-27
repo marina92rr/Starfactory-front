@@ -21,6 +21,7 @@ export const uiSlice = createSlice({
     isModalSaleOpen: false,
     //Cancellation
     isModalCancellationOpen: false,
+    isModalCancelSuscribeClienOpen: false,  //Dar baja inmediata
     //SuscriptionClient / autocompras
     isModalSuscriptionClientOpen: false,
     //ProductClientUnpaid
@@ -71,9 +72,9 @@ export const uiSlice = createSlice({
     onOpenRateModal: (state) => { state.isModalRateOpen = true; },
     //Cerrar modal Rate
     onCloseRateModal: (state) => { state.isModalRateOpen = false; },
-    //Abrir modal Rate
+    //Abrir modal cuota
     onOpenQuotaModal: (state) => { state.isModalQuotaOpen = true; },
-    //Cerrar modal Rate
+    //Cerrar modal cuota
     onCloseQuotaModal: (state) => { state.isModalQuotaOpen = false; },
 
     //Venta Modal
@@ -81,9 +82,14 @@ export const uiSlice = createSlice({
     //Cerrar modal Rate
     onCloseSaleModal: (state) => { state.isModalSaleOpen = false; },
 
-    //Abrir modal Baja
+        //Abrir modal Baja Inmediata
+    onOpenCancelSuscribeClientModal: (state) => { state.isModalCancelSuscribeClienOpen = true; },
+    //Cerrar modal Baja Inmediata
+    onCloseCancelSuscribeClientModal: (state) => { state.isModalCancelSuscribeClienOpen = false; },
+
+    //Abrir modal Baja Programada
     onOpenCancellationModal: (state) => { state.isModalCancellationOpen = true; },
-    //Cerrar modal Baja
+    //Cerrar modal Baja Programada
     onCloseCancellationModal: (state) => { state.isModalCancellationOpen = false; },
 
     //------------- SUSCRIPTION CLIENT ----------------
@@ -131,9 +137,9 @@ export const {
 
   //*Product
   onOpenProductModal,
-  onCloseProductModal
+  onCloseProductModal,
   //*Rate
-  , onOpenRateModal,
+  onOpenRateModal,
   onCloseRateModal,
   //*Quota
   onOpenQuotaModal,
@@ -142,6 +148,9 @@ export const {
   onOpenSaleModal,
   onCloseSaleModal,
   //*Baja
+  onOpenCancelSuscribeClientModal,
+  onCloseCancelSuscribeClientModal,
+  //*Baja Programada
   onOpenCancellationModal,
   onCloseCancellationModal,
   //*SuscriptionClient

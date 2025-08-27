@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ProgramCancelModal } from './ProgramCancelModal ';
 import { useClientsStore } from '../../../hooks/useClientsStore';
 import { useUiStore } from '../../../hooks/useUiStore';
@@ -7,9 +7,11 @@ import { getClientStatus } from '../../../helpers/getClientStatus';
 export const SubscribeClient = ({ idClient }) => {
 
   const { activeClient, toggleClientStatusCancel, starLoadingClientByID, cancelClientScheduledCancellation } = useClientsStore();
-  const { openClientModal } = useUiStore();
+  const { openCancelSuscribeClientModal, openClientModal } = useUiStore();
 
   const { isActive, isImmediateCancellation, isScheduledCancellation, cancelDate } = getClientStatus(activeClient?.dateCancellation);
+  const [removeSales, setRemoveSales] = useState();
+
 
   const handleCancelClient = async () => {
     if (!activeClient) return;
@@ -19,7 +21,7 @@ export const SubscribeClient = ({ idClient }) => {
     const confirm = window.confirm(`¿Estás seguro de querer ${action} al cliente?`);
 
     if (confirm) {
-      await toggleClientStatusCancel(idClient);
+      await toggleClientStatusCancel(idClient, removeSales);
       await starLoadingClientByID(); // ✅ recarga sin tener que hacer reload
     }
   }
@@ -35,14 +37,14 @@ export const SubscribeClient = ({ idClient }) => {
       )}
 
       {isScheduledCancellation && (
-  <button className="btn btn-outline-danger" onClick={() => cancelClientScheduledCancellation(idClient)}>
-    Cancelar baja programada
-  </button>
-)}
+        <button className="btn btn-outline-danger" onClick={() => cancelClientScheduledCancellation(idClient)}>
+          Cancelar baja programada
+        </button>
+      )}
 
       {isActive && (
         <>
-          <button className="btn btn-danger me-2" onClick={handleCancelClient}>
+          <button className="btn btn-danger me-2" onClick={openCancelSuscribeClientModal}>
             Dar baja
           </button>
           <button className="btn btn-outline-danger me-2" onClick={openClientModal}>

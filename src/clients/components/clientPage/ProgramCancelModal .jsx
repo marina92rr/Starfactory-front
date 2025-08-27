@@ -14,7 +14,7 @@ const customStyles = {
     bottom: 'auto',
     transform: 'translate(-50%, -50%)',
   },
-   overlay: {
+  overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // oscuridad del fondo
     zIndex: 9999,                          // asegura que está por encima
   }
@@ -25,19 +25,19 @@ export const ProgramCancelModal = ({ idClient }) => {
   // Hooks
   const { isModalClientOpen, closeClientModal } = useUiStore();
   const { programClientCancellation, starLoadingClientByID } = useClientsStore();
+  const [removeSales, setRemoveSales] = useState(false);
+
 
   // 🕒 Obtener la fecha actual en formato YYYY-MM-DD
   const todayStr = new Date().toISOString().split('T')[0];
   const [cancelDate, setCancelDate] = useState(todayStr);
 
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!cancelDate) return alert('Selecciona una fecha válida');
 
-    await programClientCancellation(idClient, cancelDate);
+    await programClientCancellation(idClient, cancelDate, removeSales);
     await starLoadingClientByID(); // ✅ recarga sin tener que hacer reload
     setCancelDate('');
     closeClientModal();
@@ -51,13 +51,13 @@ export const ProgramCancelModal = ({ idClient }) => {
       style={customStyles}
       contentLabel="Programar baja"
     >
-      <h3 className="mb-3">Programar baja del cliente</h3>
+      <h3 className="m-3">Programar baja del cliente</h3>
       <hr />
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="cancelDate" className="form-label">Fecha de baja:</label>
-          <div className="input-group py-2">
-            
+
+          <div className="mb-4">
+            <label htmlFor="cancelDate" className="form-label">Fecha de baja:</label>
             <input
               type="date"
               className="form-control"
@@ -66,19 +66,32 @@ export const ProgramCancelModal = ({ idClient }) => {
               min={todayStr}
             />
           </div>
+
+          <div className='input-group mb-4'>
+            <label className="d-inline-flex align-items-center gap-2">
+              <input
+                type="checkbox"
+                className="me-1"           // margen a la derecha del check
+                checked={removeSales}
+                onChange={(e) => setRemoveSales(e.target.checked)}
+              />
+              Eliminar todas las ventas no pagadas del cliente
+
+            </label>
+          </div>
+
+
         </div>
 
-        <div className="d-flex justify-content-end">
-          <button type="button" className="btn btn-danger me-2" onClick={closeClientModal}>
-            Cancelar
-          </button>
+        <div className="d-flex justify-content-end mb-3">
+
           <button type="submit" className="btn btn-success"
             style={{ background: '#38b647', color: 'white' }}>
             Confirmar fecha
           </button>
         </div>
       </form>
-    </Modal>
+    </Modal >
   );
 
 }

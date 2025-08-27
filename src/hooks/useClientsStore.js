@@ -201,18 +201,18 @@ export const useClientsStore = () => {
   };
 
   //Dar baja cliente
-  const toggleClientStatusCancel = async (idClient) => {
+  const toggleClientStatusCancel = async (idClient, removeSales = false) => {
     try {
-      const { data } = await clientsApi.patch(`clients/cancel/${idClient}`);
+      const { data } = await clientsApi.patch(`clients/cancel/${idClient}`,  {removeSales});
       dispatch(onToggleClientStatusCancel(data.client)); // recuerda: el backend devuelve `{ msg, client }`
     } catch (error) {
       console.error('Error al cambiar estado de baja del cliente:', error);
     }
   };
   //Programar baja
-  const programClientCancellation = async (idClient, cancelDate) => {
+  const programClientCancellation = async (idClient, cancelDate, removeSales = false) => {
     try {
-      const { data } = await clientsApi.patch(`/clients/programcancel/${idClient}`, { cancelDate });
+      const { data } = await clientsApi.patch(`/clients/programcancel/${idClient}`, { cancelDate }, {removeSales});
       dispatch(onToggleClientStatusCancel(data.client)); // O solo data si no devuelves { client: ... }
     } catch (error) {
       console.error('Error al programar baja del cliente:', error);
