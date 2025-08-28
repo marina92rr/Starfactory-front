@@ -87,7 +87,10 @@ export const CreateTicket = ({ venta }) => {
 
         <ul className="dropdown-menu dropdown-menu-end">
           <li><button className="dropdown-item" onClick={handlePrint}>Imprimir</button></li>
-          <li><button className="dropdown-item" onClick={handleSendEmail}>Enviar email</button></li>
+          {/*
+            <li><button className="dropdown-item" onClick={handleSendEmail}>Enviar email</button></li>
+          */}
+        
           <li><button className="dropdown-item" onClick={handleWhatsapp}>Enviar WhatsApp</button></li>
         </ul>
       </div>
