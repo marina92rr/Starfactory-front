@@ -5,6 +5,7 @@ import { useClientsStore } from '../../../../hooks/useClientsStore';
 import { useProductClientStore } from '../../../../hooks/useProductClientStore';
 import { useNavigate } from 'react-router-dom';
 import { generateAndSendTicket } from '../../../../hooks/ticketGenerator';
+import { printTicket } from '../../../../helpers/ticketPDF';
 
 const customStylesModal = {
   content: {
@@ -59,10 +60,8 @@ export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
 
       // Guardar en la base de datos
       await startSavingProductClient(dataToSend, false);
-
-      // Generar ticket
-      await generateAndSendTicket(venta, activeClient.email);
-
+      // imprimir ticket
+        printTicket(venta); 
       // Cerrar modal y redirigir
       closeSaleModal();
       navigate(`/${activeClient.idClient}/sales`);

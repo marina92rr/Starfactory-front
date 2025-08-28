@@ -3,7 +3,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts.js';
 
 pdfMake.vfs = pdfFonts.vfs;
 
-export const generateAndSendTicket = async (venta, email) => {
+export const generateAndSendTicket = async (venta) => {
   const subtotal = venta.total / 1.21;
   const iva = venta.total - subtotal;
 
@@ -18,26 +18,35 @@ export const generateAndSendTicket = async (venta, email) => {
       ...venta.items.map(item => ({
         columns: [
           { text: `${item.name}`, width: '70%' },
-          { text: `€${(item.price - item.discount).toFixed(2)}`, width: '30%', alignment: 'right' }
+          { text: `${(item.price).toFixed(2)} €`, width: '30%', alignment: 'right' },
         ]
       })),
+
       { text: '-----------------------------', alignment: 'center' },
+
+     ...venta.items.map(item => ({
+        columns: [
+          { text: 'Descuento:' },
+          { text: `${(item.discount).toFixed(2)} €`, width: '30%', alignment: 'right' },
+        ]
+      })),
+
       {
         columns: [
           { text: 'Subtotal:' },
-          { text: `€${subtotal.toFixed(2)}`, alignment: 'right' }
+          { text: `${subtotal.toFixed(2)} €`, alignment: 'right' }
         ]
       },
       {
         columns: [
           { text: 'IVA 21%:' },
-          { text: `€${iva.toFixed(2)}`, alignment: 'right' }
+          { text: `${iva.toFixed(2)} €`, alignment: 'right' }
         ]
       },
       {
         columns: [
           { text: 'TOTAL:', bold: true },
-          { text: `€${venta.total.toFixed(2)}`, bold: true, alignment: 'right' }
+          { text: `${venta.total.toFixed(2)} €`, bold: true, alignment: 'right' }
         ]
       },
       { text: '\n¡Gracias por su compra!', alignment: 'center', style: 'footer' }
@@ -54,18 +63,5 @@ export const generateAndSendTicket = async (venta, email) => {
 
   // ✅ Imprimir directamente
   pdfMake.createPdf(docDefinition).print();
-/*
-  // ✅ Enviar por email si se quiere
-  pdfMake.createPdf(docDefinition).getBase64(async (base64) => {
-    try {
-      await clientsApi.post('/ticket', {
-        to: email,
-        fileName: 'ticket.pdf',
-        pdfBase64: base64
-      });
-      console.log('Ticket enviado por email');
-    } catch (error) {
-      console.error('Error enviando el ticket por email:', error);
-    }
-  });*/
+  
 };

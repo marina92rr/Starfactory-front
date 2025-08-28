@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { generateAndSendTicket } from '../../../hooks/ticketGenerator'
 import { useClientsStore } from '../../../hooks/useClientsStore'
 import { useProductClientStore } from '../../../hooks/useProductClientStore'
@@ -51,7 +51,7 @@ export const SalesClient = () => {
           <thead>
             <tr>
               <th className="p-3 col-4">Concepto</th>
-              <th className="p-3 col-1">Precio</th>
+              <th className="p-3 col-1">Total</th>
               <th className="p-3 col-1">IVA</th>
               <th className="p-3 col-2">Fecha</th>
               <th className="p-3 col-2">Deuda</th>
@@ -98,7 +98,7 @@ export const SalesClient = () => {
           <thead>
             <tr>
               <th className="p-3 col-4">Concepto</th>
-              <th className="p-3 col-1">Precio</th>
+              <th className="p-3 col-1">Total</th>
               <th className="p-3 col-1">IVA</th>
               <th className="p-3 col-2">Fecha</th>
               <th className="p-3 col-1">Pago</th>
@@ -110,26 +110,36 @@ export const SalesClient = () => {
             {productsClientPaid.length === 0 ? (
               <tr><td colSpan={6} className="text-muted">No hay Productos en esta categoría</td></tr>
             ) : (
-              paidSlice.map((p) => {
-                const { iva, total } = IVAProduct(p.price)
-                return (
-                  <tr key={p.idProductClient || p._id}>
-                    <td className='text-primary p-3'>{capitalizeFirstWord(p.name)}</td>
-                    <td className="p-3">{total}€</td>
-                    <td className="p-3">{iva}€</td>
-                    <td className='p-3'>{formatDate(p.buyDate)}</td>
-                    <td className='p-3'>{formatDate(p.paymentDate)}</td>
-                    <td className='p-3'>{capitalizeFirstWord(p.paymentMethod)}</td>
-                    <td className='p-3'>
-                      <CreateTicket
-                        idSalesClient={p.idSalesClient}
-                        products={productsClientPaid}
-                      />
-                    </td>
+              paidSlice.map((row) => {
+                  const saleId = row.idSalesClient;                 // id de la venta
+                  const group = productsClientPaid.filter(i => i.idSalesClient === saleId);
 
-                  </tr>
-                )
-              })
+                  const venta = {
+                    fecha: row.paymentDate,
+                    cliente: `${activeClient.name} ${activeClient.lastName}`,
+                    items: group.map(i => ({
+                      name: i.name,
+                      price: Number(i.price),
+                      discount: Number(i.discount || 0),
+                    })),
+                    total: group.reduce((s, i) => s + (Number(i.price) - Number(i.discount || 0)), 0),
+                  };
+
+                  const { iva } = IVAProduct(row.price);
+
+                  return (
+                    <tr key={row.idProductClient || row._id}>
+                      <td className="text-primary p-3">{capitalizeFirstWord(row.name)}</td>
+                      <td className="p-3">{row.price}€</td>
+                      <td className="p-3">{iva}€</td>
+                      <td className="p-3">{formatDate(row.buyDate)}</td>
+                      <td className="p-3">{formatDate(row.paymentDate)}</td>
+                      <td className="p-3">{capitalizeFirstWord(row.paymentMethod)}</td>
+                      <td className="p-3"><CreateTicket venta={venta} /></td>
+                    </tr>
+                    )
+                })
+              
             )}
           </tbody>
         </table>
