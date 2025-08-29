@@ -7,6 +7,7 @@ import { ClientName } from "../components/clientPage/sales/ClientName";
 import { EditProductClient } from "../components/clientPage/accounting/EditProductClient";
 import { DeleteProductClient } from "../components/clientPage/accounting/DeleteProductClient";
 import { EditProductClientModal } from "../components/clientPage/accounting/EditProductClientModal";
+import { IVAProduct } from "../../helpers/IVAProduct";
 
 
 export const Accounting = () => {
@@ -69,6 +70,7 @@ export const Accounting = () => {
                             <tr>
                                 <th scope="col" className="col-1 text-center">Total Efectivo</th>
                                 <th scope="col" className="col-1 text-center">Total TPV</th>
+                                <th scope="col" className="col-1 text-center">IVA</th>
                                 <th scope="col" className="col-1 text-center">TOTAL</th>
                             </tr>
                         </thead>
@@ -77,6 +79,7 @@ export const Accounting = () => {
                                 <tr>
                                     <td className="text-center">{totalCash.toFixed(2)} €</td>
                                     <td className="text-center"> {totalTPV.toFixed(2)} €</td>
+                                    <td className="text-center"> {IVAProduct(totalAll).iva} €</td>
                                     <td className="fw-bold text-center"> {totalAll.toFixed(2)} €</td>
                                 </tr>
                             ) : (
@@ -98,6 +101,7 @@ export const Accounting = () => {
                         <tr>
                             <th scope="col" className="col-5">Concepto</th>
                             <th scope="col" className="col-2 ">Entrada (€)</th>
+                            <th scope="col" className="col-2 ">IVA (€)</th>
                             <th scope="col" className="col-2">Fecha Pago</th>
                             <th scope="col" className="col-2">Método de pago</th>
                             <th scope="col" className="col-2 ">Editar/Borrar</th>
@@ -110,8 +114,8 @@ export const Accounting = () => {
                                 <td className="p-3 d-flex gap-2 align-items-center">
                                     {capitalizeFirstWord(p.name)} - <ClientName idClient={p.idClient} />
                                 </td>
-
                                 <td >{p.paymentMethod != null ? `${p.price - p.discount} €` : '-'}</td>
+                                <td >{p.paymentMethod != null ? `${IVAProduct(p.price - p.discount).iva} €` : '-'}</td>
                                 <td>{formatDate(p.paymentDate)}</td>
                                 <td>{p.paymentMethod != null ? capitalizeFirstWord(p.paymentMethod) : 'Pendiente'}</td>
 

@@ -4,8 +4,7 @@ import { useUiStore } from '../../../../hooks/useUiStore';
 import { useClientsStore } from '../../../../hooks/useClientsStore';
 import { useProductClientStore } from '../../../../hooks/useProductClientStore';
 import { useNavigate } from 'react-router-dom';
-import { generateAndSendTicket } from '../../../../hooks/ticketGenerator';
-import { printTicket } from '../../../../helpers/ticketPDF';
+import { printTicket } from '../../../../helpers/TicketPDF';
 
 const customStylesModal = {
   content: {
