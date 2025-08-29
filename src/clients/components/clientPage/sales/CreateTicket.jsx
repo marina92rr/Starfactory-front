@@ -6,7 +6,7 @@ pdfMake.vfs = pdfFonts.vfs; // (si tu build usa pdfMake.vfs, deja así)
 
 import { useClientsStore } from '../../../../hooks/useClientsStore';
 import { getGmailAccessToken, sendPdfWithToken } from '../../../../helpers/gmailSendPdf';
-import { getTicketBlob, printTicket } from '../../../../helpers/ticketPDF';
+import { getTicketBlob, printTicket } from '../../../../helpers/TicketPDF';
 import { capitalizeFirstWord } from '../../../../helpers/capitalizeFirstWord';
 
 
