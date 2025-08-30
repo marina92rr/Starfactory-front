@@ -16,17 +16,24 @@ export const buildTicketDoc = (venta) => {
     pageSize: { width: 226.77, height: 'auto' },
     pageMargins: [10, 10, 10, 10],
     content: [
-      { text: 'STAR FACTORY SEVILLA', alignment: 'center', bold: true, fontSize: 12 },
+      { text: 'Star Factory Sevilla', alignment: 'left', bold: true, fontSize: 12 },
+      { text: 'STAR FACTORY SEVILLA', alignment: 'left', bold: false, fontSize: 8 },
+      { text: '53273142J', alignment: 'left', bold: false, fontSize: 8 },
+      { text: 'Calle Gordales nave, 3-5, 41930 Bormujos, Sevilla', alignment: 'left', bold: false, fontSize: 8 },
+      { text: '955116515 starfactorysevilla@hotmail.com', alignment: 'left', bold: false, fontSize: 8 },
+      { text: 'http://www.starfactorysevilla.com', alignment: 'left', bold: false, fontSize: 8 },
       { text: `Fecha: ${new Date(venta.fecha).toLocaleString()}`, fontSize: 8 },
-      { text: `Cliente: ${venta.cliente}`, fontSize: 8 },
-      { text: '-----------------------------', alignment: 'center' },
+      { text: '-----------------------------------------------------------------------------------', alignment: 'left' },
+      { text: `${venta.cliente}`, fontSize: 8 },
+      { text: '-----------------------------------------------------------------------------------', alignment: 'left' },
+      { text: `Concepto`, fontSize: 8 },
       ...venta.items.map(it => ({
         columns: [
           { text: it.name, width: '70%' },
           { text: `${Number(it.price).toFixed(2)} €`, width: '30%', alignment: 'right' }
         ]
       })),
-      { text: '-----------------------------', alignment: 'center' },
+      { text: '-----------------------------------------------------------------------------------', alignment: 'left' },
       ...venta.items.map(it => ({
         columns: [
           { text: 'Descuento:' },
