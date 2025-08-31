@@ -49,7 +49,7 @@ export const ClientsPage = () => {
   };
   return (
 
-    <div className='m-5'>
+    <div className='m-5 slide-in-up'>
       {/* Título + botón nuevo cliente */}
       <div className='pt-5 d-flex align-items-center'>
         <h1>Clientes</h1>

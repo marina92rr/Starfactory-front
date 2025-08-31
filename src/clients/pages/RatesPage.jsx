@@ -25,7 +25,7 @@ export const RatesPage = () => {
   }, [activeQuota]);
   
   return (
-    <div className='m-5'>
+    <div className='m-5 fade-in'>
       <div className='py-5'>
         <h1>Tarifas</h1>
         <hr />

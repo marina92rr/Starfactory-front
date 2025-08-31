@@ -53,7 +53,7 @@ export const Accounting = () => {
 
 
     return (
-        <div className='m-5'>
+        <div className='m-5 fade-in'>
             <div className='pt-5 align-items-center'>
                 <h1 className='mb-4'>Contabilidad</h1>
             </div>

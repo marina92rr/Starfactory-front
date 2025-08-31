@@ -54,7 +54,7 @@ export const ClientPage = () => {
   return (
     <div style={{ marginTop: '100px' }}>
 
-      <div className='m-5'>
+      <div className='m-5 slide-in-up'> {/* O podrías usar 'zoom-in', 'flip-in-x', etc. */}
         <div className='d-flex align-items-center gap-3 my-4 ' >
 
           {/* Imagen */}

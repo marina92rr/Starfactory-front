@@ -1,4 +1,3 @@
-
 html, body, #root { height: 100%; margin:0; }
 
 :root { --navbar-h: 56px; } /* ajusta a tu Navbar */
@@ -17,3 +16,9 @@ html, body, #root { height: 100%; margin:0; }
 
 /* opcional si quieres scroll en el menú largo */
 .sidebar { overflow-y: auto; max-height: 100%; }
+
+/* Animación para la entrada suave de nuevas vistas */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

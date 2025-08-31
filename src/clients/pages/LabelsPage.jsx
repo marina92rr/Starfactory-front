@@ -15,7 +15,7 @@ export const LabelsPage = () => {
   }, []);
 
   return (
-    <div className='m-5'>
+    <div className='m-5 fade-in'>
       <div className='pt-5 align-items-center'>
         <h1 className='mb-4'>Etiquetas</h1>
         <LabelAddNew />

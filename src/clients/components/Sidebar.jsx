@@ -1,33 +1,34 @@
-
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { useClientsStore } from '../../hooks/useClientsStore';
 import { useRateStore } from '../../hooks/useRateStore';
 import { useCategoryStore } from '../../hooks/useCategoryStore';
-import logo from "../../assets/logo.png";
+import logo from '../../assets/logo.png';
 
+// Actualización de enlaces de navegación.  Se añade una entrada para el
+// resumen mensual de ventas.
 const links = [
+  { name: 'Dashboard', path: '/monthly-summary' },
   { name: 'Clientes', path: '/' },
   { name: 'Tienda', path: '/store' },
   { name: 'Tarifas', path: '/rates' },
-  { name: 'Etiquetas', path: '/labels'},
-  { name: 'Contabilidad', path: '/accounting' }
-]
+  { name: 'Etiquetas', path: '/labels' },
+  { name: 'Contabilidad', path: '/accounting' },
+];
 
 export const Sidebar = () => {
-
   const dispatch = useDispatch();
   const { startResetClientsPage } = useClientsStore();
   const { startResetRatesPage } = useRateStore();
   const { startResetStorePage } = useCategoryStore();
 
   return (
-
-
     <div
-      className="bg-light mt-5" style={{ minWidth: '180px', maxWidth: '180px', height: '100vh' }}
+      className='bg-light mt-5'
+      style={{ minWidth: '180px', maxWidth: '180px', height: '100vh' }}
     >
-      <div className="bg-light mt-5"
+      <div
+        className='bg-light mt-5'
         style={{
           position: 'fixed',
           top: 0,
@@ -35,17 +36,18 @@ export const Sidebar = () => {
           width: '180px',
           height: '100vh',
           zIndex: 1000, // para que esté encima de otros elementos si hace falta
-          overflowY: 'auto'
-        }}>
-        <div className="text-center pt-5 p-3">
+          overflowY: 'auto',
+        }}
+      >
+        <div className='text-center pt-5 p-3'>
           <img
             src={logo}
-            alt="Star Factory Logo"
-            style={{ width: "100px", height: "auto" }}
+            alt='Star Factory Logo'
+            style={{ width: '100px', height: 'auto' }}
           />
         </div>
         <nav>
-          {links.map(link => (
+          {links.map((link) => (
             <NavLink
               key={link.path}
               to={link.path}
@@ -60,25 +62,20 @@ export const Sidebar = () => {
                 if (link.name === 'Tarifas') {
                   dispatch(startResetRatesPage());
                 }
-              }
-              }
+              }}
             >
               {({ isActive }) => (
-                <div className='p-3' style={{ background: isActive ? '#007bff' : 'none', color: isActive ? '#ffffff' : '#000000' }}>
-                  {/* Nombre siempre visible; activo en azul */}
-                  <span>
-                    {link.name}
-                  </span>
+                <div
+                  className='p-3'
+                  style={{ background: isActive ? '#007bff' : 'none', color: isActive ? '#ffffff' : '#000000' }}
+                >
+                  <span>{link.name}</span>
                 </div>
               )}
             </NavLink>
           ))}
         </nav>
       </div>
-
-
     </div>
-
-
-  )
-}
+  );
+};

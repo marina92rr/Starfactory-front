@@ -29,7 +29,7 @@ export const StorePage = () => {
 
   return (
 
-    <div className='m-5'>
+    <div className='m-5 fade-in'>
       <div className='py-5 '>
         <h1>Tienda</h1>
     <hr />
