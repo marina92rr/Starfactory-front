@@ -29,7 +29,7 @@ export const productSlice = createSlice({
       state.activeProduct = null;
     },
 
-    // Modificar cliente por dni
+    // Modificar cliente por 
     onUpdateProduct: (state, { payload }) => {
       state.products = state.products.map(product => {      //Nuevo array del evento
         if (product.idProduct === payload.idProduct) {

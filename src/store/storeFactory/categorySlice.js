@@ -27,7 +27,7 @@ export const categorySlice = createSlice({
         state.activeCategory = null;
     },
 
-      // Modificar cliente por dni
+      // Modificar cliente por 
     onUpdateCategory:(state, {payload})=>{
       state.categories = state.categories.map( category =>{      //Nuevo array del evento
         if( category.idCategory === payload.idCategory){

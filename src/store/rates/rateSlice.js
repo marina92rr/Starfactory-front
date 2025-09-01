@@ -25,7 +25,7 @@ export const rateSlice = createSlice({
         state.activeRate = payload;
     },
 
-      // Modificar cliente por dni
+      // Modificar cliente por 
     onUpdateRate:(state, {payload})=>{
       state.rates = state.rates.map( rate =>{      //Nuevo array del evento
         if( rate.idRate === payload.idRate){

@@ -28,7 +28,7 @@ export const quotaSlice = createSlice({
         state.quotas.push(payload);
         state.activeQuota = null;
     },
-      // Modificar cliente por dni
+      // Modificar cliente por 
     onUpdateQuota:(state, {payload})=>{
       state.quotas = state.quotas.map( quota =>{      //Nuevo array del evento
         if( quota.idQuota === payload.idQuota){

@@ -69,12 +69,10 @@ export const useClientsStore = () => {
   const starLoadingClients = async () => {
 
     try {
-      //const {data} = await axios.get('http://localhost:4001/api/clients');
       const { data } = await clientsApi.get('clients');
       const client = data.clients;
 
       dispatch(onLoadClients(client));
-      //console.log({client});
 
     } catch (error) {
       console.log('Error al cargar los eventos');

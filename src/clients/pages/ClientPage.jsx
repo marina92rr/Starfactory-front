@@ -94,7 +94,7 @@ export const ClientPage = () => {
                 <div className="d-flex align-items-center">
                   <i className="bi bi-telephone-fill me-1 text-secondary"></i>
                   <button type="button" className="btn btn-link p-0 m-0 text-decoration-none">
-                    {activeClient.mainPhone}
+                    {activeClient.whatsappPhone ? activeClient.whatsappPhone : activeClient.mainPhone}
                   </button>
                 </div>
               )}
