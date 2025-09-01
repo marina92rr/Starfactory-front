@@ -29,7 +29,6 @@ export const ClientModal = () => {
   const [formValues, setFormValues] = useState({
     name: '',
     lastName: '',
-    dni: '',
     email: '',
     mainPhone: '',
     optionalPhone: '',
@@ -47,7 +46,6 @@ export const ClientModal = () => {
         setFormValues({
           name: '',
           lastName: '',
-          dni: '',
           email: '',
           mainPhone: '',
           optionalPhone: '',
@@ -112,17 +110,6 @@ export const ClientModal = () => {
             name='lastName'
             type="text"
             value={formValues.lastName || ''}
-            onChange={onInputChange}
-          />
-        </div>
-
-        <div className='mb-3'>
-          <label className="form-label">DNI</label>
-          <input
-            className='form-control'
-            name='dni'
-            type="text"
-            value={formValues.dni || ''}
             onChange={onInputChange}
           />
         </div>

@@ -15,7 +15,7 @@ export const AppRoutes = () => {
 
       {/* ----------------------Cliente---------------------- */}
       <Route path=':idClient' element={<ClientPage />}>
-        {/* Ruta índice: /clients/:dni */}
+        {/* Ruta índice: /clients/ */}
         <Route index element={<Navigate to='overview' replace />} />
         {/* Vista general */}
         <Route path='overview' element={<OverviewClient />} />
