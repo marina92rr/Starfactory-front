@@ -27,6 +27,8 @@ export const useProductClientStore = () => {
     }
   };
 
+  
+ 
 
   //Lectura de productos por cliente
   const startLoadingProductsByClient = async (idClient) => {
@@ -60,6 +62,19 @@ export const useProductClientStore = () => {
       console.error('❌ Error cargando productos del cliente:', error);
     }
   };
+
+
+  // Nuevo producto 
+  const startSavingAdministrationProductClient = async (productClientSave) => {
+    try {
+      const normalizedProductClient = normalizeAllTextFields(productClientSave); //  normalizar todos los campos string
+      const { data } = await clientsApi.post('/productclient/administration', normalizedProductClient);
+      dispatch(onAddNewProductClient(data));
+      
+    } catch (error) {
+      console.log('Error en Front', error);
+    }
+  }
 
   // Nuevo producto 
   const startSavingProductClient = async (productClientSave, isEditMode) => {
@@ -147,6 +162,7 @@ export const useProductClientStore = () => {
     startDeleteProductClient,
     startLoadProductsByDate,
     setSelectedDate,
+    startSavingAdministrationProductClient
   }
 
 }

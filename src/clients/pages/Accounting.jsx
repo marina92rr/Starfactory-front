@@ -8,6 +8,8 @@ import { EditProductClient } from "../components/clientPage/accounting/EditProdu
 import { DeleteProductClient } from "../components/clientPage/accounting/DeleteProductClient";
 import { EditProductClientModal } from "../components/clientPage/accounting/EditProductClientModal";
 import { IVAProduct } from "../../helpers/IVAProduct";
+import { AddNewProductClient } from "../components/clientPage/accounting/AddNewProductClient";
+import { AddProductClientModal } from "../components/clientPage/accounting/AddProductClientModal";
 
 
 export const Accounting = () => {
@@ -61,7 +63,13 @@ export const Accounting = () => {
                 <div>
                     <div>
                         <h6 className='mb-4'>Caja diaria</h6>
-                        <DateNavigator value={date} onChange={setDate} />
+
+                        <div className="d-flex justify-content-between">
+                            <AddNewProductClient/>
+                            <AddProductClientModal/>
+                            <DateNavigator value={date} onChange={setDate} />
+
+                        </div>
                     </div>
                 </div>
                 <div className="col-4 ">

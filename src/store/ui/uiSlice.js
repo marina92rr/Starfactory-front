@@ -26,7 +26,7 @@ export const uiSlice = createSlice({
     isModalSuscriptionClientOpen: false,
     //ProductClientUnpaid
     isModalProductClientUnpaidOpen: false,
-    //ProductClientUnpaid
+    //ProductClient
     isModalProductClientOpen: false,
 
   },
