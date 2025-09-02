@@ -34,7 +34,7 @@ export const CreateTicket = ({ venta }) => {
     // 3) Abrir WhatsApp con el ticket formateado
     const to2 = (n) => Number(n).toFixed(2);
     const fecha = new Date(venta.fecha).toLocaleString();
-      const discount = venta.items.reduce((s, i) => s + Number(i.discount || 0), 0);
+    const discount = venta.items.reduce((s, i) => s + Number(i.discount || 0), 0);
 
     const subtotal = venta.total / 1.21;
     const iva = venta.total - subtotal;
@@ -71,13 +71,13 @@ export const CreateTicket = ({ venta }) => {
 
     const phone = activeClient.whatsappPhone; //tel cliente
     // 3) Abrir WhatsApp con web
-   //window.open(`https://wa.me/${phone}?text=${encodeURIComponent(ticketMsg)}`, '_blank');
+    //window.open(`https://wa.me/${phone}?text=${encodeURIComponent(ticketMsg)}`, '_blank');
 
     // 3) Abrir Whatsapp con app
-  window.location.href = `whatsapp://send?phone=${phone}&text=${encodeURIComponent(ticketMsg)}`;
+    window.location.href = `whatsapp://send?phone=${phone}&text=${encodeURIComponent(ticketMsg)}`;
   };
 
-  
+
   return (
 
     <>
@@ -93,10 +93,7 @@ export const CreateTicket = ({ venta }) => {
 
         <ul className="dropdown-menu dropdown-menu-end">
           <li><button className="dropdown-item" onClick={handlePrint}>Imprimir</button></li>
-          {/*
-            <li><button className="dropdown-item" onClick={handleSendEmail}>Enviar email</button></li>
-          */}
-        
+          <li><button className="dropdown-item" onClick={handleSendEmail}>Enviar email</button></li>
           <li><button className="dropdown-item" onClick={handleWhatsapp}>Enviar WhatsApp</button></li>
         </ul>
       </div>

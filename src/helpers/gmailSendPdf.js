@@ -9,7 +9,7 @@ const loadGIS = () =>
 
 export async function getGmailAccessToken() {
   await loadGIS();
-  const CLIENT_ID = '165932605274-f5qavfphoh5faipi9eaf5oe9hq1lbquc.apps.googleusercontent.com';
+  const CLIENT_ID = '242793852492-jqildtqjgao0fnqgc5fj4hd9kv92abks.apps.googleusercontent.com'; //ID Cliente StarFactory
   if (!CLIENT_ID) throw new Error('Falta VITE_GOOGLE_CLIENT_ID');
 
   return await new Promise((resolve) => {

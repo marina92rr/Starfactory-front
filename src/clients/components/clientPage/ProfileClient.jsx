@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { ClientModal } from '../ClientModal';
 import { ClientEddit } from '../ClientEddit';
 import userPhoto from '../../../assets/user.png';
-import  {formatDate}  from '../../../helpers/formatDate';
+import { formatDate } from '../../../helpers/formatDate';
 
 
 export const ProfileClient = () => {
@@ -37,13 +37,13 @@ export const ProfileClient = () => {
           {/* Imagen */}
           <button className='btn'>
             <img
-            src={userPhoto}
-            className="rounded-circle mt-1"
-            alt="Usuario"
-            style={{ width: '80px', height: '80px', objectFit: 'cover' }}
-          />
+              src={userPhoto}
+              className="rounded-circle mt-1"
+              alt="Usuario"
+              style={{ width: '80px', height: '80px', objectFit: 'cover' }}
+            />
           </button>
-          
+
         </div>
 
         {/* Columna izquierda */}
@@ -56,14 +56,14 @@ export const ProfileClient = () => {
           </div>
           <div>
             <strong>Teléfono:</strong>
-            <p>{activeClient.mainPhone  ? activeClient.mainPhone : '-'}</p>
+            <p>{activeClient.mainPhone ? activeClient.mainPhone : '-'}</p>
           </div>
-           <div>
+          <div>
             <strong>Fecha de alta:</strong>
             <p>{formatDate(activeClient.dateRegistration)}</p>
           </div>
-         
-         
+
+
 
         </div>
 
@@ -74,7 +74,7 @@ export const ProfileClient = () => {
             <p>{activeClient.lastName ? activeClient.lastName : '-'}</p>
           </div>
 
-           <div>
+          <div>
             <strong>2 Teléfono:</strong>
             <p>{activeClient.optionalPhone ? activeClient.optionalPhone : '-'}</p>
           </div>
@@ -82,45 +82,45 @@ export const ProfileClient = () => {
             <strong>Código Cliente:</strong>
             <p>{activeClient.idClient}</p>
           </div>
-          
+
         </div>
 
         {/* Columna derecha */}
         <div className="col-md-4">
           <div>
             <strong>Correo electrónico:</strong>
-             <p>
-    {activeClient.email ? (
-      <a 
-        href={`mailto:${activeClient.email}?subject=${encodeURIComponent("Consulta desde StarFactory")}&body=${encodeURIComponent("Hola, te escribo porque...")}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {activeClient.email.toLowerCase()}
-      </a>
-    ) : (
-      '-'
-    )}
-  </p>
+            <p>
+              {activeClient.email ? (
+                <a
+                  href={`mailto:${activeClient.email}?subject=${encodeURIComponent("Consulta desde StarFactory")}&body=${encodeURIComponent("Hola, te escribo porque...")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {activeClient.email.toLowerCase()}
+                </a>
+              ) : (
+                '-'
+              )}
+            </p>
           </div>
 
           <div>
             <strong>Teléfono Whattsapp:</strong>
             <p>
-    {activeClient.whatsappPhone ? (
-      <a
-        href={`https://wa.me/${activeClient.whatsappPhone}?text=Hola%20soy%20${encodeURIComponent('StarFactory')}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {activeClient.whatsappPhone}
-      </a>
-    ) : (
-      '-'
-    )}
-  </p>
+              {activeClient.whatsappPhone ? (
+                <a
+                  href={`https://wa.me/${activeClient.whatsappPhone}?text=Hola%20soy%20${encodeURIComponent('StarFactory')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {activeClient.whatsappPhone}
+                </a>
+              ) : (
+                '-'
+              )}
+            </p>
           </div>
-          
+
         </div>
       </div>
 

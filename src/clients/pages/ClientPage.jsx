@@ -94,7 +94,16 @@ export const ClientPage = () => {
                 <div className="d-flex align-items-center">
                   <i className="bi bi-telephone-fill me-1 text-secondary"></i>
                   <button type="button" className="btn btn-link p-0 m-0 text-decoration-none">
-                    {activeClient.whatsappPhone ? activeClient.whatsappPhone : activeClient.mainPhone}
+                    
+                    {activeClient.whatsappPhone ? (
+                      <a
+                          href={`whatsapp://send?phone=${activeClient.whatsappPhone}&text=${encodeURIComponent(`Hola soy StarFactory`)}`}
+                      >
+                        {activeClient.whatsappPhone}
+                      </a>
+                    ) : (
+                       activeClient.mainPhone
+                    )}
                   </button>
                 </div>
               )}
@@ -166,10 +175,10 @@ export const ClientPage = () => {
             )}
             <CancelSuscribeClientModal idClient={activeClient.idClient} />
             <SubscribeClient idClient={activeClient.idClient} />
-               {!isImmediateCancellation ? (
-             <></>
+            {!isImmediateCancellation ? (
+              <></>
             ) : (
-              <DeleteClient/>
+              <DeleteClient />
             )}
           </div>
         </div>
