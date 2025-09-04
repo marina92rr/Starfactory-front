@@ -9,6 +9,7 @@ import { DeleteProductClientUnpaid } from './sales/DeleteProductClientUnpaid'
 import { LiquidateProductClient } from './sales/LiquidateProductClient'
 import { LiquidateProductClientModal } from './sales/LiquidateProductClientModal'
 import { CreateTicket } from './sales/CreateTicket'
+import { DateLabel } from '../../../hooks/DateLabel'
 
 export const SalesClient = () => {
   const { activeClient, setActiveClient } = useClientsStore()
@@ -68,7 +69,7 @@ export const SalesClient = () => {
                     <td className='text-primary p-3 col-4'>{capitalizeFirstWord(unpaid.name)}</td>
                     <td className="p-3">{total}€</td>
                     <td className="p-3">{iva}€</td>
-                    <td className='p-3'>{formatDate(unpaid.buyDate)}</td>
+                    <td className='p-3'><DateLabel isoDate = {unpaid.buyDate}/></td>
                     <td className='p-3'>
                       <div className='d-flex align-items-center'>
                         <LiquidateProductClient unpaid={unpaid} />
@@ -97,13 +98,13 @@ export const SalesClient = () => {
         <table className="table border col-12">
           <thead>
             <tr>
-              <th className="p-3 col-4">Concepto</th>
+              <th className="p-3 col-3">Concepto</th>
               <th className="p-3 col-1">Total</th>
               <th className="p-3 col-1">IVA</th>
               <th className="p-3 col-2">Fecha</th>
-              <th className="p-3 col-1">Pago</th>
+              <th className="p-3 col-2">Pago</th>
               <th className="p-3 col-2">Método de pago</th>
-              <th className="p-3 col-2">ticket</th>
+              <th className="p-3 col-1">ticket</th>
             </tr>
           </thead>
           <tbody>
@@ -132,8 +133,8 @@ export const SalesClient = () => {
                       <td className="text-primary p-3">{capitalizeFirstWord(row.name)}</td>
                       <td className="p-3">{row.price}€</td>
                       <td className="p-3">{iva}€</td>
-                      <td className="p-3">{formatDate(row.buyDate)}</td>
-                      <td className="p-3">{formatDate(row.paymentDate)}</td>
+                      <td className="p-3"><DateLabel isoDate = {row.buyDate}/></td>
+                      <td className="p-3"><DateLabel isoDate = {row.paymentDate}/></td>
                       <td className="p-3">{capitalizeFirstWord(row.paymentMethod)}</td>
                       <td className="p-3"><CreateTicket venta={venta} /></td>
                     </tr>
