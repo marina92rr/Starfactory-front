@@ -133,7 +133,7 @@ export const SalesClient = () => {
                       <td className="text-primary p-3">{capitalizeFirstWord(row.name)}</td>
                       <td className="p-3">{row.price}€</td>
                       <td className="p-3">{iva}€</td>
-                      <td className="p-3"><DateLabel isoDate = {row.buyDate}/></td>
+                      <td className="p-3">{formatDate(row.buyDate)}</td>
                       <td className="p-3"><DateLabel isoDate = {row.paymentDate}/></td>
                       <td className="p-3">{capitalizeFirstWord(row.paymentMethod)}</td>
                       <td className="p-3"><CreateTicket venta={venta} /></td>

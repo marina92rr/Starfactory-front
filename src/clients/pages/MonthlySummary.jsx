@@ -83,17 +83,20 @@ export const MonthlySummary = () => {
     
     <div style={{ marginTop: '100px' }}>
     <div className='m-5 fade-in'>
+      
       <h1 className='mb-4'>Resumen Mensual de Ventas</h1>
       {loading && <p>Cargando resumen...</p>}
       {error && <p className='text-danger'>{error}</p>}
       {!loading && !error && summary.length === 0 && <p>No hay datos de ventas mensuales.</p>}
       {!loading && !error && summary.length > 0 && (
-        <div>
-          <div className='mb-5' style={{ maxWidth: '500px' }}>
+        <div className='d-flex align-items-center'>
+          <div className='mb-5 me-5' style={{ maxWidth: '500px' }}>
             <Bar data={barData} options={barOptions} />
           </div>
           {methodSummary.length > 0 && (
-            <div style={{ maxWidth: '300px' }}>
+            <div 
+              className='mb-5 ms-5'
+              style={{ maxWidth: '500px' }}>
               <h5>Distribución por método de pago</h5>
               <Pie data={pieData} />
             </div>

@@ -10,6 +10,7 @@ import { EditProductClientModal } from "../components/clientPage/accounting/Edit
 import { IVAProduct } from "../../helpers/IVAProduct";
 import { AddNewProductClient } from "../components/clientPage/accounting/AddNewProductClient";
 import { AddProductClientModal } from "../components/clientPage/accounting/AddProductClientModal";
+import { DateLabel } from "../../hooks/DateLabel";
 
 
 export const Accounting = () => {
@@ -107,12 +108,12 @@ export const Accounting = () => {
                 <table className="table border align-middle rounded-3 ">
                     <thead className="table-light">
                         <tr>
-                            <th scope="col" className="col-5">Concepto</th>
-                            <th scope="col" className="col-2 ">Entrada (€)</th>
+                            <th scope="col" className="col-4">Concepto</th>
+                            <th scope="col" className="col-1 ">Entrada (€)</th>
                             <th scope="col" className="col-2 ">IVA (€)</th>
                             <th scope="col" className="col-2">Fecha Pago</th>
                             <th scope="col" className="col-2">Método de pago</th>
-                            <th scope="col" className="col-2 ">Editar/Borrar</th>
+                            <th scope="col" className="col-2">Editar/Borrar</th>
                         </tr>
                     </thead>
 
@@ -124,7 +125,7 @@ export const Accounting = () => {
                                 </td>
                                 <td >{p.paymentMethod != null ? `${p.price - p.discount} €` : '-'}</td>
                                 <td >{p.paymentMethod != null ? `${IVAProduct(p.price - p.discount).iva} €` : '-'}</td>
-                                <td>{formatDate(p.paymentDate)}</td>
+                                <td><DateLabel isoDate={p.paymentDate} /></td>
                                 <td>{p.paymentMethod != null ? capitalizeFirstWord(p.paymentMethod) : 'Pendiente'}</td>
 
                                 {/* 👇 sin d-flex en el td */}

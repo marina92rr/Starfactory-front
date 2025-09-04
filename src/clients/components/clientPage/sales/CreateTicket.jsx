@@ -1,5 +1,4 @@
-// src/pages/sales/CreateTicket.jsx (ajusta la ruta real)
-import React from 'react';
+// CREA EL TICKET --->> IMPRIME/ ENVIA: EMAIL - WHATSAPP
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.vfs; // (si tu build usa pdfMake.vfs, deja así)
@@ -8,6 +7,8 @@ import { useClientsStore } from '../../../../hooks/useClientsStore';
 import { getGmailAccessToken, sendPdfWithToken } from '../../../../helpers/gmailSendPdf';
 import { getTicketBlob, printTicket } from '../../../../helpers/TicketPDF';
 import { capitalizeFirstWord } from '../../../../helpers/capitalizeFirstWord';
+import points from '../../../../assets/3point.png';
+
 
 
 
@@ -84,16 +85,17 @@ export const CreateTicket = ({ venta }) => {
       <div className="btn-group">
         <button
           type="button"
-          className="btn btn-outline-secondary btn-sm rounded py-0 px-1 fs-4 lh-1"
+          className="btn btn-outline rounded"
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          ...
+          <img src={points}  
+          style={{ width: '20px', height: '20px', objectFit: 'cover' }}/>
         </button>
 
         <ul className="dropdown-menu dropdown-menu-end">
           <li><button className="dropdown-item" onClick={handlePrint}>Imprimir</button></li>
-          <li><button className="dropdown-item" onClick={handleSendEmail}>Enviar email</button></li>
+          <li><button className="dropdown-item" onClick={handleSendEmail}>Enviar Email</button></li>
           <li><button className="dropdown-item" onClick={handleWhatsapp}>Enviar WhatsApp</button></li>
         </ul>
       </div>
