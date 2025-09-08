@@ -10,6 +10,9 @@ import { LiquidateProductClient } from './sales/LiquidateProductClient'
 import { LiquidateProductClientModal } from './sales/LiquidateProductClientModal'
 import { CreateTicket } from './sales/CreateTicket'
 import { DateLabel } from '../../../hooks/DateLabel'
+import { EditProductClient } from './accounting/EditProductClient'
+import { EditProductClientModal } from './accounting/EditProductClientModal'
+import { DeleteProductClient } from './accounting/DeleteProductClient'
 
 export const SalesClient = () => {
   const { activeClient, setActiveClient } = useClientsStore()
@@ -69,7 +72,7 @@ export const SalesClient = () => {
                     <td className='text-primary p-3 col-4'>{capitalizeFirstWord(unpaid.name)}</td>
                     <td className="p-3">{total}€</td>
                     <td className="p-3">{iva}€</td>
-                    <td className='p-3'><DateLabel isoDate = {unpaid.buyDate}/></td>
+                    <td className='p-3'><DateLabel isoDate={unpaid.buyDate} /></td>
                     <td className='p-3'>
                       <div className='d-flex align-items-center'>
                         <LiquidateProductClient unpaid={unpaid} />
@@ -104,6 +107,7 @@ export const SalesClient = () => {
               <th className="p-3 col-2">Fecha</th>
               <th className="p-3 col-2">Pago</th>
               <th className="p-3 col-2">Método de pago</th>
+              <th className="p-3 col-1">Editar</th>
               <th className="p-3 col-1">ticket</th>
             </tr>
           </thead>
@@ -112,35 +116,44 @@ export const SalesClient = () => {
               <tr><td colSpan={6} className="text-muted">No hay Productos en esta categoría</td></tr>
             ) : (
               paidSlice.map((row) => {
-                  const saleId = row.idSalesClient;                 // id de la venta
-                  const group = productsClientPaid.filter(i => i.idSalesClient === saleId);
+                const saleId = row.idSalesClient;                 // id de la venta
+                const group = productsClientPaid.filter(i => i.idSalesClient === saleId);
 
-                  const venta = {
-                    fecha: row.paymentDate,
-                    cliente: `${activeClient.name} ${activeClient.lastName}`,
-                    items: group.map(i => ({
-                      name: i.name,
-                      price: Number(i.price),
-                      discount: Number(i.discount || 0),
-                    })),
-                    total: group.reduce((s, i) => s + (Number(i.price) - Number(i.discount || 0)), 0),
-                  };
+                const venta = {
+                  fecha: row.paymentDate,
+                  cliente: `${activeClient.name} ${activeClient.lastName}`,
+                  items: group.map(i => ({
+                    name: i.name,
+                    price: Number(i.price),
+                    discount: Number(i.discount || 0),
+                  })),
+                  total: group.reduce((s, i) => s + (Number(i.price) - Number(i.discount || 0)), 0),
+                };
 
-                  const { iva } = IVAProduct(row.price);
+                const { iva } = IVAProduct(row.price);
 
-                  return (
-                    <tr key={row.idProductClient || row._id}>
-                      <td className="text-primary p-3">{capitalizeFirstWord(row.name)}</td>
-                      <td className="p-3">{row.price}€</td>
-                      <td className="p-3">{iva}€</td>
-                      <td className="p-3">{formatDate(row.buyDate)}</td>
-                      <td className="p-3"><DateLabel isoDate = {row.paymentDate}/></td>
-                      <td className="p-3">{capitalizeFirstWord(row.paymentMethod)}</td>
-                      <td className="p-3"><CreateTicket venta={venta} /></td>
-                    </tr>
-                    )
-                })
-              
+                return (
+                  <tr key={row.idProductClient || row._id}>
+                    <td className="text-primary p-3">{capitalizeFirstWord(row.name)}</td>
+                    <td className="p-3">{row.price - row.discount}€</td>
+                    <td className="p-3">{iva}€</td>
+                    <td className="p-3">{formatDate(row.buyDate)}</td>
+                    <td className="p-3"><DateLabel isoDate={row.paymentDate} /></td>
+                    <td className="p-3">{capitalizeFirstWord(row.paymentMethod)}</td>
+                    <td className="p-3 text-nowrap">
+                      <div className="d-inline-flex gap-2">
+                        <EditProductClient productClient={row} />
+                        <EditProductClientModal productClient={row} />
+                        <DeleteProductClient productClient={row} />
+                      </div>
+
+                    </td>
+
+                    <td className="p-3"><CreateTicket venta={venta} /></td>
+                  </tr>
+                )
+              })
+
             )}
           </tbody>
         </table>

@@ -21,7 +21,7 @@ const customStylesModal = {
 
 export const EditProductClientModal = ({ productClient }) => {
   const { isModalProductClientOpen, closeProductClientModal } = useUiStore()
-  const { activeProductClient, startUpdateProductClient, startLoadProductsByDate } = useProductClientStore();
+  const { activeProductClient, startUpdateProductClient, startLoadProductsByDate, startLoadingProductsClientPaid } = useProductClientStore();
 
 
 
@@ -30,6 +30,7 @@ export const EditProductClientModal = ({ productClient }) => {
   const [formValues, setFormValues] = useState({
     name: '',
     price: '',
+    discount: '',
     paymentDate: '',
     paymentMethod: '',
   })
@@ -40,12 +41,14 @@ export const EditProductClientModal = ({ productClient }) => {
       setFormValues({
         name: activeProductClient.name,
         price: activeProductClient.price,
+        discount: activeProductClient.discount,
+        paymentMethod: activeProductClient.paymentMethod,
         paymentDate: activeProductClient.paymentDate
           ? formatDate(new Date(activeProductClient.paymentDate), 'yyyy-MM-dd')
           : '', // deja vacío si no hay fecha
       })
     } else {
-      setFormValues({ name: '', price: '', paymentDate: '', paymentMethod: '' }) // Reset form values when not editing
+      setFormValues({ name: '', price: '', discount: '', paymentDate: '', paymentMethod: '' }) // Reset form values when not editing
     }
   }, [isEdit, activeProductClient])
 
@@ -66,8 +69,12 @@ export const EditProductClientModal = ({ productClient }) => {
 
     await startUpdateProductClient(payload, true);
     closeProductClientModal();
-    await startLoadProductsByDate(formatDate(new Date(), 'yyyy-MM-dd'));
-    setFormValues({ name: '', price: '', paymentDate: '', paymentMethod: '' });
+
+    if (activeProductClient.idClient) {
+      await startLoadingProductsClientPaid(activeProductClient.idClient);
+      await startLoadProductsByDate(formatDate(new Date(), 'yyyy-MM-dd'));
+    }
+    setFormValues({ name: '', price: '', discount: '', paymentDate: '', paymentMethod: '' });
     setSubmitted(false);
   };
 
@@ -111,17 +118,31 @@ export const EditProductClientModal = ({ productClient }) => {
 
 
           </div>
-          {/*Precio  */}
+          {/*Descuento  */}
           <div className='mb-3'>
-            <label className='form-label'>Fecha de pago</label>
-            <input
-              type="date"
-              className="form-control w-100"
-              name='paymentDate'
-              value={formValues.paymentDate ? formatDate(new Date(formValues.paymentDate), 'yyyy-MM-dd') : ''}
-              onChange={onInputChange} />
+            <label className='form-label'>Descuento</label>
+            <div className='input-group'>
+              <input
+                className={`form-control`}
+                name="discount"
+                type="number"
+                step="0.01"
+                value={formValues.discount}
+                onChange={onInputChange}
+              />
+              <span className='input-group-text'>€</span>
+            </div>
           </div>
-
+        </div>
+        {/*Fecha pago  */}
+        <div className='mb-3'>
+          <label className='form-label'>Fecha de pago</label>
+          <input
+            type="date"
+            className="form-control w-100"
+            name='paymentDate'
+            value={formValues.paymentDate ? formatDate(new Date(formValues.paymentDate), 'yyyy-MM-dd') : ''}
+            onChange={onInputChange} />
         </div>
 
         {/*Metodo pago */}
