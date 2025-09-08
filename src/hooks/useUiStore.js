@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { onCloseCancellationModal, onCloseCancelSuscribeClientModal, onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseFilterClientsByLabelModal, onCloseLabelModal, onCloseProductClientModal, onCloseProductClientUnpaidModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onCloseSuscriptionClientModal, onOpenCancellationModal, onOpenCancelSuscribeClientModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenFilterClientsByLabelModal, onOpenLabelModal, onOpenProductClientModal, onOpenProductClientUnpaidModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal, onOpenSuscriptionClientModal } from "../store/ui/uiSlice";
+import { onCloseCancellationModal, onCloseCancelSuscribeClientModal, onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseFilterClientsByLabelModal, onCloseLabelModal, onCloseProductClientAdminModal, onCloseProductClientModal, onCloseProductClientUnpaidModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onCloseSuscriptionClientModal, onOpenCancellationModal, onOpenCancelSuscribeClientModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenFilterClientsByLabelModal, onOpenLabelModal, onOpenProductClientAdminModal, onOpenProductClientModal, onOpenProductClientUnpaidModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal, onOpenSuscriptionClientModal } from "../store/ui/uiSlice";
 
 
 
@@ -22,6 +22,7 @@ export const useUiStore = () => {
       isModalSuscriptionClientOpen,
       isModalProductClientUnpaidOpen,
       isModalProductClientOpen,
+      isModalProductClientAdminOpen
      } = useSelector( state => state.ui);
 
 
@@ -197,6 +198,16 @@ export const useUiStore = () => {
         dispatch(onCloseProductClientModal());
     }
 
+           //Abrir AllProductClient Admin
+    const openProductClientAdminModal = () =>{
+        dispatch(onOpenProductClientAdminModal());
+    }
+
+    //Cerrar AllProductClient Admin
+    const closeProductClientAdminModal = () =>{
+        dispatch(onCloseProductClientAdminModal());
+    }
+
   return {
     //*Propiedades
     isModalClientOpen,
@@ -214,6 +225,7 @@ export const useUiStore = () => {
     isModalSuscriptionClientOpen,
     isModalProductClientUnpaidOpen,
     isModalProductClientOpen,
+    isModalProductClientAdminOpen,
 
     //*Metodos
     openClientModal,
@@ -257,6 +269,9 @@ export const useUiStore = () => {
 
     openProductClientModal,
     closeProductClientModal,
+
+    openProductClientAdminModal,
+    closeProductClientAdminModal,
 
   }
 }

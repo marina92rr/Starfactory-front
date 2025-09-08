@@ -5,7 +5,7 @@ import { useUiStore } from '../../../../hooks/useUiStore';
 
 export const AddNewProductClient = () => {
 
-    const {openProductClientModal} = useUiStore();
+    const {openProductClientAdminModal} = useUiStore();
     const { setActiveProductClient} = useProductClientStore();
 
     
@@ -22,7 +22,7 @@ export const AddNewProductClient = () => {
 
         })
       //  closeLabelModal();
-        openProductClientModal();
+        openProductClientAdminModal();
     }
 
   return (

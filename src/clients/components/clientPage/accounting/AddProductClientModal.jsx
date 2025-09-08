@@ -24,7 +24,7 @@ const customStylesModal = {
 
 export const AddProductClientModal = () => {
 
-  const { isModalProductClientOpen, closeProductClientModal } = useUiStore(); //Abrir y cerrar modal
+  const { isModalProductClientAdminOpen, closeProductClientAdminModal } = useUiStore(); //Abrir y cerrar modal
   const { startSavingAdministrationProductClient } = useProductClientStore();
 
 
@@ -66,7 +66,7 @@ export const AddProductClientModal = () => {
     if (formValues.name.trim().length === 0) return;
 
     await startSavingAdministrationProductClient(formValues);  // Guarda en la BBDD
-    closeProductClientModal();  // Debería cerrar el modal
+    closeProductClientAdminModal();  // Debería cerrar el modal
     window.location.reload();
 
     setFormSubmitted(false);
@@ -80,11 +80,10 @@ export const AddProductClientModal = () => {
 
   }
 
-
   return (
     <Modal
-      isOpen={isModalProductClientOpen}
-      onRequestClose={closeProductClientModal}
+      isOpen={isModalProductClientAdminOpen}
+      onRequestClose={closeProductClientAdminModal}
       style={customStylesModal}
       contentLabel={'Añadir nuevo registro'} >
 

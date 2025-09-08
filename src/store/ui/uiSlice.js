@@ -28,6 +28,8 @@ export const uiSlice = createSlice({
     isModalProductClientUnpaidOpen: false,
     //ProductClient
     isModalProductClientOpen: false,
+    //ProductClientAdmin
+    isModalProductClientAdminOpen: false,
 
   },
   reducers: {
@@ -109,6 +111,12 @@ export const uiSlice = createSlice({
     //Cerrar modal allProductClient
     onCloseProductClientModal: (state) => { state.isModalProductClientOpen = false; },
 
+        //Abrir modal allProductClientAdmin
+    onOpenProductClientAdminModal: (state) => { state.isModalProductClientAdminOpen = true; },
+    //Cerrar modal allProductClientAdmin
+    onCloseProductClientAdminModal: (state) => { state.isModalProductClientAdminOpen = false; },
+
+
 
 
   },
@@ -161,5 +169,8 @@ export const {
   onCloseProductClientUnpaidModal,
   onOpenProductClientModal,
   onCloseProductClientModal,
+  //*ProductClient Admin
+  onOpenProductClientAdminModal,
+  onCloseProductClientAdminModal,
 
 } = uiSlice.actions; //accion
