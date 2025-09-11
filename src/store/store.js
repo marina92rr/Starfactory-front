@@ -8,11 +8,13 @@ import { rateSlice } from "./rates/rateSlice"
 import { quotaSlice } from "./rates/quotaSlice"
 import { productClientSlice } from "./sales/productClientSlice"
 import { suscriptionClientSlice } from "./sales/suscriptionClientSlice"
+import { authSlice } from "./auth/authSlice"
 
 
 export const store = configureStore({
 
     reducer:{
+        auth: authSlice.reducer,
         client: clientSlice.reducer,
         ui: uiSlice.reducer,
         labels: labelSlice.reducer,

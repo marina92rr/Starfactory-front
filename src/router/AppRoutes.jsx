@@ -6,10 +6,20 @@ import { LabelsPage } from '../clients/pages/LabelsPage';
 import { Accounting } from '../clients/pages/Accounting';
 // Import the new monthly summary page
 import { MonthlySummary } from '../clients/pages/MonthlySummary';
+import { LoginPage } from '../auth/pages/LoginPage';
+import { RegisterPage } from '../auth/pages/RegisterPage';
 
 export const AppRoutes = () => {
   return (
     <Routes>
+
+      {/* ----------------------Login/Register---------------------- */}
+      <Route path='/auth/login' element={<LoginPage />} />
+      <Route path='/register/*' element={<RegisterPage />} />
+
+
+
+
       {/* ----------------------Clientes---------------------- */}
       <Route path='/' element={<ClientsPage />} />
 

@@ -14,7 +14,12 @@ const links = [
   { name: 'Tarifas', path: '/rates' },
   { name: 'Etiquetas', path: '/labels' },
   { name: 'Contabilidad', path: '/accounting' },
+
 ];
+
+const registers =[
+  { name: 'Registrar usuario', path: '/register' }
+]
 
 export const Sidebar = () => {
   const dispatch = useDispatch();
@@ -24,11 +29,11 @@ export const Sidebar = () => {
 
   return (
     <div
-      className='bg-light mt-5'
+      className='bg-light mt-5 '
       style={{ minWidth: '180px', maxWidth: '180px', height: '100vh' }}
     >
       <div
-        className='bg-light mt-5'
+        className='bg-light mt-5 d-flex flex-column'
         style={{
           position: 'fixed',
           top: 0,
@@ -39,6 +44,7 @@ export const Sidebar = () => {
           overflowY: 'auto',
         }}
       >
+        {/* ----------------------Logo + enlaces de navegación----------------------- */}
         <div className='text-center pt-5 p-3'>
           <img
             src={logo}
@@ -75,6 +81,33 @@ export const Sidebar = () => {
             </NavLink>
           ))}
         </nav>
+
+        {/* ----------------------Registro usuario---------------------- */}
+        {/*}
+        <div className='mt-auto mb-5' >
+          <nav>
+          {registers.map((register) => (
+            <NavLink
+              key={register.path}
+              to={register.path}
+              style={{ textDecoration: 'none' }}
+              onClick={() => {
+                
+              }}
+            >
+              {({ isActive }) => (
+                <div
+                  className='p-3 mb-5'
+                  style={{ background: isActive ? '#007bff' : 'none', color: isActive ? '#ffffff' : '#000000' }}
+                >
+                  <span>{register.name}</span>
+                </div>
+              )}
+            </NavLink>
+          ))}
+        </nav>
+        </div>
+        */}
       </div>
     </div>
   );

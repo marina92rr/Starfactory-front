@@ -59,8 +59,7 @@ export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
 
       // Guardar en la base de datos
       await startSavingProductClient(dataToSend, false);
-      // imprimir ticket
-        printTicket(venta); 
+
       // Cerrar modal y redirigir
       closeSaleModal();
       navigate(`/${activeClient.idClient}/sales`);
