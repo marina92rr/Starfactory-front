@@ -1,11 +1,13 @@
+import { use } from "react"
 import { FindClient } from "./FindClient"
+import { useAuthStore } from "../../hooks/useAuthStore"
 
 
 
 export const Navbar = () => {
 
+  const {user, startLogout} = useAuthStore();
   
-
   return (
     <>
       <div className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
@@ -13,23 +15,19 @@ export const Navbar = () => {
         <span className="navbar-brand ms-3">
           <i className="fas"></i>
           &nbsp;
-          User
+          {user.name}
         </span>
 
        <FindClient/>
 
-        <button className="btn btn-outline-danger ms-auto me-5">
+        <button 
+          className="btn btn-outline-danger ms-auto me-5"
+          onClick={startLogout}>
           <i className="fas fa-sign-out-alt"></i>
           &nbsp;
           <span>Salir</span>
         </button>
-
       </div>
-
-
-
-
-
     </>
 
 

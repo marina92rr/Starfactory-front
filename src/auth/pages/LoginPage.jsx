@@ -10,8 +10,6 @@ const logingFormFields = {
     loginPassword: ''
 }
 
-
-
 export const LoginPage = () => {
 
     const { startLogin, errorMessage } = useAuthStore();
@@ -19,7 +17,7 @@ export const LoginPage = () => {
 
     const loginSubmit = () => {
         event.preventDefault();
-        startLogin({ email: loginEmail, password: loginPassword });
+        startLogin({ email: loginEmail.trim(), password: loginPassword });
     }
 
     useEffect(() => {
@@ -30,12 +28,12 @@ export const LoginPage = () => {
     }, [errorMessage])
 
     return (
-        <div className='m-5'>
-            <div className='pt-5 align-items-center'>
-                <h1 className='mb-4'>Login</h1>
+        <div className='container d-flex flex-column align-items-center justify-content-center' style={{ height: '100vh' }}>
+            <div className='mb-4 text-center align-items-center'>
+                <h1 >Login</h1>
             </div>
             
-                <div className="col-3 border rounded p-3 bg-light">
+                <div className="col-4 border rounded p-3 bg-light">
                     
                     <form onSubmit={loginSubmit}>
                         <div className="form-group mb-3">
@@ -63,7 +61,7 @@ export const LoginPage = () => {
                                 onChange={onLoginInputChange}
                             />
                         </div>
-                        <div className="form-group mb-3">
+                        <div className="form-group mb-3 text-end">
                             <input
                                 type="submit"
                                 className="btn btn-primary"

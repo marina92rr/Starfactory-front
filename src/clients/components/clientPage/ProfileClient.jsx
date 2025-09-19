@@ -44,84 +44,114 @@ export const ProfileClient = () => {
             />
           </button>
 
+
+          <div className=' text-center text-md-start mb-3 mb-md-0'>
+
+            <table className="table">
+
+              <tbody>
+                <tr>
+                  <td>
+                    <div>
+                      <strong>Nombre:</strong>
+                      <p>{activeClient.name}</p>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <strong>Apellido:</strong>
+                      <p>{activeClient.lastName ? activeClient.lastName : '-'}</p>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <strong>Código Cliente:</strong>
+                      <p>{activeClient.idClient}</p>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div>
+                      <strong>Teléfono Whattsapp:</strong>
+                      <p>
+                        {activeClient.whatsappPhone ? (
+                          <a
+                            href={`https://wa.me/${activeClient.whatsappPhone}?text=Hola%20soy%20${encodeURIComponent('StarFactory')}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {activeClient.whatsappPhone}
+                          </a>
+                        ) : (
+                          '-'
+                        )}
+                      </p>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <strong>Teléfono:</strong>
+                      <p>{activeClient.mainPhone ? activeClient.mainPhone : '-'}</p>
+                    </div>
+                  </td>
+                  <td><div>
+                    <strong>2 Teléfono:</strong>
+                    <p>{activeClient.optionalPhone ? activeClient.optionalPhone : '-'}</p>
+                  </div></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div>
+                      <strong>Email 1:</strong>
+                      <p>
+                        {activeClient.email ? (
+                          <a
+                            href={`mailto:${activeClient.email}?subject=${encodeURIComponent("Consulta desde StarFactory")}&body=${encodeURIComponent("Hola, te escribo porque...")}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {activeClient.email.toLowerCase()}
+                          </a>
+                        ) : (
+                          '-'
+                        )}
+                      </p>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <strong>Email 2:</strong>
+                      <p>
+                        {activeClient.email2 ? (
+                          <a
+                            href={`mailto:${activeClient.email2}?subject=${encodeURIComponent("Consulta desde StarFactory")}&body=${encodeURIComponent("Hola, te escribo porque...")}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {activeClient.email2.toLowerCase()}
+                          </a>
+                        ) : (
+                          '-'
+                        )}
+                      </p>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <strong>Fecha de alta:</strong>
+                      <p>{formatDate(activeClient.dateRegistration)}</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+  
 
-        {/* Columna izquierda */}
-        <div className="col-md-4 text-center text-md-start mb-3 mb-md-0">
-
-
-          <div>
-            <strong>Nombre:</strong>
-            <p>{activeClient.name}</p>
-          </div>
-          <div>
-            <strong>Teléfono:</strong>
-            <p>{activeClient.mainPhone ? activeClient.mainPhone : '-'}</p>
-          </div>
-          <div>
-            <strong>Fecha de alta:</strong>
-            <p>{formatDate(activeClient.dateRegistration)}</p>
-          </div>
-
-
-
-        </div>
-
-        {/* Columna central */}
-        <div className="col-md-4">
-          <div>
-            <strong>Apellido:</strong>
-            <p>{activeClient.lastName ? activeClient.lastName : '-'}</p>
-          </div>
-
-          <div>
-            <strong>2 Teléfono:</strong>
-            <p>{activeClient.optionalPhone ? activeClient.optionalPhone : '-'}</p>
-          </div>
-          <div>
-            <strong>Código Cliente:</strong>
-            <p>{activeClient.idClient}</p>
-          </div>
-
-        </div>
-
-        {/* Columna derecha */}
-        <div className="col-md-4">
-          <div>
-            <strong>Correo electrónico:</strong>
-            <p>
-              {activeClient.email ? (
-                <a
-                  href={`mailto:${activeClient.email}?subject=${encodeURIComponent("Consulta desde StarFactory")}&body=${encodeURIComponent("Hola, te escribo porque...")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {activeClient.email.toLowerCase()}
-                </a>
-              ) : (
-                '-'
-              )}
-            </p>
-          </div>
-
-          <div>
-            <strong>Teléfono Whattsapp:</strong>
-            <p>
-              {activeClient.whatsappPhone ? (
-                <a
-                  href={`https://wa.me/${activeClient.whatsappPhone}?text=Hola%20soy%20${encodeURIComponent('StarFactory')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {activeClient.whatsappPhone}
-                </a>
-              ) : (
-                '-'
-              )}
-            </p>
-          </div>
-
-        </div>
       </div>
 
       {/* Sección de notificaciones */}

@@ -176,6 +176,11 @@ export const clientSlice = createSlice({
       }
     },
 
+     onLogoutClients : (state) =>{
+      state.isLoadingClients = true;
+      state.clients= [];
+      state.activeClient = null;
+    }
   
 
 
@@ -208,5 +213,6 @@ export const {
   setFilteredClientsByLabel,
   clearFilteredClientsByLabel,
   onResetFindLLabels,
+  onLogoutClients
 
 } = clientSlice.actions; //accion

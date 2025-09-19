@@ -43,8 +43,7 @@ export const QuotaModal = () => {
   const isEditMode = !!activeQuota?.idQuota;
 
   useEffect(() => {
-      console.log("🎯 activeQuota recibido en modal:", activeQuota);
-
+    
     if (activeQuota && isEditMode) {
       setFormValues({ 
         name: activeQuota.name || '',

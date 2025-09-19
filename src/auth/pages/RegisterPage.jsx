@@ -1,7 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from '../../hooks/useForm';
 import { useAuthStore } from '../../hooks/useAuthStore'
 import Swal from 'sweetalert2';
+import { UserDelete } from '../components/UserDelete';
+import { UserEdit } from '../components/UserEdit';
+import { UserEditModal } from '../components/UserEditModal';
+import { useDispatch } from 'react-redux';
 
 
 
@@ -14,34 +18,44 @@ const registerFormFields = {
 
 export const RegisterPage = () => {
 
+    const dispatch = useDispatch();
+    const { startRegister, errorMessage, startLoadingtUsers, users } = useAuthStore();
+    const { registerName, registerEmail, registerPassword, registerPassword2, onInputChange: onRegisterInputChange, onResetForm } = useForm(registerFormFields);
 
-    const { startRegister, errorMessage } = useAuthStore();
 
 
-    const { registerName, registerEmail, registerPassword, registerPassword2, onInputChange: onRegisterInputChange } = useForm(registerFormFields);
+
 
     const registerSubmit = () => {
-        event.preventDefault();     //Evitar que recarge la pagina
-        //Validaciones de password
+        event.preventDefault();
+
         if (registerPassword !== registerPassword2) {
             Swal.fire(' Error en registro', 'Las contraseñas no son iguales', 'error');
-            return
+            return;
         }
 
-        startRegister({ name: registerName, email: registerEmail, password: registerPassword });
+        startRegister({
+            name: registerName,
+            email: registerEmail,
+            password: registerPassword,
+        });
+
+       onResetForm();
     }
 
-    
+
     // Opcional: mostrar error del backend
     useEffect(() => {
         if (errorMessage) {
             Swal.fire('Error', errorMessage, 'error');
         }
+
+        startLoadingtUsers();
     }, [errorMessage]);
 
     return (
-        <div className='m-5'>
-            <div className='pt-5 align-items-center'>
+        <div className='m-5 align-items-center  d-flex flex-column justify-content-center'>
+            <div className='pt-5 pb-3'>
                 <h1 className='mb-4'>Registrar Usuario</h1>
             </div>
 
@@ -109,6 +123,53 @@ export const RegisterPage = () => {
                             value="Crear cuenta" />
                     </div>
                 </form>
+            </div>
+            <hr />
+            <div className='col-12 mt-5' >
+                <div className='border bg-light rounded-top  d-flex justify-content-between align-items-center p-2'>
+                    <h3 className='text-muted text-start'>Usuarios</h3>
+                </div>
+
+                <table className="table border">
+                    <thead >
+                        <tr >
+                            <th scope='col' className="p-3 text-start">Nombre</th>
+                            <th scope='col' className="p-3 text-start">Correo</th>
+                            <th scope='col' className="p-3 text-start">Administrador</th>
+                            <th scope='col' className="p-3 text-start">Editar/ borrar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.length === 0 ? (
+
+                            <tr>
+                                <td colSpan={5} className="text-muted">No hay usuarios registrados</td>
+                            </tr>
+                        ) : (
+                            users.map((user, i) => {
+                                return (
+
+                                    <tr key={i}>
+                                        <td className=' p-3 text-start'>{user.name}</td>
+                                        <td className='p-3 text-start'>{user.email}</td>
+                                        <td className='p-3 text-start'>
+                                            {user.isAdmin === true ? 'Sí' : 'No'}
+                                        </td>
+                                        <td >
+                                            <div className='d-flex justify-content-center align-items-center gap-2'>
+                                                <UserEdit user={user} />
+                                                <UserEditModal />
+                                                <UserDelete user={user} />
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                )
+                            })
+                        )}
+                    </tbody>
+                </table>
+
             </div>
         </div>
 

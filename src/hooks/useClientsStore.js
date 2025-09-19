@@ -27,7 +27,7 @@ import { normalizeAllTextFields } from "../helpers/normalizeText";
 export const useClientsStore = () => {
 
   const dispatch = useDispatch();
-  const { clients, clientsLimit, activeClient, filter, filteredList,totalPages, isLoadingLabelsClient,filteredClientsByLabel, isLoadingClients, allClientsLoaded, activeClientLabels, scheduledCancellationClients, filteredLabels, clientsName } = useSelector(state => state.client);
+  const { clients, clientsLimit, activeClient, filter, filteredList, totalPages, isLoadingLabelsClient, filteredClientsByLabel, isLoadingClients, allClientsLoaded, activeClientLabels, scheduledCancellationClients, filteredLabels, clientsName } = useSelector(state => state.client);
   const { idClient } = useParams();
   const filteredLabelsByClient = useSelector(state => state.client.filteredLabelsByClient);
 
@@ -54,11 +54,12 @@ export const useClientsStore = () => {
       if (isEditMode) {
         const { data } = await clientsApi.put(`/clients/${clientSave.idClient}`, normalizedClient);
         dispatch(onUpdateClient(data));
-       
+        console.log('Cliente actualizado:', data);
+
       } else {
         const { data } = await clientsApi.post('/clients', normalizedClient);
         dispatch(onAddNewClient(data));
-      } 
+      }
     } catch (error) {
       console.error('Error al guardar cliente', error);
     }
@@ -81,19 +82,19 @@ export const useClientsStore = () => {
   }
 
   //Lectura de 30 clientes
- const starLoadingLimitPageClients = async (page = 1) => {
-  try {
-    const { data } = await clientsApi.get(`clients/limit?page=${page}`);
-    const clients = data.clients;
-    const totalPages = data.totalPages;
+  const starLoadingLimitPageClients = async (page = 1) => {
+    try {
+      const { data } = await clientsApi.get(`clients/limit?page=${page}`);
+      const clients = data.clients;
+      const totalPages = data.totalPages;
 
-    dispatch(onLoadLimitPageClients({ clients, totalPages }));
+      dispatch(onLoadLimitPageClients({ clients, totalPages }));
 
-  } catch (error) {
-    console.log('Error al cargar los clientes');
-    console.log(error);
-  }
-};
+    } catch (error) {
+      console.log('Error al cargar los clientes');
+      console.log(error);
+    }
+  };
 
   //Lectura de cliente
   const getClientbyClientID = async (idClient) => {
@@ -162,17 +163,17 @@ export const useClientsStore = () => {
     }
   };
 
-   const  startDeleteClient = async()=>{
-              const {data} = await clientsApi.delete(`/clients/${activeClient.idClient}`);
-              dispatch(onDeleteClient(data));
-    }
+  const startDeleteClient = async () => {
+    const { data } = await clientsApi.delete(`/clients/${activeClient.idClient}`);
+    dispatch(onDeleteClient(data));
+  }
 
   // Filtrar clientes por etiquetas
   const filterClientsByLabels = async (labelIds) => {
     try {
       // labelIds es un array de Number
       const { data } = await clientsApi.post('/clients/filterlabels', { labelIds });
-       console.log('Recibidos', data.length, 'clientes filtrados');
+      console.log('Recibidos', data.length, 'clientes filtrados');
       dispatch(setFilteredClientsByLabel(data)); // guardas el resultado en Redux
     } catch (error) {
       // Maneja el error a tu manera
@@ -180,7 +181,7 @@ export const useClientsStore = () => {
       dispatch(setFilteredClientsByLabel([]));
     }
   };
-   const clearFilter = () => {
+  const clearFilter = () => {
     dispatch(clearFilteredClientsByLabel());
   };
 
@@ -201,7 +202,7 @@ export const useClientsStore = () => {
   //Dar baja cliente
   const toggleClientStatusCancel = async (idClient, removeSales = false) => {
     try {
-      const { data } = await clientsApi.patch(`clients/cancel/${idClient}`,  {removeSales});
+      const { data } = await clientsApi.patch(`clients/cancel/${idClient}`, { removeSales });
       dispatch(onToggleClientStatusCancel(data.client)); // recuerda: el backend devuelve `{ msg, client }`
     } catch (error) {
       console.error('Error al cambiar estado de baja del cliente:', error);
@@ -210,7 +211,7 @@ export const useClientsStore = () => {
   //Programar baja
   const programClientCancellation = async (idClient, cancelDate, removeSales = false) => {
     try {
-      const { data } = await clientsApi.patch(`/clients/programcancel/${idClient}`, { cancelDate }, {removeSales});
+      const { data } = await clientsApi.patch(`/clients/programcancel/${idClient}`, { cancelDate }, { removeSales });
       dispatch(onToggleClientStatusCancel(data.client)); // O solo data si no devuelves { client: ... }
     } catch (error) {
       console.error('Error al programar baja del cliente:', error);
@@ -263,7 +264,7 @@ export const useClientsStore = () => {
     loadClientsWithScheduledCancellation,
     startLoadingLabelsOfClient,
     startLoadingFilteredLabels,
-    
+
 
     //Label
     filterClientsByLabels,

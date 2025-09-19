@@ -8,51 +8,79 @@ import { Accounting } from '../clients/pages/Accounting';
 import { MonthlySummary } from '../clients/pages/MonthlySummary';
 import { LoginPage } from '../auth/pages/LoginPage';
 import { RegisterPage } from '../auth/pages/RegisterPage';
+import { useAuthStore } from '../hooks/useAuthStore';
 
 export const AppRoutes = () => {
+
+  const { status } = useAuthStore();
+
+
+  if (status === 'checking') {
+    return (
+      <h3>Cargando...</h3>
+    );
+  }
+
   return (
     <Routes>
+      {
+        (status === 'not-authenticated')
+          ? (
+            <>
+              {/* ----------------------Login/Register---------------------- */}
+              < Route path='/auth/login' element={<LoginPage />} />
+              <Route path="/*" element={<Navigate to='/auth/login'/>}/>
+              
+            </>
+          )
+          :
+          (
+            <>
+              {/* ----------------------Clientes---------------------- */}
+              < Route path='/' element={<ClientsPage />} />
+              <Route path="/*" element={<Navigate to='/'/>}/>
+              {/* ----------------------Cliente---------------------- */}
+              <Route path=':idClient' element={<ClientPage />}>
+                {/* Ruta índice: /clients/ */}
+                <Route index element={<Navigate to='overview' replace />} />
+                {/* Vista general */}
+                <Route path='overview' element={<OverviewClient />} />
+                {/* Reservas */}
+                <Route path='reservations' element={<ReservationsClient />} />
+                {/* Ventas */}
+                <Route path='sales' element={<SalesClient />} />
+                {/* AddVentas */}
+                <Route path='addSales' element={<AddNewSales />} />
+                {/* Perfil */}
+                <Route path='profile' element={<ProfileClient />} />
+              </Route>
 
-      {/* ----------------------Login/Register---------------------- */}
-      <Route path='/auth/login' element={<LoginPage />} />
-      <Route path='/register/*' element={<RegisterPage />} />
+              {/* ----------------------Tienda---------------------- */}
+              <Route path='/store' element={<StorePage />} />
 
+              {/* ----------------------Servicios---------------------- */}
+              <Route path='/rates' element={<RatesPage />} />
 
+              {/* ----------------------Etiquetas---------------------- */}
+              <Route path='/labels' element={<LabelsPage />} />
 
+              {/* ----------------------Contabilidad---------------------- */}
+              <Route path='/accounting' element={<Accounting />} />
 
-      {/* ----------------------Clientes---------------------- */}
-      <Route path='/' element={<ClientsPage />} />
+              {/* ----------------------Resumen mensual---------------------- */}
+              <Route path='/monthly-summary' element={<MonthlySummary />} />
 
-      {/* ----------------------Cliente---------------------- */}
-      <Route path=':idClient' element={<ClientPage />}>
-        {/* Ruta índice: /clients/ */}
-        <Route index element={<Navigate to='overview' replace />} />
-        {/* Vista general */}
-        <Route path='overview' element={<OverviewClient />} />
-        {/* Reservas */}
-        <Route path='reservations' element={<ReservationsClient />} />
-        {/* Ventas */}
-        <Route path='sales' element={<SalesClient />} />
-        {/* AddVentas */}
-        <Route path='addSales' element={<AddNewSales />} />
-        {/* Perfil */}
-        <Route path='profile' element={<ProfileClient />} />
-      </Route>
+             
+                <>
+                  {/* ----------------------Registro de usuarios (solo admin)---------------------- */}
+                  <Route path='/register' element={<RegisterPage />} />
+                </>
+             
+            </>
 
-      {/* ----------------------Tienda---------------------- */}
-      <Route path='/store' element={<StorePage />} />
+          )
+      }
 
-      {/* ----------------------Servicios---------------------- */}
-      <Route path='/rates' element={<RatesPage />} />
-
-      {/* ----------------------Etiquetas---------------------- */}
-      <Route path='/labels' element={<LabelsPage />} />
-
-      {/* ----------------------Contabilidad---------------------- */}
-      <Route path='/accounting' element={<Accounting />} />
-
-      {/* ----------------------Resumen mensual---------------------- */}
-      <Route path='/monthly-summary' element={<MonthlySummary />} />
     </Routes>
   );
 };

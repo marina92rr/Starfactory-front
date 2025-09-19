@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { onCloseCancellationModal, onCloseCancelSuscribeClientModal, onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseFilterClientsByLabelModal, onCloseLabelModal, onCloseProductClientAdminModal, onCloseProductClientModal, onCloseProductClientUnpaidModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onCloseSuscriptionClientModal, onOpenCancellationModal, onOpenCancelSuscribeClientModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenFilterClientsByLabelModal, onOpenLabelModal, onOpenProductClientAdminModal, onOpenProductClientModal, onOpenProductClientUnpaidModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal, onOpenSuscriptionClientModal } from "../store/ui/uiSlice";
+import { onCloseCancellationModal, onCloseCancelSuscribeClientModal, onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseFilterClientsByLabelModal, onCloseLabelModal, onCloseProductClientAdminModal, onCloseProductClientModal, onCloseProductClientUnpaidModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onCloseSuscriptionClientModal, onCloseUserModal, onOpenCancellationModal, onOpenCancelSuscribeClientModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenFilterClientsByLabelModal, onOpenLabelModal, onOpenProductClientAdminModal, onOpenProductClientModal, onOpenProductClientUnpaidModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal, onOpenSuscriptionClientModal, onOpenUserModal } from "../store/ui/uiSlice";
 
 
 
@@ -22,7 +22,8 @@ export const useUiStore = () => {
       isModalSuscriptionClientOpen,
       isModalProductClientUnpaidOpen,
       isModalProductClientOpen,
-      isModalProductClientAdminOpen
+      isModalProductClientAdminOpen,
+      isModalUserOpen
      } = useSelector( state => state.ui);
 
 
@@ -208,6 +209,16 @@ export const useUiStore = () => {
         dispatch(onCloseProductClientAdminModal());
     }
 
+    //Abrir Usuario
+    const openUserModal = () =>{
+        dispatch(onOpenUserModal());
+    }
+
+    //Cerrar Usuario                
+    const closeUserModal = () =>{
+        dispatch(onCloseUserModal());
+    }
+
   return {
     //*Propiedades
     isModalClientOpen,
@@ -226,6 +237,7 @@ export const useUiStore = () => {
     isModalProductClientUnpaidOpen,
     isModalProductClientOpen,
     isModalProductClientAdminOpen,
+    isModalUserOpen,
 
     //*Metodos
     openClientModal,
@@ -272,6 +284,9 @@ export const useUiStore = () => {
 
     openProductClientAdminModal,
     closeProductClientAdminModal,
+
+    openUserModal,
+    closeUserModal
 
   }
 }

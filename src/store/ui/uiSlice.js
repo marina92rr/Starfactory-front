@@ -30,6 +30,8 @@ export const uiSlice = createSlice({
     isModalProductClientOpen: false,
     //ProductClientAdmin
     isModalProductClientAdminOpen: false,
+    //USUARIOS
+    isModalUserOpen: false,
 
   },
   reducers: {
@@ -116,6 +118,11 @@ export const uiSlice = createSlice({
     //Cerrar modal allProductClientAdmin
     onCloseProductClientAdminModal: (state) => { state.isModalProductClientAdminOpen = false; },
 
+    //Abrir modal Usuario
+    onOpenUserModal: (state) => { state.isModalUserOpen = true; },
+    //Cerrar modal Usuario
+    onCloseUserModal: (state) => { state.isModalUserOpen = false; },
+
 
 
 
@@ -172,5 +179,9 @@ export const {
   //*ProductClient Admin
   onOpenProductClientAdminModal,
   onCloseProductClientAdminModal,
+
+  //*USUARIOS
+  onOpenUserModal,
+  onCloseUserModal,
 
 } = uiSlice.actions; //accion

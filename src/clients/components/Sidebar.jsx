@@ -4,6 +4,8 @@ import { useClientsStore } from '../../hooks/useClientsStore';
 import { useRateStore } from '../../hooks/useRateStore';
 import { useCategoryStore } from '../../hooks/useCategoryStore';
 import logo from '../../assets/logo.png';
+import { useAuthStore } from '../../hooks/useAuthStore';
+import React, { useEffect } from 'react';
 
 // Actualización de enlaces de navegación.  Se añade una entrada para el
 // resumen mensual de ventas.
@@ -17,15 +19,27 @@ const links = [
 
 ];
 
-const registers =[
+const registers = [
   { name: 'Registrar usuario', path: '/register' }
 ]
 
-export const Sidebar = () => {
+export const Sidebar = React.memo(() => {
   const dispatch = useDispatch();
   const { startResetClientsPage } = useClientsStore();
   const { startResetRatesPage } = useRateStore();
   const { startResetStorePage } = useCategoryStore();
+
+
+
+
+  
+  const { status, user } = useAuthStore();
+  const isAdmin = !!user?.isAdmin; // <- fuerza booleano
+
+
+  useEffect(() => {
+}, [status, user]);
+
 
   return (
     <div
@@ -83,32 +97,40 @@ export const Sidebar = () => {
         </nav>
 
         {/* ----------------------Registro usuario---------------------- */}
-        {/*}
-        <div className='mt-auto mb-5' >
-          <nav>
-          {registers.map((register) => (
-            <NavLink
-              key={register.path}
-              to={register.path}
-              style={{ textDecoration: 'none' }}
-              onClick={() => {
-                
-              }}
-            >
-              {({ isActive }) => (
-                <div
-                  className='p-3 mb-5'
-                  style={{ background: isActive ? '#007bff' : 'none', color: isActive ? '#ffffff' : '#000000' }}
+
+       {status !== 'checking' && isAdmin && (
+            <div className='mt-auto mb-5' >
+            <nav>
+              {registers.map((register) => (
+                <NavLink
+                  key={register.path}
+                  to={register.path}
+                  style={{ textDecoration: 'none' }}
+                  onClick={() => {
+
+                  }}
                 >
-                  <span>{register.name}</span>
-                </div>
-              )}
-            </NavLink>
-          ))}
-        </nav>
-        </div>
-        */}
+                  {({ isActive }) => (
+                    <div
+                      className='p-3 mb-5'
+                      style={{ background: isActive ? '#007bff' : 'none', color: isActive ? '#ffffff' : '#000000' }}
+                    >
+                      <span>{register.name}</span>
+                    </div>
+                  )}
+                </NavLink>
+              ))}
+            </nav>
+          </div>
+          )
+
+          
+        }
+
+
+
       </div>
     </div>
   );
-};
+});
+

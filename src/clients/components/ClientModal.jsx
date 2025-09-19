@@ -2,26 +2,14 @@ import { useEffect, useMemo, useState } from 'react';
 import { useUiStore } from '../../hooks/useUiStore';
 import { useClientsStore } from '../../hooks/useClientsStore';
 import Modal from 'react-modal';
+import { customStyleModal } from '../../helpers/customStyleModal';
 
 Modal.setAppElement('#root');
 
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    transform: 'translate(-50%, -50%)',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // oscuridad del fondo
-    zIndex: 9999,                          // asegura que está por encima
-  }
-};
 
 export const ClientModal = () => {
   const { isModalClientOpen, closeClientModal } = useUiStore();
-  const { activeClient, startSavingClient, starLoadingClients } = useClientsStore();
+  const { activeClient, startSavingClient } = useClientsStore();
 
   const isEditMode = !!activeClient?.idClient;
 
@@ -30,6 +18,7 @@ export const ClientModal = () => {
     name: '',
     lastName: '',
     email: '',
+    email2: '',
     mainPhone: '',
     optionalPhone: '',
     whatsappPhone: ''
@@ -47,6 +36,7 @@ export const ClientModal = () => {
           name: '',
           lastName: '',
           email: '',
+          email2: '',
           mainPhone: '',
           optionalPhone: '',
           whatsappPhone: ''
@@ -86,7 +76,7 @@ export const ClientModal = () => {
     <Modal
       isOpen={isModalClientOpen}
       onRequestClose={closeClientModal}
-      style={customStyles}
+      style={customStyleModal}
       contentLabel={isEditMode ? 'Editar Cliente' : 'Añadir Cliente'}
     >
       <h1>{isEditMode ? 'Editar Cliente' : 'Añadir nuevo Cliente'}</h1>
@@ -114,16 +104,32 @@ export const ClientModal = () => {
           />
         </div>
 
-        <div className='mb-3'>
-          <label className="form-label">Email</label>
-          <input
-            className='form-control'
-            name='email'
-            type="text"
-            value={formValues.email || ''}
-            onChange={onInputChange}
-          />
+        <div className='d-flex gap-2 mb-3'>
+
+          <div className='mb-3'>
+            <label className="form-label">Email</label>
+            <input
+              className='form-control'
+              name='email'
+              type="text"
+              value={formValues.email || ''}
+              onChange={onInputChange}
+            />
+          </div>
+
+          <div className='mb-3'>
+            <label className="form-label">Email 2</label>
+            <input
+              className='form-control'
+              name='email2'
+              type="text"
+              value={formValues.email2 || ''}
+              onChange={onInputChange}
+            />
+          </div>
         </div>
+
+
 
         <div className='d-flex gap-2 mb-3'>
           <div>
