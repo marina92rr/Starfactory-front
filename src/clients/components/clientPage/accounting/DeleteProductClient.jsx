@@ -2,8 +2,8 @@
 import React from 'react'
 import { useProductClientStore } from '../../../../hooks/useProductClientStore';
 
-export const DeleteProductClient = ({productClient}) => {
-   const { startDeleteProductClient} = useProductClientStore();
+export const DeleteProductClient = ({productClient,defaultDate}) => {
+   const { startDeleteProductClient, startLoadProductsByDate} = useProductClientStore();
      
   
     const handleDelete =  async() => {
@@ -12,7 +12,9 @@ export const DeleteProductClient = ({productClient}) => {
   
       try {
        await startDeleteProductClient(productClient); 
-        window.location.reload(); // Reload the page to reflect changes
+       startLoadProductsByDate(defaultDate); // Recarga las ventas del día sin hacer reload
+        //window.location.reload(); // Reload the page to reflect changes
+
       } catch {
         alert('Hubo un problema. He recargado la lista por si se eliminó igualmente.');
       }

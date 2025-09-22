@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 export const ClientName = ({idClient}) => {
 
+
+
   const { getClientbyClientID, clientsName } = useClientsStore();
   const navigate = useNavigate();
 

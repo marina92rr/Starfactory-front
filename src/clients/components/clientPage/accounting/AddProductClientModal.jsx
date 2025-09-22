@@ -1,6 +1,6 @@
 
 import Modal from 'react-modal'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useUiStore } from '../../../../hooks/useUiStore';
 import { useProductClientStore } from '../../../../hooks/useProductClientStore';
 
@@ -22,13 +22,10 @@ const customStylesModal = {
   }
 };
 
-export const AddProductClientModal = () => {
+export const AddProductClientModal = ({defaultDate}) => {
 
   const { isModalProductClientAdminOpen, closeProductClientAdminModal } = useUiStore(); //Abrir y cerrar modal
-  const { startSavingAdministrationProductClient } = useProductClientStore();
-
-
-
+  const { startSavingAdministrationProductClient, startLoadProductsByDate } = useProductClientStore();
 
   //Estado valor
   // 🔧 Estado inicial coherente con el schema
@@ -37,8 +34,15 @@ export const AddProductClientModal = () => {
     name: 'Registro administrativo',
     price: '',
     paymentMethod: 'efectivo',
-    paymentDate: new Date().toISOString().slice(0, 10)
+    paymentDate: defaultDate || new Date().toISOString().slice(0,10), // <-- usa prop
   });
+
+  // cuando se abra el modal, fija la fecha al día seleccionado
+  useEffect(() => {
+    if (isModalProductClientAdminOpen && defaultDate) {
+      setFormValues(prev => ({ ...prev, paymentDate: defaultDate }));
+    }
+  }, [isModalProductClientAdminOpen, defaultDate]);
 
   //Subir estado formulario
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -67,14 +71,15 @@ export const AddProductClientModal = () => {
 
     await startSavingAdministrationProductClient(formValues);  // Guarda en la BBDD
     closeProductClientAdminModal();  // Debería cerrar el modal
-    window.location.reload();
+        startLoadProductsByDate(formValues.paymentDate); // Recarga las ventas del día sin hacer reload
+    //window.location.reload();
 
     setFormSubmitted(false);
     setFormValues({
       name: 'Registro administrativo',
       price: '',
       paymentMethod: 'efectivo',
-      paymentDate: new Date().toISOString().slice(0, 10)
+      paymentDate: defaultDate || new Date().toISOString().slice(0,10), // <-- usa prop
 
     });
 

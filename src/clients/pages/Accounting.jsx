@@ -12,18 +12,33 @@ import { AddNewProductClient } from "../components/clientPage/accounting/AddNewP
 import { AddProductClientModal } from "../components/clientPage/accounting/AddProductClientModal";
 import { DateLabel } from "../../hooks/DateLabel";
 
+//fecha iso local.   (EJ: Local: 2025-09-21 00:00 → UTC es 2025-09-20 22:00.)
+const toISO = d => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);    //
+const readISO = () =>
+    new URLSearchParams(location.search).get('date') ||
+    localStorage.getItem('accounting.selectedDate') ||
+    toISO(new Date()
+    );
+
+
 
 export const Accounting = () => {
 
     const { startLoadProductsByDate, productsClientDate } = useProductClientStore();
-    const [date, setDate] = useState(new Date()); // hoy por defecto
+    const [date, setDate] = useState(readISO()); // Fecha seleccionada
 
     // carga inicial y cada vez que cambie la fecha
     useEffect(() => {
-        const iso = date.toISOString().slice(0, 10); // YYYY-MM-DD
-        startLoadProductsByDate(iso);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        localStorage.setItem('accounting.selectedDate', date);
+        const u = new URL(location.href);
+        u.searchParams.set('date', date);
+        history.replaceState({}, '', u);
+        startLoadProductsByDate(date);
     }, [date]);
+
+    //Fecha seleccionada
+    //const selectedDateISO = useMemo(() => toLocalISO(date), [date]);
+
 
     const { totalCash, totalTPV, totalAll, hasPaidSales } = useMemo(() => {
         const toNum = (v) => Number(v ?? 0);
@@ -66,8 +81,8 @@ export const Accounting = () => {
                         <h6 className='mb-4'>Caja diaria</h6>
 
                         <div className="d-flex justify-content-between">
-                            <AddNewProductClient/>
-                            <AddProductClientModal/>
+                            <AddNewProductClient />
+                            <AddProductClientModal defaultDate={date} />
                             <DateNavigator value={date} onChange={setDate} />
 
                         </div>
@@ -121,7 +136,10 @@ export const Accounting = () => {
                         {productsClientDate?.length ? productsClientDate.map((p, i) => (
                             <tr key={i}>
                                 <td className="p-3 d-flex gap-2 align-items-center">
-                                    {capitalizeFirstWord(p.name)} - <ClientName idClient={p.idClient} />
+                                    {capitalizeFirstWord(p.name)} —{" "}
+                                    {Number(p?.idClient) > 0
+                                        ? <ClientName idClient={p.idClient} />
+                                        : <span className="badge text-bg-secondary">Administración</span>}
                                 </td>
                                 <td >{p.paymentMethod != null ? `${p.price - p.discount} €` : '-'}</td>
                                 <td >{p.paymentMethod != null ? `${IVAProduct(p.price - p.discount).iva} €` : '-'}</td>
@@ -132,8 +150,8 @@ export const Accounting = () => {
                                 <td className=" text-nowrap">
                                     <div className="d-inline-flex gap-2">
                                         <EditProductClient productClient={p} />
-                                        <EditProductClientModal productClient={p} />
-                                        <DeleteProductClient productClient={p} />
+                                        <EditProductClientModal productClient={p} defaultDate={date} />
+                                        <DeleteProductClient productClient={p} defaultDate={date} />
                                     </div>
                                 </td>
                             </tr>

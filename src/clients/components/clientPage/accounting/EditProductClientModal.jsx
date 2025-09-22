@@ -19,7 +19,7 @@ const customStylesModal = {
   overlay: { backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999 }
 }
 
-export const EditProductClientModal = ({ productClient }) => {
+export const EditProductClientModal = ({ defaultDate }) => {
   const { isModalProductClientOpen, closeProductClientModal } = useUiStore()
   const { activeProductClient, startUpdateProductClient, startLoadProductsByDate, startLoadingProductsClientPaid } = useProductClientStore();
 
@@ -68,12 +68,10 @@ export const EditProductClientModal = ({ productClient }) => {
     };
 
     await startUpdateProductClient(payload, true);
+     // recarga SIEMPRE con la fecha seleccionada (YYYY-MM-DD)
+    startLoadProductsByDate(defaultDate);
     closeProductClientModal();
 
-    if (activeProductClient.idClient) {
-      await startLoadingProductsClientPaid(activeProductClient.idClient);
-      await startLoadProductsByDate(formatDate(new Date(), 'yyyy-MM-dd'));
-    }
     setFormValues({ name: '', price: '', discount: '', paymentDate: '', paymentMethod: '' });
     setSubmitted(false);
   };
