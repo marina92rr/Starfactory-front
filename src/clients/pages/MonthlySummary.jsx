@@ -62,6 +62,7 @@ export const MonthlySummary = () => {
 
   const barOptions = {
     responsive: true,
+    maintainAspectRatio: false,        // 👈 evita colapsar por alto
     plugins: {
       legend: { position: 'top' },
       title: { display: true, text: 'Ventas mensuales' },
@@ -80,30 +81,34 @@ export const MonthlySummary = () => {
   };
 
   return (
-    
+
     <div style={{ marginTop: '100px' }}>
-    <div className='m-5 fade-in'>
-      
-      <h1 className='mb-4'>Resumen Mensual de Ventas</h1>
-      {loading && <p>Cargando resumen...</p>}
-      {error && <p className='text-danger'>{error}</p>}
-      {!loading && !error && summary.length === 0 && <p>No hay datos de ventas mensuales.</p>}
-      {!loading && !error && summary.length > 0 && (
-        <div className='d-flex align-items-center'>
-          <div className='mb-5 me-5' style={{ maxWidth: '500px' }}>
-            <Bar data={barData} options={barOptions} />
-          </div>
-          {methodSummary.length > 0 && (
-            <div 
-              className='mb-5 ms-5'
-              style={{ maxWidth: '500px' }}>
-              <h5>Distribución por método de pago</h5>
-              <Pie data={pieData} />
+      <div className='m-5 fade-in'>
+
+        <h1 className='mb-4'>Resumen Mensual de Ventas</h1>
+        {loading && <p>Cargando resumen...</p>}
+        {error && <p className='text-danger'>{error}</p>}
+        {!loading && !error && summary.length === 0 && <p>No hay datos de ventas mensuales.</p>}
+        {!loading && !error && summary.length > 0 && (
+          <div className='d-flex flex-wrap gap-4 align-items-start'>
+            <div className='mb-5 me-5' style={{ width: 'min(100%, 600px)' }}>
+              <div style={{ height: 320 }}>
+                <Bar data={barData} options={barOptions} height={320} />
+              </div>
             </div>
-          )}
-        </div>
-      )}
-    </div>
+            {methodSummary.length > 0 && (
+              <div
+                className='mb-5 ms-5'
+                style={{ width: 'min(100%, 500px)' }}>
+                <h5>Distribución por método de pago</h5>
+                <div style={{ height: 280 }}>
+                  <Pie data={pieData} options={{ maintainAspectRatio: false, responsive: true }} height={280} />
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
