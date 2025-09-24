@@ -32,6 +32,7 @@ export const uiSlice = createSlice({
     isModalProductClientAdminOpen: false,
     //USUARIOS
     isModalUserOpen: false,
+    isModalPasswordUser: false,
 
   },
   reducers: {
@@ -123,6 +124,11 @@ export const uiSlice = createSlice({
     //Cerrar modal Usuario
     onCloseUserModal: (state) => { state.isModalUserOpen = false; },
 
+    //Abrir modal Password Usuario
+     onOpenPasswordUserModal: (state) => { state.isModalPasswordUser = true; },
+    //Cerrar modal Password Usuario
+     onClosePasswordUserModal: (state) => { state.isModalPasswordUser = false; },
+
 
 
 
@@ -183,5 +189,9 @@ export const {
   //*USUARIOS
   onOpenUserModal,
   onCloseUserModal,
+
+  //*Password USUARIOS
+  onOpenPasswordUserModal,
+  onClosePasswordUserModal,
 
 } = uiSlice.actions; //accion

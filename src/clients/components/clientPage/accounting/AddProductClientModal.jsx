@@ -3,10 +3,12 @@ import Modal from 'react-modal'
 import { useEffect, useMemo, useState } from 'react'
 import { useUiStore } from '../../../../hooks/useUiStore';
 import { useProductClientStore } from '../../../../hooks/useProductClientStore';
-
+import { toLocalISO } from '../../../../helpers/toLocalISO';
 
 
 Modal.setAppElement('#root');
+
+
 
 const customStylesModal = {
   content: {
@@ -34,13 +36,12 @@ export const AddProductClientModal = ({defaultDate}) => {
     name: 'Registro administrativo',
     price: '',
     paymentMethod: 'efectivo',
-    paymentDate: defaultDate || new Date().toISOString().slice(0,10), // <-- usa prop
+    paymentDate: toLocalISO(defaultDate)
   });
 
-  // cuando se abra el modal, fija la fecha al día seleccionado
   useEffect(() => {
-    if (isModalProductClientAdminOpen && defaultDate) {
-      setFormValues(prev => ({ ...prev, paymentDate: defaultDate }));
+    if (isModalProductClientAdminOpen) {
+      setFormValues(prev => ({ ...prev, paymentDate: toLocalISO(defaultDate) })); // 👈 al abrir
     }
   }, [isModalProductClientAdminOpen, defaultDate]);
 
@@ -79,7 +80,7 @@ export const AddProductClientModal = ({defaultDate}) => {
       name: 'Registro administrativo',
       price: '',
       paymentMethod: 'efectivo',
-      paymentDate: defaultDate || new Date().toISOString().slice(0,10), // <-- usa prop
+      paymentDate: toLocalISO(defaultDate)
 
     });
 

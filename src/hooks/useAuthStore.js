@@ -25,8 +25,8 @@ export const useAuthStore = () => {
             localStorage.setItem('token', data.token);      //Almacenar token. Token: Codigo para saber si el registro existe
             localStorage.setItem('token-init-date', new Date().getTime()); //Almacenar la fecha de creacion de token
 
-            dispatch(onLogin({ name: data.name, uid: data.uid, isAdmin: data.isAdmin }));  //rescatamos name y uid
-
+            dispatch(onLogin({ name: data.name, uid: data.uid, isAdmin: data.isAdmin, email: data.email }));  //rescatamos name y uid
+           
 
         } catch (error) {
             //console.log('LOGIN ERROR:', error?.response?.status, error?.response?.data);
@@ -54,11 +54,12 @@ export const useAuthStore = () => {
             // Si quieres refrescar la lista de usuarios:
             await startLoadingtUsers();
         } catch (error) {
-            dispatch(onRegisterError(error?.response?.data?.msg || 'Error en el registro'));
+            console.log('REGISTER ERROR:', error?.response?.data);
             setTimeout(() => dispatch(clearErrorMessage()), 10);
         }
     }
 
+    //Eutentifica los datos del token
     const checkAuthToken = async () => {
         const token = localStorage.getItem('token');    //Geto.token
 
@@ -70,7 +71,7 @@ export const useAuthStore = () => {
 
             localStorage.setItem('token', data.token);      //Almacenar token. Token: Codigo para saber si el registro existe
             localStorage.setItem('token-init-date', new Date().getTime()); //Almacenar la fecha de creacion de token
-            dispatch(onLogin({ name: data.name, uid: data.uid, isAdmin: data.isAdmin }));  //rescatamos name y uid
+            dispatch(onLogin({ name: data.name, uid: data.uid, isAdmin: data.isAdmin, email: data.email }));  //rescatamos name y uid
 
         } catch (error) {
             localStorage.clear(); //Limpiamos los token de localstore
@@ -122,7 +123,17 @@ export const useAuthStore = () => {
 
     };
 
+    const starEmailSend = async(email) => {
 
+        try {
+            await clientsApi.post('auth/resetPassword', {email: email.trim().toLowerCase()});
+            dispatch(onEmailSend());
+        } catch (error) {
+             console.log('Error al reenviar el email');
+            console.log(error);
+        }
+        
+    }
 
     return {
         //*Propiedades
@@ -141,7 +152,8 @@ export const useAuthStore = () => {
         startLoadingtUsers,
         starUpdateUser,
         startDeleteUser,
-        setActiveUser
+        setActiveUser,
+        starEmailSend
 
     }
 }

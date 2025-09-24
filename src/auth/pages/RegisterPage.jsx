@@ -18,13 +18,8 @@ const registerFormFields = {
 
 export const RegisterPage = () => {
 
-    const dispatch = useDispatch();
     const { startRegister, errorMessage, startLoadingtUsers, users } = useAuthStore();
     const { registerName, registerEmail, registerPassword, registerPassword2, onInputChange: onRegisterInputChange, onResetForm } = useForm(registerFormFields);
-
-
-
-
 
     const registerSubmit = () => {
         event.preventDefault();
@@ -42,7 +37,6 @@ export const RegisterPage = () => {
 
        onResetForm();
     }
-
 
     // Opcional: mostrar error del backend
     useEffect(() => {

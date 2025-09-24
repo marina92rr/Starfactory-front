@@ -9,6 +9,7 @@ import { MonthlySummary } from '../clients/pages/MonthlySummary';
 import { LoginPage } from '../auth/pages/LoginPage';
 import { RegisterPage } from '../auth/pages/RegisterPage';
 import { useAuthStore } from '../hooks/useAuthStore';
+import { ProfileUserPage } from '../auth/pages/ProfileUserPage';
 
 export const AppRoutes = () => {
 
@@ -74,6 +75,11 @@ export const AppRoutes = () => {
                 <>
                   {/* ----------------------Registro de usuarios (solo admin)---------------------- */}
                   <Route path='/register' element={<RegisterPage />} />
+                </>
+
+                 <>
+                  {/* ----------------------Perfil de usuario---------------------- */}
+                  <Route path='/profileUser' element={<ProfileUserPage />} />
                 </>
              
             </>

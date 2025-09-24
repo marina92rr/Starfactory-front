@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { onCloseCancellationModal, onCloseCancelSuscribeClientModal, onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseFilterClientsByLabelModal, onCloseLabelModal, onCloseProductClientAdminModal, onCloseProductClientModal, onCloseProductClientUnpaidModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onCloseSuscriptionClientModal, onCloseUserModal, onOpenCancellationModal, onOpenCancelSuscribeClientModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenFilterClientsByLabelModal, onOpenLabelModal, onOpenProductClientAdminModal, onOpenProductClientModal, onOpenProductClientUnpaidModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal, onOpenSuscriptionClientModal, onOpenUserModal } from "../store/ui/uiSlice";
+import { onCloseCancellationModal, onCloseCancelSuscribeClientModal, onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseFilterClientsByLabelModal, onCloseLabelModal, onClosePasswordUserModal, onCloseProductClientAdminModal, onCloseProductClientModal, onCloseProductClientUnpaidModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onCloseSuscriptionClientModal, onCloseUserModal, onOpenCancellationModal, onOpenCancelSuscribeClientModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenFilterClientsByLabelModal, onOpenLabelModal, onOpenPasswordUserModal, onOpenProductClientAdminModal, onOpenProductClientModal, onOpenProductClientUnpaidModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal, onOpenSuscriptionClientModal, onOpenUserModal } from "../store/ui/uiSlice";
 
 
 
@@ -23,7 +23,8 @@ export const useUiStore = () => {
       isModalProductClientUnpaidOpen,
       isModalProductClientOpen,
       isModalProductClientAdminOpen,
-      isModalUserOpen
+      isModalUserOpen,
+      isModalPasswordUser
      } = useSelector( state => state.ui);
 
 
@@ -219,6 +220,17 @@ export const useUiStore = () => {
         dispatch(onCloseUserModal());
     }
 
+    //Abrir Password Usuario
+    const openPasswordUserModal = () =>{
+        dispatch(onOpenPasswordUserModal());
+    }
+
+    //Cerrar Password Usuario
+    const closePasswordUserModal = () =>{
+        dispatch(onClosePasswordUserModal());
+    }
+
+
   return {
     //*Propiedades
     isModalClientOpen,
@@ -238,6 +250,7 @@ export const useUiStore = () => {
     isModalProductClientOpen,
     isModalProductClientAdminOpen,
     isModalUserOpen,
+    isModalPasswordUser,
 
     //*Metodos
     openClientModal,
@@ -286,7 +299,10 @@ export const useUiStore = () => {
     closeProductClientAdminModal,
 
     openUserModal,
-    closeUserModal
+    closeUserModal,
+
+    openPasswordUserModal,
+    closePasswordUserModal
 
   }
 }

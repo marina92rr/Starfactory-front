@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useUiStore } from '../../../../hooks/useUiStore'
 import { useProductClientStore } from '../../../../hooks/useProductClientStore'
 import { formatDate } from 'date-fns'
+import { toLocalISO } from '../../../../helpers/toLocalISO'
 
 Modal.setAppElement('#root')
 
@@ -19,13 +20,13 @@ const customStylesModal = {
   overlay: { backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999 }
 }
 
-export const EditProductClientModal = ({ defaultDate }) => {
+export const EditProductClientModal = ({ productClient, defaultDate }) => {
   const { isModalProductClientOpen, closeProductClientModal } = useUiStore()
   const { activeProductClient, startUpdateProductClient, startLoadProductsByDate, startLoadingProductsClientPaid } = useProductClientStore();
 
 
 
-  const isEdit = !!activeProductClient?.idProductClient
+  const isEdit = !!activeProductClient?.idProductClient || productClient
 
   const [formValues, setFormValues] = useState({
     name: '',
@@ -39,18 +40,16 @@ export const EditProductClientModal = ({ defaultDate }) => {
   useEffect(() => {
     if (isEdit) {
       setFormValues({
-        name: activeProductClient.name,
-        price: activeProductClient.price,
-        discount: activeProductClient.discount,
-        paymentMethod: activeProductClient.paymentMethod,
-        paymentDate: activeProductClient.paymentDate
-          ? formatDate(new Date(activeProductClient.paymentDate), 'yyyy-MM-dd')
-          : '', // deja vacío si no hay fecha
+        name: productClient.name,
+        price: productClient.price,
+        discount: productClient.discount,
+        paymentMethod: productClient.paymentMethod,
+        paymentDate: toLocalISO(defaultDate)
       })
     } else {
       setFormValues({ name: '', price: '', discount: '', paymentDate: '', paymentMethod: '' }) // Reset form values when not editing
     }
-  }, [isEdit, activeProductClient])
+  }, [isEdit, activeProductClient, defaultDate])
 
   const onInputChange = (e) => {
     const { name, value } = e.target

@@ -82,6 +82,9 @@ export const Sidebar = React.memo(() => {
                 if (link.name === 'Tarifas') {
                   dispatch(startResetRatesPage());
                 }
+                if (link.name === 'Contabilidad') {
+                  dispatch(startResetRatesPage());
+                }
               }}
             >
               {({ isActive }) => (

@@ -7,15 +7,23 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState: {
     status: 'checking',     //'authenticated' or 'not-authenticated'
-    user: { name: null, uid: null, isAdmin: false },
+    user: { name: null, uid: null, isAdmin: false, email: null },
     isLoadingUser: false,
     activeUser: null,
     users: [],
     registerUser: { name: null, uid: null, isAdmin: false },
     registerStatus: 'not-success',
-    errorMessage: undefined
+    errorMessage: undefined,
+
+    // confirmacion email
+    isEmailConfirmed: false,
+    emailConfirmation: 'not-sent', // 'not-sent' | 'sent' | 'verified'
   },
   reducers: {
+
+    onSetActiveUser:(state,{payload}) => { 
+      state.activeUser = payload 
+    },
 
     //Estado de confirmacion de authenti
     onChecking: (state) => {
@@ -28,6 +36,7 @@ export const authSlice = createSlice({
       state.user = {
         name: payload.name,
         uid: payload.uid,
+        email: payload.email,
         isAdmin: !!payload.isAdmin, // <- fuerza booleano
       };
       state.errorMessage = undefined;
@@ -43,10 +52,6 @@ export const authSlice = createSlice({
       state.errorMessage = undefined;
     },
 
-
-    onSetActiveUser: (status, { payload }) => {
-      status.activeUser = payload;
-    },
 
     onRegisterUser: (state, { payload }) => {
       state.registerUser = {
@@ -88,6 +93,10 @@ export const authSlice = createSlice({
       }
     },
 
+    onEmailSend:(state, {payload}) =>{
+      state.emailConfirmation = payload;
+    }
+
   },
 })
 export const {
@@ -99,5 +108,8 @@ export const {
   onLoadUsers,
   onUpdateUser,
   onDeleteUser,
-  onRegisterUser
+  onRegisterUser,
+  onEmailSend,
+
+  
 } = authSlice.actions; //accion

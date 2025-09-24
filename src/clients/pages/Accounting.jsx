@@ -18,8 +18,7 @@ const readISO = () =>
     new URLSearchParams(location.search).get('date') ||
     localStorage.getItem('accounting.selectedDate') ||
     toISO(new Date()
-    );
-
+);
 
 
 export const Accounting = () => {
@@ -37,7 +36,6 @@ export const Accounting = () => {
     }, [date]);
 
     //Fecha seleccionada
-    //const selectedDateISO = useMemo(() => toLocalISO(date), [date]);
 
 
     const { totalCash, totalTPV, totalAll, hasPaidSales } = useMemo(() => {
@@ -115,9 +113,6 @@ export const Accounting = () => {
                     </table>
                 </div>
             </div>
-
-
-
             <div className="d-flex flex-column mt-3">
 
                 <table className="table border align-middle rounded-3 ">
@@ -131,7 +126,6 @@ export const Accounting = () => {
                             <th scope="col" className="col-2">Editar/Borrar</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         {productsClientDate?.length ? productsClientDate.map((p, i) => (
                             <tr key={i}>

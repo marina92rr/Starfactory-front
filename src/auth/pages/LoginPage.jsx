@@ -4,6 +4,8 @@ import React, { useEffect } from 'react'
 import { useAuthStore } from '../../hooks/useAuthStore'
 import { useForm } from '../../hooks/useForm'
 import Swal from 'sweetalert2'
+import { ResendPassword } from '../components/ResendPassword'
+import { PasswordModal } from '../components/passwordModal'
 
 const logingFormFields = {
     loginEmail: '',
@@ -17,13 +19,15 @@ export const LoginPage = () => {
 
     const loginSubmit = () => {
         event.preventDefault();
-        startLogin({ email: loginEmail.trim(), password: loginPassword });
+        startLogin({  
+            email: loginEmail.trim().toLowerCase(), // Sin espacios y en minúsculas
+            password: loginPassword
+     });
     }
 
     useEffect(() => {
-
         if (errorMessage !== undefined) {
-            Swal.fire('Error en la Autentificación', errorMessage, 'error');
+            Swal.fire('Error en la Autentificación', errorMessage, 'error');    //Mensaje error
         };
     }, [errorMessage])
 
@@ -69,7 +73,12 @@ export const LoginPage = () => {
                             />
                         </div>
                     </form>
+            {/* Componente para reenviar contraseña 
+                <ResendPassword/>
+                <PasswordModal/>
+            */}
                 </div>
+
             
         </div>
     )
