@@ -26,7 +26,7 @@ export const useAuthStore = () => {
             localStorage.setItem('token-init-date', new Date().getTime()); //Almacenar la fecha de creacion de token
 
             dispatch(onLogin({ name: data.name, uid: data.uid, isAdmin: data.isAdmin, email: data.email }));  //rescatamos name y uid
-           
+           //dejar activo usuario con activeUser
 
         } catch (error) {
             //console.log('LOGIN ERROR:', error?.response?.status, error?.response?.data);

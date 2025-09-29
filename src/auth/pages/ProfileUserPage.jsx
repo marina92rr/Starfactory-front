@@ -2,12 +2,15 @@
 import React, { useEffect } from 'react'
 import { useAuthStore } from '../../hooks/useAuthStore'
 
+
 export const ProfileUserPage = () => {
 
     const { user } = useAuthStore();
 
 
-
+    useEffect(() => {
+        
+    }, []);
 
     return (
         <div className='m-5 slide-in-up'>
@@ -39,6 +42,7 @@ export const ProfileUserPage = () => {
                     </tbody>
                 </table>
             </div>
+
 
         </div>
     )

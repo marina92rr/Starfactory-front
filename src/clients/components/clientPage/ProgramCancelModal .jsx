@@ -2,23 +2,10 @@ import Modal from 'react-modal';
 import { useState } from 'react';
 import { useUiStore } from '../../../hooks/useUiStore';
 import { useClientsStore } from '../../../hooks/useClientsStore';
-
+import {customStyleModal} from '../../../helpers/customStyleModal';
 
 Modal.setAppElement('#root');
 
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    transform: 'translate(-50%, -50%)',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // oscuridad del fondo
-    zIndex: 9999,                          // asegura que está por encima
-  }
-};
 
 export const ProgramCancelModal = ({ idClient }) => {
 
@@ -48,7 +35,7 @@ export const ProgramCancelModal = ({ idClient }) => {
     <Modal
       isOpen={isModalClientOpen}
       onRequestClose={closeClientModal}
-      style={customStyles}
+      style={customStyleModal}
       contentLabel="Programar baja"
     >
       <h3 className="m-3">Programar baja del cliente</h3>

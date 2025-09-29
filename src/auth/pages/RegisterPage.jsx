@@ -16,6 +16,8 @@ const registerFormFields = {
     registerPassword2: ''
 }
 
+
+
 export const RegisterPage = () => {
 
     const { startRegister, errorMessage, startLoadingtUsers, users } = useAuthStore();
@@ -40,10 +42,10 @@ export const RegisterPage = () => {
 
     // Opcional: mostrar error del backend
     useEffect(() => {
+        
         if (errorMessage) {
             Swal.fire('Error', errorMessage, 'error');
         }
-
         startLoadingtUsers();
     }, [errorMessage]);
 
@@ -58,6 +60,7 @@ export const RegisterPage = () => {
                 <form onSubmit={registerSubmit}>
                     <div className="form-group mb-2">
                         <label
+                            
                             htmlFor="registerName"
                             className="form-label">Nombre:
                         </label>

@@ -4,25 +4,11 @@ import { useEffect, useMemo, useState } from 'react'
 import { useUiStore } from '../../../../hooks/useUiStore';
 import { useProductClientStore } from '../../../../hooks/useProductClientStore';
 import { toLocalISO } from '../../../../helpers/toLocalISO';
+import {customStyleModal} from '../../../../helpers/customStyleModal';
 
 
 Modal.setAppElement('#root');
 
-
-
-const customStylesModal = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    transform: 'translate(-50%, -50%)',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // oscuridad del fondo
-    zIndex: 9999,                          // asegura que está por encima
-  }
-};
 
 export const AddProductClientModal = ({defaultDate}) => {
 
@@ -90,7 +76,7 @@ export const AddProductClientModal = ({defaultDate}) => {
     <Modal
       isOpen={isModalProductClientAdminOpen}
       onRequestClose={closeProductClientAdminModal}
-      style={customStylesModal}
+      style={customStyleModal}
       contentLabel={'Añadir nuevo registro'} >
 
       <h1>{'Añadir nuevo Registro'}</h1>

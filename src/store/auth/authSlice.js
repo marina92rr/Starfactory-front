@@ -76,6 +76,8 @@ export const authSlice = createSlice({
       })
     },
 
+  
+
     // Modificar usuario por ID
     onUpdateUser: (state, { payload }) => {
       state.users = state.users.map(user => {      //Nuevo array del usuario

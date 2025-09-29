@@ -5,26 +5,21 @@ import { useUiStore } from '../../../../hooks/useUiStore'
 import { useProductClientStore } from '../../../../hooks/useProductClientStore'
 import { formatDate } from 'date-fns'
 import { toLocalISO } from '../../../../helpers/toLocalISO'
+import { customStyleModal } from '../../../../helpers/customStyleModal'
 
-Modal.setAppElement('#root')
 
-const customStylesModal = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    transform: 'translate(-50%, -50%)',
-    width: '400px',
+const lightOverlayStyle = {
+  ...customStyleModal,
+  overlay: {
+    backgroundColor: 'rgba(0,0,0,0.20)', // fuerza opacidad más baja
+    zIndex: 1000,
   },
-  overlay: { backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999 }
-}
+};
+
 
 export const EditProductClientModal = ({ productClient, defaultDate }) => {
   const { isModalProductClientOpen, closeProductClientModal } = useUiStore()
-  const { activeProductClient, startUpdateProductClient, startLoadProductsByDate, startLoadingProductsClientPaid } = useProductClientStore();
-
-
+  const { activeProductClient, startUpdateProductClient, startLoadProductsByDate } = useProductClientStore();
 
   const isEdit = !!activeProductClient?.idProductClient || productClient
 
@@ -79,7 +74,7 @@ export const EditProductClientModal = ({ productClient, defaultDate }) => {
     <Modal
       isOpen={isModalProductClientOpen}
       onRequestClose={closeProductClientModal}
-      style={customStylesModal}
+      style={lightOverlayStyle}
       contentLabel="Editar Compra automática"
     >
       <h4 className='ps-4'>Editar Venta</h4>

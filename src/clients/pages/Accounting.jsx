@@ -28,10 +28,7 @@ export const Accounting = () => {
 
     // carga inicial y cada vez que cambie la fecha
     useEffect(() => {
-        localStorage.setItem('accounting.selectedDate', date);
-        const u = new URL(location.href);
-        u.searchParams.set('date', date);
-        history.replaceState({}, '', u);
+        localStorage.setItem('accounting.selectedDate', date);  // Guardar en localStorage(recarga la ultima fecha elegida)
         startLoadProductsByDate(date);
     }, [date]);
 

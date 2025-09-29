@@ -3,20 +3,9 @@ import { useUiStore } from '../../../../hooks/useUiStore';
 import { useClientsStore } from '../../../../hooks/useClientsStore';
 import { formatDate } from '../../../../helpers/formatDate';
 import { useNavigate } from 'react-router-dom';
+import { customStyleModal } from '../../../../helpers/customStyleModal';
 
-const customStylesModal = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        transform: 'translate(-50%, -50%)',
-    },
-    overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // oscuridad del fondo
-    zIndex: 9999,                          // asegura que está por encima
-  }
-};
+
 
 
 export const GetClientCancellationModal = () => {
@@ -39,7 +28,7 @@ export const GetClientCancellationModal = () => {
         <Modal
             isOpen={isModalCancellationOpen}
             onRequestClose={closeCancellationModal}
-            style={customStylesModal}
+            style={customStyleModal}
             contentLabel='Clientes con Baja Programada' >
 
             <div className="position-sticky top-0 bg-white pt-2 pb-2" style={{ zIndex: 12 }}>

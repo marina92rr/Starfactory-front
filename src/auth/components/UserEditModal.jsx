@@ -5,9 +5,16 @@ import { useUiStore } from '../../hooks/useUiStore';
 import { useAuthStore } from '../../hooks/useAuthStore';
 import { customStyleModal} from '../../helpers/customStyleModal';
 
-
-
 Modal.setAppElement('#root');
+
+const lightOverlayStyle = {
+  ...customStyleModal,
+  overlay: {
+    backgroundColor: 'rgba(0,0,0,0.20)', // fuerza opacidad más baja
+    zIndex: 1000,
+  },
+};
+  
 
 
 export const UserEditModal = () => {
@@ -84,7 +91,7 @@ export const UserEditModal = () => {
     <Modal
       isOpen={isModalUserOpen}
       onRequestClose={closeUserModal}
-      style={customStyleModal}
+      style={lightOverlayStyle}
       contentLabel={'Actualizar Usuario'}>
 
       <h1>Actualizar usuario</h1>

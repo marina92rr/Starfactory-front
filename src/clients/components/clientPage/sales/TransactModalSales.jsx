@@ -4,22 +4,8 @@ import { useUiStore } from '../../../../hooks/useUiStore';
 import { useClientsStore } from '../../../../hooks/useClientsStore';
 import { useProductClientStore } from '../../../../hooks/useProductClientStore';
 import { useNavigate } from 'react-router-dom';
-import { printTicket } from '../../../../helpers/TicketPDF';
+import { customStyleModal } from '../../../../helpers/customStyleModal';
 
-const customStylesModal = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    transform: 'translate(-50%, -50%)',
-    width: '400px', height: '450px'
-  },
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // oscuridad del fondo
-    zIndex: 9999,                          // asegura que está por encima
-  }
-};
 
 export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
 
@@ -72,7 +58,7 @@ export const TransactModalSales = ({ selectedProducts, totalAmount }) => {
     <Modal
       isOpen={isModalSaleOpen}
       onRequestClose={closeSaleModal}
-      style={customStylesModal}
+      style={customStyleModal}
       contentLabel='Tramitar Venta' >
 
       <h3 className='py-1'>Liquidar deuda</h3>

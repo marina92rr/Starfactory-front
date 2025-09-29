@@ -3,25 +3,11 @@ import Modal  from 'react-modal'
 import { useEffect, useMemo, useState } from 'react'
 import { useUiStore } from '../../../hooks/useUiStore';
 import { useRateStore } from '../../../hooks/useRateStore';
+import {customStyleModal} from '../../../helpers/customStyleModal';
 
 
 Modal.setAppElement('#root');
 
-const customStylesModal = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    transform: 'translate(-50%, -50%)',
-    width: '600px',
-    height: 'auto',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // oscuridad del fondo
-    zIndex: 9999,                          // asegura que está por encima
-  }
-};
 
 export const RateModal = () => {
 
@@ -85,7 +71,7 @@ export const RateModal = () => {
     <Modal
         isOpen={isModalRateOpen}
         onRequestClose={closeRateModal}
-        style={customStylesModal}
+        style={customStyleModal}
         contentLabel={isEditRate ? 'Actualizar Tarifa' :'Crear Tarifa'} 
        >
 

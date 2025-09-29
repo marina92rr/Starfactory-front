@@ -1,24 +1,13 @@
 // SuscriptionClientModal.jsx
 import Modal from 'react-modal'
-import { useEffect, useMemo, useState } from 'react'
-import { useSuscriptionClientStore } from '../../../../hooks/useSuscriptionClientStore'
+import { useEffect, useState } from 'react'
 import { useUiStore } from '../../../../hooks/useUiStore'
-import { capitalizeFirstWord } from '../../../../helpers/capitalizeFirstWord'
 import { useProductClientStore } from '../../../../hooks/useProductClientStore'
+import { customStyleModal } from '../../../../helpers/customStyleModal'
 
 Modal.setAppElement('#root')
 
-const customStylesModal = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    transform: 'translate(-50%, -50%)',
-    width: '400px',
-  },
-  overlay: { backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999 }
-}
+
 
 export const LiquidateProductClientModal = ({ unpaid }) => {
   const { isModalProductClientUnpaidOpen, closeProductClientUnpaidModal } = useUiStore()
@@ -73,7 +62,7 @@ export const LiquidateProductClientModal = ({ unpaid }) => {
     <Modal
       isOpen={isModalProductClientUnpaidOpen}
       onRequestClose={closeProductClientUnpaidModal}
-      style={customStylesModal}
+      style={customStyleModal}
       contentLabel="Editar Compra automática"
     >
       <h4 className='ps-4'>Liquidar deuda</h4>

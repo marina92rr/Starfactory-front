@@ -5,9 +5,9 @@ import { useLabelsStore } from '../../../hooks/useLabelsStore';
 import { useUiStore } from '../../../hooks/useUiStore';
 import { useClientsStore } from '../../../hooks/useClientsStore';
 
-//Modal.setAppElement('#root');
 
 const customStylesModal = {
+
   content: {
     top: '50%',
     left: '50%',
@@ -21,6 +21,7 @@ const customStylesModal = {
     zIndex: 1001
   },
   overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', // oscuridad del fondo
     zIndex: 1000
   },
 };

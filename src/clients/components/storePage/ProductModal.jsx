@@ -4,23 +4,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { useUiStore } from '../../../hooks/useUiStore';
 import { useCategoryStore } from '../../../hooks/useCategoryStore';
 import { useProductStore } from '../../../hooks/useProductStore';
-
+import {customStyleModal} from '../../../helpers/customStyleModal';
 
 Modal.setAppElement('#root');
 
-const customStylesModal = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    transform: 'translate(-50%, -50%)',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // oscuridad del fondo
-    zIndex: 9999,                          // asegura que está por encima
-  }
-};
 
 export const ProductModal = () => {
 
@@ -102,7 +89,7 @@ if(isEditMode){
     <Modal
       isOpen={isModalProductOpen}
       onRequestClose={closeProductModal}
-      style={customStylesModal}
+      style={customStyleModal}
       contentLabel={isEditMode ? 'Editar Producto' : 'Añadir nuevo Producto'} >
 
       <h1>{isEditMode ? 'Editar Producto' : 'Añadir nuevo Producto'}</h1>

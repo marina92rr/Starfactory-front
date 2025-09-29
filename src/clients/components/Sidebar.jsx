@@ -10,7 +10,6 @@ import React, { useEffect } from 'react';
 // Actualización de enlaces de navegación.  Se añade una entrada para el
 // resumen mensual de ventas.
 const links = [
-  { name: 'Dashboard', path: '/monthly-summary' },
   { name: 'Clientes', path: '/' },
   { name: 'Tienda', path: '/store' },
   { name: 'Tarifas', path: '/rates' },
@@ -19,6 +18,12 @@ const links = [
 
 ];
 
+//Si es administrador, verá el dashboard
+const Dashboard = [
+  { name: 'Dashboard', path: '/monthly-summary' },
+];
+
+//Si es administrador, verá el registro de usuarios
 const registers = [
   { name: 'Registrar usuario', path: '/register' }
 ]
@@ -29,16 +34,12 @@ export const Sidebar = React.memo(() => {
   const { startResetRatesPage } = useRateStore();
   const { startResetStorePage } = useCategoryStore();
 
-
-
-
-  
   const { status, user } = useAuthStore();
   const isAdmin = !!user?.isAdmin; // <- fuerza booleano
 
 
   useEffect(() => {
-}, [status, user]);
+  }, [status, user]);
 
 
   return (
@@ -66,6 +67,36 @@ export const Sidebar = React.memo(() => {
             style={{ width: '100px', height: 'auto' }}
           />
         </div>
+
+        {/* ----------------------Mensualidad---------------------- */}
+
+        {status !== 'checking' && isAdmin && (
+          <div className='mt-5' >
+            <nav>
+              {Dashboard.map((Dashboard) => (
+                <NavLink
+                  key={Dashboard.path}
+                  to={Dashboard.path}
+                  style={{ textDecoration: 'none' }}
+                  onClick={() => {
+
+                  }}
+                >
+                  {({ isActive }) => (
+                    <div
+                      className='p-3 '
+                      style={{ background: isActive ? '#007bff' : 'none', color: isActive ? '#ffffff' : '#000000' }}
+                    >
+                      <span>{Dashboard.name}</span>
+                    </div>
+                  )}
+                </NavLink>
+              ))}
+            </nav>
+          </div>
+        )
+        }
+
         <nav>
           {links.map((link) => (
             <NavLink
@@ -83,7 +114,7 @@ export const Sidebar = React.memo(() => {
                   dispatch(startResetRatesPage());
                 }
                 if (link.name === 'Contabilidad') {
-                  dispatch(startResetRatesPage());
+                  localStorage.removeItem('accounting.selectedDate'); // Resetea la fecha al entrar en contabilidad
                 }
               }}
             >
@@ -101,8 +132,8 @@ export const Sidebar = React.memo(() => {
 
         {/* ----------------------Registro usuario---------------------- */}
 
-       {status !== 'checking' && isAdmin && (
-            <div className='mt-auto mb-5' >
+        {status !== 'checking' && isAdmin && (
+          <div className='mt-auto mb-5' >
             <nav>
               {registers.map((register) => (
                 <NavLink
@@ -125,9 +156,7 @@ export const Sidebar = React.memo(() => {
               ))}
             </nav>
           </div>
-          )
-
-          
+        )
         }
 
 

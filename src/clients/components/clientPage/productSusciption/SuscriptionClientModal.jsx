@@ -4,19 +4,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { useSuscriptionClientStore } from '../../../../hooks/useSuscriptionClientStore'
 import { useUiStore } from '../../../../hooks/useUiStore'
 import { capitalizeFirstWord } from '../../../../helpers/capitalizeFirstWord'
+import { customStyleModal } from '../../../../helpers/customStyleModal'
 
 Modal.setAppElement('#root')
 
-const customStylesModal = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    transform: 'translate(-50%, -50%)',
-  },
-  overlay: { backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999 }
-}
 
 export const SuscriptionClientModal = ({ suscription }) => {
   const { isModalSuscriptionClientOpen, closeSuscriptionClientModal } = useUiStore()
@@ -78,7 +69,7 @@ export const SuscriptionClientModal = ({ suscription }) => {
     <Modal
       isOpen={isModalSuscriptionClientOpen}
       onRequestClose={closeSuscriptionClientModal}
-      style={customStylesModal}
+      style={customStyleModal}
       contentLabel="Editar Compra automática"
     >
       <h4>Editar compra automática</h4>
