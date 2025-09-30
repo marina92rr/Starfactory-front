@@ -4,8 +4,7 @@ import React, { useEffect } from 'react'
 import { useAuthStore } from '../../hooks/useAuthStore'
 import { useForm } from '../../hooks/useForm'
 import Swal from 'sweetalert2'
-import { ResendPassword } from '../components/ResendPassword'
-import { PasswordModal } from '../components/passwordModal'
+
 
 const logingFormFields = {
     loginEmail: '',
@@ -73,10 +72,7 @@ export const LoginPage = () => {
                             />
                         </div>
                     </form>
-            {/* Componente para reenviar contraseña 
-                <ResendPassword/>
-                <PasswordModal/>
-            */}
+
                 </div>
 
             
