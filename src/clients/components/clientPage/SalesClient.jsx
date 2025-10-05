@@ -23,6 +23,8 @@ export const SalesClient = () => {
     startLoadingProductsClientUnpaid,
   } = useProductClientStore()
 
+   
+
   useEffect(() => {
     setActiveClient(activeClient)
     if (activeClient?.idClient) {
@@ -70,7 +72,7 @@ export const SalesClient = () => {
                 return (
                   <tr key={i}>
                     <td className='text-primary p-3 col-4'>{capitalizeFirstWord(unpaid.name)}</td>
-                    <td className="p-3">{total}€</td>
+                    <td className="p-3">{total - unpaid.discount}€</td>
                     <td className="p-3">{iva}€</td>
                     <td className='p-3'><DateLabel isoDate={unpaid.buyDate} /></td>
                     <td className='p-3'>

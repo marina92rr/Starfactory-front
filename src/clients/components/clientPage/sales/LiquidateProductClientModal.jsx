@@ -1,6 +1,6 @@
 // SuscriptionClientModal.jsx
 import Modal from 'react-modal'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useUiStore } from '../../../../hooks/useUiStore'
 import { useProductClientStore } from '../../../../hooks/useProductClientStore'
 import { customStyleModal } from '../../../../helpers/customStyleModal'
@@ -20,19 +20,32 @@ export const LiquidateProductClientModal = ({ unpaid }) => {
   const [formValues, setFormValues] = useState({
     paymentMethod: '',
     paid: '',
+    discount: ''
   })
-  const [submitted, setSubmitted] = useState(false)
+  const [submitted, setSubmitted] = useState(false);
+
+  // acción actual del submit: 'update' | 'liquidate'
+    const [action, setAction] = useState('update')
 
   useEffect(() => {
     if (isEdit) {
       setFormValues({
         paymentMethod: activeProductClient.paymentMethod ?? '',
         paid: activeProductClient.paid ?? '',
+        discount: activeProductClient.discount ?? ''
       })
     } else {
-      setFormValues({ paymentMethod: '', paid: '' }) // Reset form values when not editing
+      setFormValues({ paymentMethod: '', paid: '', discount: '' }) // Reset form values when not editing
     }
   }, [isEdit, activeProductClient])
+
+  // 🧮 Cálculo dinámico del precio final (resta el descuento)
+  const finalPrice = useMemo(() => {
+    const price = parseFloat(unpaid.price) || 0
+    const discount = parseFloat(formValues.discount) || 0
+    const result = price - discount
+    return result >= 0 ? result.toFixed(2) : '0.00'
+  }, [unpaid.price, formValues.discount])
 
   const onInputChange = (e) => {
     const { name, value } = e.target
@@ -42,21 +55,37 @@ export const LiquidateProductClientModal = ({ unpaid }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);
-  
-    const payload = {
-      ...formValues,
-      idProductClient: activeProductClient?.idProductClient, // <-- AQUI
-      paid: true,
-    };
+
+    // Validaciones Actualizar-Liquidar
+    if (action === 'liquidate' && !formValues.paymentMethod) {
+      setSubmitted(false);
+      return;
+    }
+
+    const payload =
+
+      action === 'liquidate'
+        ? {
+          ...formValues,
+          idProductClient: activeProductClient?.idProductClient, // <-- AQUI
+          paid: true,
+        }
+        : {
+          ...formValues,
+          idProductClient: activeProductClient?.idProductClient, // <-- AQUI
+          paid: false,
+        }
 
     await startUpdateProductClient(payload, true);
     closeProductClientUnpaidModal();
     await startLoadingProductsClientUnpaid(activeProductClient?.idClient);
     await startLoadingProductsClientPaid(activeProductClient?.idClient);
 
-    setFormValues({ paymentMethod: '', paid: '' });
+    setFormValues({ paymentMethod: '', paid: '', discount: '' });
     setSubmitted(false);
+    setAction('update');
   };
+
 
   return (
     <Modal
@@ -72,6 +101,17 @@ export const LiquidateProductClientModal = ({ unpaid }) => {
         <div className='mb-3'>
           <label className='border p-3 w-100'>{unpaid.name}</label>
         </div>
+
+        <div className='mb-3 '>
+          <label className="form-label">Descuento</label>
+          <input
+            className="form-control"
+            ype="text"
+            name='discount'
+            value={formValues.discount}
+            onChange={onInputChange}
+          />
+        </div>
         {/*metodo de pago  */}
         <div className="mb-3 py-3">
           <label className="form-label">Método de pago</label>
@@ -81,17 +121,32 @@ export const LiquidateProductClientModal = ({ unpaid }) => {
             value={formValues.paymentMethod}
             onChange={onInputChange}
           >
-             <option value="tarjeta">Tarjeta</option> 
-             <option value="efectivo">Efectivo</option>
+            <option value="tarjeta">Tarjeta</option>
+            <option value="efectivo">Efectivo</option>
           </select>
         </div>
-        
+
 
         <div className="d-flex gap-2 mb-3 justify-content-between align-items-center">
-          <h4 className='ps-1'>{unpaid.price} €</h4>
-          <button type="submit" className="btn btn-success ">Liquidar deuda</button>
-
+          <h4 className='ps-1'>{finalPrice} €</h4>
+          {/* Botón ACTUALIZAR: mantiene paid = false */}
+          <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={() => setAction('update')}
+          >Actualizar
+          </button>
+          {/* Botón LIQUIDAR: paid = true */}
+          <button
+            type="submit"
+            className="btn btn-success"
+            onClick={() => setAction('liquidate')}
+            disabled={submitted}
+          >
+            Liquidar deuda
+          </button>
         </div>
+
       </form>
     </Modal>
   )
