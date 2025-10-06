@@ -78,7 +78,7 @@ export const SalesClient = () => {
                     <td className='p-3'>
                       <div className='d-flex align-items-center'>
                         <LiquidateProductClient unpaid={unpaid} />
-                        <LiquidateProductClientModal unpaid={unpaid} />
+                        <LiquidateProductClientModal />
                         <DeleteProductClientUnpaid unpaid={unpaid} />
                       </div>
 
@@ -145,7 +145,7 @@ export const SalesClient = () => {
                     <td className="p-3 text-nowrap">
                       <div className="d-inline-flex gap-2">
                         <EditProductClient productClient={row} />
-                        <EditProductClientModal productClient={row} />
+                        <EditProductClientModal/>
                         <DeleteProductClient productClient={row} />
                       </div>
 

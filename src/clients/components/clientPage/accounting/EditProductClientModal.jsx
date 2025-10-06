@@ -17,11 +17,12 @@ const lightOverlayStyle = {
 };
 
 
-export const EditProductClientModal = ({ productClient, defaultDate }) => {
+export const EditProductClientModal = () => {
   const { isModalProductClientOpen, closeProductClientModal } = useUiStore()
-  const { activeProductClient, startUpdateProductClient, startLoadProductsByDate } = useProductClientStore();
+  const { activeProductClient, startUpdateProductClient, startLoadProductsByDate, startClearActiveProductClient } = useProductClientStore();
+  
+  const isEditMode = !!activeProductClient?.idProductClient
 
-  const isEdit = !!activeProductClient?.idProductClient || productClient
 
   const [formValues, setFormValues] = useState({
     name: '',
@@ -33,51 +34,65 @@ export const EditProductClientModal = ({ productClient, defaultDate }) => {
   const [submitted, setSubmitted] = useState(false)
 
   useEffect(() => {
-    if (isEdit) {
+    if (isEditMode && activeProductClient) {
       setFormValues({
-        name: productClient.name,
-        price: productClient.price,
-        discount: productClient.discount,
-        paymentMethod: productClient.paymentMethod,
-        paymentDate: toLocalISO(defaultDate)
+        name: activeProductClient.name,
+        price: activeProductClient.price,
+        discount: activeProductClient.discount,
+        paymentMethod: activeProductClient.paymentMethod,
+        paymentDate: toLocalISO(
+          activeProductClient.paymentDate
+            ? new Date(activeProductClient.paymentDate)
+            : new Date()
+        ),
       })
     } else {
       setFormValues({ name: '', price: '', discount: '', paymentDate: '', paymentMethod: '' }) // Reset form values when not editing
     }
-  }, [isEdit, activeProductClient, defaultDate])
+  }, [isModalProductClientOpen,isEditMode])
 
   const onInputChange = (e) => {
     const { name, value } = e.target
     setFormValues(v => ({ ...v, [name]: value }))
   }
 
+   const onClose = () => {
+    setSubmitted(false);
+    setFormValues({ name: '', price: '', discount: '', paymentDate: '', paymentMethod: '' });
+    startClearActiveProductClient?.(); // limpia el store si existe esta acción
+    closeProductClientModal();
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);
 
-
     const payload = {
       ...formValues,
-      idProductClient: activeProductClient.idProductClient,
+      idProductClient: source?.idProductClient,
     };
 
     await startUpdateProductClient(payload, true);
+    // recarga por la fecha del propio form (YYYY-MM-DD)
+    const ymd = formatDate(
+      new Date(formValues.paymentDate),
+      'yyyy-MM-dd'
+    )
      // recarga SIEMPRE con la fecha seleccionada (YYYY-MM-DD)
-    startLoadProductsByDate(defaultDate);
-    closeProductClientModal();
-
-    setFormValues({ name: '', price: '', discount: '', paymentDate: '', paymentMethod: '' });
-    setSubmitted(false);
+    startLoadProductsByDate(ymd);
+    onClose();
+    
   };
+
 
   return (
     <Modal
       isOpen={isModalProductClientOpen}
-      onRequestClose={closeProductClientModal}
+      onRequestClose={onClose}
       style={lightOverlayStyle}
-      contentLabel="Editar Compra automática"
+      contentLabel="Editar venta"
     >
-      <h4 className='ps-4'>Editar Venta</h4>
+      <h4 className='ps-4'>Editar venta</h4>
       <hr />
 
       <form className="container mb-3 " onSubmit={onSubmit}>

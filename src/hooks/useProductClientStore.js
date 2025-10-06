@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { clientsApi } from "../api";
 import { normalizeAllTextFields } from "../helpers/normalizeText";
-import { onAddNewProductClient, onDeleteProductClient, onLoadAllProductsClient, onLoadProductsByDate, onLoadProductsClient, onLoadProductsClientPaid, onLoadProductsClientUnpaid, onSetActiveProductClient, onSetSelectedDate, onUpdateProductClient } from "../store/sales/productClientSlice";
+import { clearActiveProductClient, onAddNewProductClient, onDeleteProductClient, onLoadAllProductsClient, onLoadProductsByDate, onLoadProductsClient, onLoadProductsClientPaid, onLoadProductsClientUnpaid, onSetActiveProductClient, onSetSelectedDate, onUpdateProductClient } from "../store/sales/productClientSlice";
 import { useClientsStore } from "./useClientsStore";
 
 
@@ -15,6 +15,11 @@ export const useProductClientStore = () => {
   const setActiveProductClient = (productclientData) => {
     dispatch(onSetActiveProductClient(productclientData))
   }
+
+  //Limpiar producto activo
+   const startClearActiveProductClient = () => {
+    dispatch(clearActiveProductClient());
+  };
 
   //Lectura de productos por fecha
   const getAllProductsClientByDate = async (date) => {
@@ -154,6 +159,7 @@ export const useProductClientStore = () => {
     //*Metodos
     startSavingProductClient,
     setActiveProductClient,
+    startClearActiveProductClient,
     getAllProductsClientByDate,
     startLoadingProductsByClient,
     startLoadingProductsClientPaid,

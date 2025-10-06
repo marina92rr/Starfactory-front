@@ -9,11 +9,9 @@ Modal.setAppElement('#root')
 
 
 
-export const LiquidateProductClientModal = ({ unpaid }) => {
+export const LiquidateProductClientModal = () => {
   const { isModalProductClientUnpaidOpen, closeProductClientUnpaidModal } = useUiStore()
   const { activeProductClient, startUpdateProductClient, startLoadingProductsClientUnpaid, startLoadingProductsClientPaid } = useProductClientStore();
-
-
 
   const isEdit = !!activeProductClient?.idProductClient
 
@@ -28,24 +26,22 @@ export const LiquidateProductClientModal = ({ unpaid }) => {
     const [action, setAction] = useState('update')
 
   useEffect(() => {
-    if (isEdit) {
+    if (isEdit && activeProductClient) {
       setFormValues({
-        paymentMethod: activeProductClient.paymentMethod ?? '',
-        paid: activeProductClient.paid ?? '',
-        discount: activeProductClient.discount ?? ''
+        paymentMethod: activeProductClient.paymentMethod,
+        paid: activeProductClient.paid,
+        discount: activeProductClient.discount
       })
     } else {
       setFormValues({ paymentMethod: '', paid: '', discount: '' }) // Reset form values when not editing
     }
-  }, [isEdit, activeProductClient])
+  }, [isEdit, isModalProductClientUnpaidOpen])
 
-  // 🧮 Cálculo dinámico del precio final (resta el descuento)
   const finalPrice = useMemo(() => {
-    const price = parseFloat(unpaid.price) || 0
-    const discount = parseFloat(formValues.discount) || 0
-    const result = price - discount
-    return result >= 0 ? result.toFixed(2) : '0.00'
-  }, [unpaid.price, formValues.discount])
+    if (!activeProductClient) return 0;
+    const discount = parseFloat(formValues.discount) || 0;
+    return (activeProductClient.price - discount).toFixed(2);
+  }, [activeProductClient, formValues.discount]);
 
   const onInputChange = (e) => {
     const { name, value } = e.target
@@ -99,7 +95,7 @@ export const LiquidateProductClientModal = ({ unpaid }) => {
 
       <form className="container mb-3 " onSubmit={onSubmit}>
         <div className='mb-3'>
-          <label className='border p-3 w-100'>{unpaid.name}</label>
+          <label className='border p-3 w-100'>{activeProductClient?.name}</label>
         </div>
 
         <div className='mb-3 '>

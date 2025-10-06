@@ -20,6 +20,10 @@ export const productClientSlice = createSlice({
       state.activeProductClient = payload;
     },
 
+    clearActiveProductClient: (state) => {
+      state.activeProductClient = null;   // 🔹 Aquí limpia
+    },
+
     //Añadir categoria
     onAddNewProductClient: (state, { payload }) => {
       state.productClients.push(payload);
@@ -78,6 +82,7 @@ export const productClientSlice = createSlice({
 })
 export const {
   onSetActiveProductClient,
+  clearActiveProductClient,
   onLoadProductsClient,
   onLoadAllProductsClient,
   onLoadProductsClientPaid,
