@@ -117,7 +117,8 @@ export const Accounting = () => {
                         <tr>
                             <th scope="col" className="col-4">Concepto</th>
                             <th scope="col" className="col-1 ">Entrada (€)</th>
-                            <th scope="col" className="col-2 ">IVA (€)</th>
+                            <th scope="col" className="col-1 ">Desc. (€)</th>
+                            <th scope="col" className="col-1 ">IVA (€)</th>
                             <th scope="col" className="col-2">Fecha Pago</th>
                             <th scope="col" className="col-2">Método de pago</th>
                             <th scope="col" className="col-2">Editar/Borrar</th>
@@ -133,6 +134,7 @@ export const Accounting = () => {
                                         : <span className="badge text-bg-secondary">Administración</span>}
                                 </td>
                                 <td >{p.paymentMethod != null ? `${p.price - p.discount} €` : '-'}</td>
+                                <td >{p.paymentMethod != null ? `${p.discount} €` : '-'}</td>
                                 <td >{p.paymentMethod != null ? `${IVAProduct(p.price - p.discount).iva} €` : '-'}</td>
                                 <td><DateLabel isoDate={p.paymentDate} /></td>
                                 <td>{p.paymentMethod != null ? capitalizeFirstWord(p.paymentMethod) : 'Pendiente'}</td>

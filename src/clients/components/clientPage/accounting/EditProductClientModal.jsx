@@ -1,28 +1,27 @@
 // SuscriptionClientModal.jsx
 import Modal from 'react-modal'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useUiStore } from '../../../../hooks/useUiStore'
 import { useProductClientStore } from '../../../../hooks/useProductClientStore'
-import { formatDate } from 'date-fns'
+import { format } from 'date-fns' // <= OJO: format, no formatDate
 import { toLocalISO } from '../../../../helpers/toLocalISO'
 import { customStyleModal } from '../../../../helpers/customStyleModal'
 
-
 const lightOverlayStyle = {
   ...customStyleModal,
-  overlay: {
-    backgroundColor: 'rgba(0,0,0,0.20)', // fuerza opacidad más baja
-    zIndex: 1000,
-  },
+  overlay: { backgroundColor: 'rgba(0,0,0,0.20)', zIndex: 1000 },
 };
-
 
 export const EditProductClientModal = () => {
   const { isModalProductClientOpen, closeProductClientModal } = useUiStore()
-  const { activeProductClient, startUpdateProductClient, startLoadProductsByDate, startClearActiveProductClient } = useProductClientStore();
-  
-  const isEditMode = !!activeProductClient?.idProductClient
+  const {
+    activeProductClient,
+    startUpdateProductClient,
+    startLoadProductsByDate,
+    startLoadingProductsClientPaid
+  } = useProductClientStore();
 
+  const isEditMode = !!activeProductClient?.idProductClient;
 
   const [formValues, setFormValues] = useState({
     name: '',
@@ -30,36 +29,35 @@ export const EditProductClientModal = () => {
     discount: '',
     paymentDate: '',
     paymentMethod: '',
-  })
-  const [submitted, setSubmitted] = useState(false)
+  });
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     if (isEditMode && activeProductClient) {
       setFormValues({
-        name: activeProductClient.name,
-        price: activeProductClient.price,
-        discount: activeProductClient.discount,
-        paymentMethod: activeProductClient.paymentMethod,
+        name: activeProductClient.name ?? '',
+        price: String(activeProductClient.price ?? ''),
+        discount: String(activeProductClient.discount ?? ''),
+        paymentMethod: activeProductClient.paymentMethod ?? 'efectivo',
         paymentDate: toLocalISO(
           activeProductClient.paymentDate
             ? new Date(activeProductClient.paymentDate)
             : new Date()
         ),
-      })
+      });
     } else {
-      setFormValues({ name: '', price: '', discount: '', paymentDate: '', paymentMethod: '' }) // Reset form values when not editing
+      setFormValues({ name: '', price: '', discount: '', paymentDate: '', paymentMethod: 'efectivo' });
     }
-  }, [isModalProductClientOpen,isEditMode])
+  }, [isModalProductClientOpen, isEditMode]); 
 
   const onInputChange = (e) => {
-    const { name, value } = e.target
-    setFormValues(v => ({ ...v, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setFormValues(v => ({ ...v, [name]: value }));
+  };
 
-   const onClose = () => {
+  const onClose = () => {
     setSubmitted(false);
-    setFormValues({ name: '', price: '', discount: '', paymentDate: '', paymentMethod: '' });
-    startClearActiveProductClient?.(); // limpia el store si existe esta acción
+    setFormValues({ name: '', price: '', discount: '', paymentDate: '', paymentMethod: 'efectivo' });
     closeProductClientModal();
   };
 
@@ -67,36 +65,35 @@ export const EditProductClientModal = () => {
     e.preventDefault();
     setSubmitted(true);
 
-    const payload = {
-      ...formValues,
-      idProductClient: source?.idProductClient,
-    };
+      const paymentDateISO = new Date(formValues.paymentDate).toISOString()
+       
 
-    await startUpdateProductClient(payload, true);
-    // recarga por la fecha del propio form (YYYY-MM-DD)
-    const ymd = formatDate(
-      new Date(formValues.paymentDate),
-      'yyyy-MM-dd'
-    )
-     // recarga SIEMPRE con la fecha seleccionada (YYYY-MM-DD)
-    startLoadProductsByDate(ymd);
-    onClose();
-    
+      const payload = {
+        ...formValues,                  
+        idProductClient: activeProductClient?.idProductClient, // <= FIX
+      };
+
+      await startUpdateProductClient(payload, true);
+      startLoadProductsByDate(paymentDateISO);
+      startLoadingProductsClientPaid(activeProductClient?.idClient);
+
+      onClose();
+
+   
   };
-
 
   return (
     <Modal
       isOpen={isModalProductClientOpen}
-      onRequestClose={onClose}
+      onRequestClose={closeProductClientModal}
       style={lightOverlayStyle}
       contentLabel="Editar venta"
     >
       <h4 className='ps-4'>Editar venta</h4>
       <hr />
 
-      <form className="container mb-3 " onSubmit={onSubmit}>
-        {/*Nombre  */}
+      <form className="container mb-3" onSubmit={onSubmit}>
+        {/* Nombre */}
         <div className='mb-3'>
           <label className='form-label'>Nombre</label>
           <input
@@ -104,33 +101,34 @@ export const EditProductClientModal = () => {
             className="form-control w-100"
             name='name'
             value={formValues.name}
-            onChange={onInputChange} />
+            onChange={onInputChange}
+          />
         </div>
-        <div className='d-flex gap-2'>
 
-          {/*Precio  */}
+        <div className='d-flex gap-2'>
+          {/* Precio */}
           <div className='mb-3'>
             <label className='form-label'>Precio</label>
             <div className='input-group'>
               <input
-                className={`form-control`}
+                className="form-control"
                 name="price"
                 type="number"
                 step="0.01"
                 value={formValues.price}
                 onChange={onInputChange}
+                required
               />
               <span className='input-group-text'>€</span>
             </div>
-
-
           </div>
-          {/*Descuento  */}
+
+          {/* Descuento */}
           <div className='mb-3'>
             <label className='form-label'>Descuento</label>
             <div className='input-group'>
               <input
-                className={`form-control`}
+                className="form-control"
                 name="discount"
                 type="number"
                 step="0.01"
@@ -141,35 +139,40 @@ export const EditProductClientModal = () => {
             </div>
           </div>
         </div>
-        {/*Fecha pago  */}
+
+        {/* Fecha pago */}
         <div className='mb-3'>
           <label className='form-label'>Fecha de pago</label>
           <input
             type="date"
             className="form-control w-100"
             name='paymentDate'
-            value={formValues.paymentDate ? formatDate(new Date(formValues.paymentDate), 'yyyy-MM-dd') : ''}
-            onChange={onInputChange} />
+            value={formValues.paymentDate}
+            onChange={onInputChange}
+            required
+          />
         </div>
 
-        {/*Metodo pago */}
+        {/* Método pago */}
         <div className="mb-3 py-3">
           <label className="form-label">Método de pago</label>
           <select
             className="form-select py-3"
             name='paymentMethod'
-            value={formValues.paymentMethod}
+            value={formValues.paymentMethod }
             onChange={onInputChange}
           >
-            <option value="tarjeta">Tarjeta</option>
             <option value="efectivo">Efectivo</option>
+            <option value="tarjeta">Tarjeta</option>
           </select>
         </div>
-        <div className="d-flex gap-2 mb-3 justify-content-between align-items-center">
-          <button type="submit" className="btn btn-primary ">Actualizar</button>
 
+        <div className="d-flex gap-2 mb-3 justify-content-between align-items-center">
+          <button type="submit" className="btn btn-primary">
+            Actualizar
+          </button>
         </div>
       </form>
     </Modal>
-  )
-}
+  );
+};

@@ -29,6 +29,7 @@ export const OverviewClient = () => {
             <th className='py-3' scope='col'>Concepto</th>
             <th className='py-3' scope='col'>Fecha (Próxima compra)</th>
             <th className='py-3' scope='col'>Total</th>
+            <th className='py-3' scope='col'>Desc.</th>
             <th className='py-3' scope='col'>Método Pago</th>
             <th className='py-3' scope='col'>Caducidad</th>
             <th className='py-3' scope='col'>Editar</th>
@@ -44,6 +45,7 @@ export const OverviewClient = () => {
                   <td className='py-3'>{capitalizeFirstWord(suscriptions.name)}</td>
                   <td className='py-3'>Se intentará la próxima compra el {getNextPurchaseDate()}</td>
                   <td className='py-3'>{suscriptions.price - suscriptions.discount} €</td>
+                  <td className='py-3'>{suscriptions.discount} €</td>
                   <td className='py-3'>{capitalizeFirstWord(suscriptions.paymentMethod)}</td>
                   <td className='py-3'>Siempre</td>
                   <td className='d-flex py-3 align-items-center gap-2'>

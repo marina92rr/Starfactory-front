@@ -22,3 +22,8 @@ html, body, #root { height: 100%; margin:0; }
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+.success-button {
+  background: '#38b647'; 
+  color: 'white'; 
+}

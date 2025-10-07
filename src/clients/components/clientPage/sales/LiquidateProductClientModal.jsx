@@ -18,30 +18,33 @@ export const LiquidateProductClientModal = () => {
   const [formValues, setFormValues] = useState({
     paymentMethod: '',
     paid: '',
+    price: '',
     discount: ''
   })
   const [submitted, setSubmitted] = useState(false);
 
   // acción actual del submit: 'update' | 'liquidate'
-    const [action, setAction] = useState('update')
+  const [action, setAction] = useState('update')
 
   useEffect(() => {
     if (isEdit && activeProductClient) {
       setFormValues({
         paymentMethod: activeProductClient.paymentMethod,
         paid: activeProductClient.paid,
+        price: activeProductClient.price,
         discount: activeProductClient.discount
       })
     } else {
-      setFormValues({ paymentMethod: '', paid: '', discount: '' }) // Reset form values when not editing
+      setFormValues({ paymentMethod: '', paid: '', price: '', discount: '' }) // Reset form values when not editing
     }
   }, [isEdit, isModalProductClientUnpaidOpen])
 
   const finalPrice = useMemo(() => {
     if (!activeProductClient) return 0;
+    const price = parseFloat(formValues.price) || activeProductClient.price;
     const discount = parseFloat(formValues.discount) || 0;
-    return (activeProductClient.price - discount).toFixed(2);
-  }, [activeProductClient, formValues.discount]);
+    return (price - discount).toFixed(2);
+  }, [activeProductClient, formValues.discount, formValues.price]);
 
   const onInputChange = (e) => {
     const { name, value } = e.target
@@ -77,7 +80,7 @@ export const LiquidateProductClientModal = () => {
     await startLoadingProductsClientUnpaid(activeProductClient?.idClient);
     await startLoadingProductsClientPaid(activeProductClient?.idClient);
 
-    setFormValues({ paymentMethod: '', paid: '', discount: '' });
+    setFormValues({ paymentMethod: '', paid: '', price: '', discount: '' });
     setSubmitted(false);
     setAction('update');
   };
@@ -97,22 +100,47 @@ export const LiquidateProductClientModal = () => {
         <div className='mb-3'>
           <label className='border p-3 w-100'>{activeProductClient?.name}</label>
         </div>
+        {/* Precio y Descuento */}
+        <div className='d-flex'>
+          {/* Precio */}
+          <div className='me-3'>
+            <label className="form-label">Precio</label>
+            <div className='input-group'>
+              <input
+                className="form-control"
+                ype="text"
+                name='price'
+                value={formValues.price}
+                onChange={onInputChange}
+              />
+              <span className='input-group-text'>€</span>
+            </div>
 
-        <div className='mb-3 '>
-          <label className="form-label">Descuento</label>
-          <input
-            className="form-control"
-            ype="text"
-            name='discount'
-            value={formValues.discount}
-            onChange={onInputChange}
-          />
+          </div>
+          {/* Descuento */}
+          <div >
+            <label className="form-label">Descuento</label>
+
+            <div className='input-group '>
+              <input
+                className="form-control"
+                ype="text"
+                name='discount'
+                value={formValues.discount}
+                onChange={onInputChange}
+              />
+              <span className='input-group-text'>€</span>
+            </div>
+
+          </div>
+
         </div>
+
         {/*metodo de pago  */}
         <div className="mb-3 py-3">
           <label className="form-label">Método de pago</label>
           <select
-            className="form-select py-3"
+            className="form-select py-2"
             name='paymentMethod'
             value={formValues.paymentMethod}
             onChange={onInputChange}
@@ -123,24 +151,28 @@ export const LiquidateProductClientModal = () => {
         </div>
 
 
-        <div className="d-flex gap-2 mb-3 justify-content-between align-items-center">
+        <div className="d-flex  ">
           <h4 className='ps-1'>{finalPrice} €</h4>
-          {/* Botón ACTUALIZAR: mantiene paid = false */}
-          <button
-            type="submit"
-            className="btn btn-primary"
-            onClick={() => setAction('update')}
-          >Actualizar
-          </button>
-          {/* Botón LIQUIDAR: paid = true */}
-          <button
-            type="submit"
-            className="btn btn-success"
-            onClick={() => setAction('liquidate')}
-            disabled={submitted}
-          >
-            Liquidar deuda
-          </button>
+
+          <div className='ms-auto'>
+            {/* Botón ACTUALIZAR: mantiene paid = false */}
+            <button
+              type="submit"
+              className="btn btn-primary me-3"
+              onClick={() => setAction('update')}
+            >Actualizar
+            </button>
+            {/* Botón LIQUIDAR: paid = true */}
+            <button
+              type="submit"
+              className="btn btn-success"
+              onClick={() => setAction('liquidate')}
+              disabled={submitted}
+            >
+              Liquidar deuda
+            </button>
+          </div>
+
         </div>
 
       </form>

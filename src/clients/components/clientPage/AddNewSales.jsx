@@ -12,7 +12,6 @@ export const AddNewSales = () => {
 
   const { products, starLoadingProducts, filteredList } = useProductStore();
   const { quotas, starLoadingQuotas, filteredListQuotas } = useQuotaStore();
-  const { activeClient } = useClientsStore();
   const [searchInput, setSearchInput] = useState('');
 
 
@@ -88,24 +87,9 @@ export const AddNewSales = () => {
 
           {/* Scroll solo para el listado */}
           <div style={{ maxHeight: '50vh', overflowY: 'auto', marginRight: '2rem' }}>
-            {(searchInput.trim() ? filteredList : products).map((product, i) => (
-              <div
-                key={`p-${i}`}
-                className="border my-2 p-3 text-start"
-                onClick={() => handleAddProduct(product, 'product')}
-                style={{ cursor: 'pointer', width: 300 }}
-              >
-                <div className='d-flex justify-content-between'>
-                  <div className='text fw-medium'>{product.name}</div>
-                  <div className='text-end fw-medium'>{product.price}€</div>
-                </div>
-                <div className='text-secondary fw-light'>{capitalizeFirstWord(product.description)}</div>
-              </div>
-            ))}
-
-            {(searchInput.trim() ? filteredListQuotas : quotas).map((quota, i) => {
             
-
+            {/* CUOTAS */}
+            {(searchInput.trim() ? filteredListQuotas : quotas).map((quota, i) => {
               return (
                 <div
                   key={`q-${i}`}
@@ -121,6 +105,22 @@ export const AddNewSales = () => {
                 </div>
               );
             })}
+
+            {/* PRODUCTOS */}
+            {(searchInput.trim() ? filteredList : products).map((product, i) => (
+              <div
+                key={`p-${i}`}
+                className="border my-2 p-3 text-start"
+                onClick={() => handleAddProduct(product, 'product')}
+                style={{ cursor: 'pointer', width: 300 }}
+              >
+                <div className='d-flex justify-content-between'>
+                  <div className='text fw-medium'>{product.name}</div>
+                  <div className='text-end fw-medium'>{product.price}€</div>
+                </div>
+                <div className='text-secondary fw-light'>{capitalizeFirstWord(product.description)}</div>
+              </div>
+            ))}
           </div>
         </div>
 

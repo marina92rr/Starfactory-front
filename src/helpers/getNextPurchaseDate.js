@@ -5,10 +5,13 @@ export const getNextPurchaseDate = () => {
   const month = today.getMonth(); // 0-indexed (enero = 0)
   
   const isFebruary = month === 1; // febrero
-  const day = isFebruary ? 25 : 30;
+  const nextMonth = isFebruary ? month : month + 1; 
+  const nextYear = nextMonth > 11 ? year + 1 : year; // si pasa de diciembre a enero
 
-  // Crear la nueva fecha
-  const nextDate = new Date(year, month, day);
+  const day = isFebruary ? 25 : 1;
+
+  // Crear la nueva fecha (mes siguiente si no es febrero)
+  const nextDate = new Date(nextYear, nextMonth % 12, day);
 
   // Formatear a dd/mm/yyyy
   const formatted = nextDate.toLocaleDateString('es-ES', {

@@ -23,7 +23,7 @@ export const SalesClient = () => {
     startLoadingProductsClientUnpaid,
   } = useProductClientStore()
 
-   
+
 
   useEffect(() => {
     setActiveClient(activeClient)
@@ -42,6 +42,10 @@ export const SalesClient = () => {
   const prevPage = () => setPaidPage(p => Math.max(1, p - 1))                              // –
   const nextPage = () => setPaidPage(p => Math.min(totalPaidPages, p + 1))                 // +
 
+  const liquidateTotal = () =>{
+
+  }
+
   return (
     <div>
       {/* Pendientes */}
@@ -51,6 +55,23 @@ export const SalesClient = () => {
           <span className="text-secondary" style={{ fontSize: '1rem' }}>
             {productsClientUnpaid.length}
           </span>
+
+          <div className='ms-auto d-flex align-items-center'>
+            
+            {productsClientUnpaid.length > 0 && (
+              <h5 className='mb-1 me-3'>
+                Total: {" "}
+                {productsClientUnpaid.reduce(
+                  (sum, item) => sum + (item.price - (item.discount || 0)),
+                  0
+                )}
+                €
+              </h5>
+            )}
+
+            
+
+          </div>
         </div>
 
         <table className="table border col-12">
@@ -58,6 +79,7 @@ export const SalesClient = () => {
             <tr>
               <th className="p-3 col-4">Concepto</th>
               <th className="p-3 col-1">Total</th>
+              <th className="p-3 col-1">Desc.</th>
               <th className="p-3 col-1">IVA</th>
               <th className="p-3 col-2">Fecha</th>
               <th className="p-3 col-2">Deuda</th>
@@ -73,6 +95,7 @@ export const SalesClient = () => {
                   <tr key={i}>
                     <td className='text-primary p-3 col-4'>{capitalizeFirstWord(unpaid.name)}</td>
                     <td className="p-3">{total - unpaid.discount}€</td>
+                    <td className="p-3">{unpaid.discount}€</td>
                     <td className="p-3">{iva}€</td>
                     <td className='p-3'><DateLabel isoDate={unpaid.buyDate} /></td>
                     <td className='p-3'>
@@ -105,6 +128,7 @@ export const SalesClient = () => {
             <tr>
               <th className="p-3 col-3">Concepto</th>
               <th className="p-3 col-1">Total</th>
+              <th className="p-3 col-1">Desc.</th>
               <th className="p-3 col-1">IVA</th>
               <th className="p-3 col-2">Fecha</th>
               <th className="p-3 col-2">Pago</th>
@@ -138,6 +162,7 @@ export const SalesClient = () => {
                   <tr key={row.idProductClient || row._id}>
                     <td className="text-primary p-3">{capitalizeFirstWord(row.name)}</td>
                     <td className="p-3">{row.price - row.discount}€</td>
+                    <td className="p-3">{row.discount}€</td>
                     <td className="p-3">{iva}€</td>
                     <td className="p-3">{formatDate(row.buyDate)}</td>
                     <td className="p-3"><DateLabel isoDate={row.paymentDate} /></td>
@@ -145,7 +170,7 @@ export const SalesClient = () => {
                     <td className="p-3 text-nowrap">
                       <div className="d-inline-flex gap-2">
                         <EditProductClient productClient={row} />
-                        <EditProductClientModal/>
+                        <EditProductClientModal />
                         <DeleteProductClient productClient={row} />
                       </div>
 
