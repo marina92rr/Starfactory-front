@@ -51,6 +51,7 @@ export const productClientSlice = createSlice({
       state.productsClientUnpaid = payload; // ahora sí es un array directamente
     },
 
+    //Productos no pagados
     onUpdateProductClient: (state, { payload }) => {
       state.productsClientUnpaid = state.productsClientUnpaid.map(productClient => {      //Nuevo array del evento
         if (productClient.idProductClient === payload.idProductClient) {
@@ -60,8 +61,16 @@ export const productClientSlice = createSlice({
       })
     },
 
+  // productClientSlice.js
+onUpdateUnpaidProductsByClient: (state, { payload }) => {
+  const { idClient, updates } = payload; // p.ej. { paymentMethod: 'efectivo' }
+  state.productsClientUnpaid = state.productsClientUnpaid.map(p =>
+    p.idClient === idClient ? { ...p, ...updates } : p
+  );
+},
+
     onDeleteProductClient: (state) => {
-       if (state.activeProductClient) {
+      if (state.activeProductClient) {
         state.productsClientUnpaid = state.productsClientUnpaid.filter(
           (productClient) =>
             productClient.idProductClient !== state.activeProductClient.idProductClient
@@ -89,8 +98,9 @@ export const {
   onLoadProductsClientUnpaid,
   onAddNewProductClient,
   onUpdateProductClient,
+  onUpdateUnpaidProductsByClient,
   onDeleteProductClient,
 
-  onSetSelectedDate,  
+  onSetSelectedDate,
   onLoadProductsByDate
 } = productClientSlice.actions; //accion

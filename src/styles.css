@@ -23,7 +23,7 @@ html, body, #root { height: 100%; margin:0; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.success-button {
+.success {
   background: '#38b647'; 
   color: 'white'; 
 }

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { onCloseCancellationModal, onCloseCancelSuscribeClientModal, onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseFilterClientsByLabelModal, onCloseLabelModal, onClosePasswordUserModal, onCloseProductClientAdminModal, onCloseProductClientModal, onCloseProductClientUnpaidModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onCloseSuscriptionClientModal, onCloseUserModal, onOpenCancellationModal, onOpenCancelSuscribeClientModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenFilterClientsByLabelModal, onOpenLabelModal, onOpenPasswordUserModal, onOpenProductClientAdminModal, onOpenProductClientModal, onOpenProductClientUnpaidModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal, onOpenSuscriptionClientModal, onOpenUserModal } from "../store/ui/uiSlice";
+import { onCloseCancellationModal, onCloseCancelSuscribeClientModal, onCloseCategoryModal, onCloseClientModal, onCloseColorLabelModal, onCloseCreateLabelModal, onCloseFilterClientsByLabelModal, onCloseLabelModal, onClosePasswordUserModal, onCloseProductClientAdminModal, onCloseProductClientModal, onCloseProductClientUnpaidModal, onCloseProductModal, onCloseQuotaModal, onCloseRateModal, onCloseSaleModal, onCloseSuscriptionClientModal, onCloseTotalProductClientModal, onCloseTotalProductClientUnpaidModal, onCloseUserModal, onOpenCancellationModal, onOpenCancelSuscribeClientModal, onOpenCategoryModal, onOpenClientModal, onOpenColorLabelModal, onOpenCreateLabelModal, onOpenFilterClientsByLabelModal, onOpenLabelModal, onOpenPasswordUserModal, onOpenProductClientAdminModal, onOpenProductClientModal, onOpenProductClientUnpaidModal, onOpenProductModal, onOpenQuotaModal, onOpenRateModal, onOpenSaleModal, onOpenSuscriptionClientModal, onOpenTotalProductClientModal, onOpenTotalProductClientUnpaidModal, onOpenUserModal } from "../store/ui/uiSlice";
 
 
 
@@ -21,6 +21,7 @@ export const useUiStore = () => {
       isModalCancellationOpen,
       isModalSuscriptionClientOpen,
       isModalProductClientUnpaidOpen,
+      isModalTotalProductClientUnpaidOpen,
       isModalProductClientOpen,
       isModalProductClientAdminOpen,
       isModalUserOpen,
@@ -190,6 +191,16 @@ export const useUiStore = () => {
     const closeProductClientUnpaidModal = () =>{
         dispatch(onCloseProductClientUnpaidModal());
     }
+
+        //Abrir UnpaidTotal
+    const openTotalProductClientUnpaidModal = () =>{
+        dispatch(onOpenTotalProductClientUnpaidModal());
+    }
+
+    //Cerrar UnpaidTotal
+    const closeTotalProductClientUnpaidModal = () =>{
+        dispatch(onCloseTotalProductClientUnpaidModal());
+    }
         //Abrir AllProductClient
     const openProductClientModal = () =>{
         dispatch(onOpenProductClientModal());
@@ -247,6 +258,7 @@ export const useUiStore = () => {
     isModalCancellationOpen,
     isModalSuscriptionClientOpen,
     isModalProductClientUnpaidOpen,
+    isModalTotalProductClientUnpaidOpen,
     isModalProductClientOpen,
     isModalProductClientAdminOpen,
     isModalUserOpen,
@@ -291,6 +303,9 @@ export const useUiStore = () => {
 
     openProductClientUnpaidModal,
     closeProductClientUnpaidModal,
+
+    openTotalProductClientUnpaidModal,
+    closeTotalProductClientUnpaidModal,
 
     openProductClientModal,
     closeProductClientModal,

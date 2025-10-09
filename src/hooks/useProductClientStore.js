@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from "react-redux"
 import { clientsApi } from "../api";
 import { normalizeAllTextFields } from "../helpers/normalizeText";
-import { clearActiveProductClient, onAddNewProductClient, onDeleteProductClient, onLoadAllProductsClient, onLoadProductsByDate, onLoadProductsClient, onLoadProductsClientPaid, onLoadProductsClientUnpaid, onSetActiveProductClient, onSetSelectedDate, onUpdateProductClient } from "../store/sales/productClientSlice";
+import { clearActiveProductClient, onAddNewProductClient, onDeleteProductClient, onLoadAllProductsClient, onLoadProductsByDate, onLoadProductsClient, onLoadProductsClientPaid, onLoadProductsClientUnpaid, onSetActiveProductClient, onSetSelectedDate, onUpdateProductClient, onUpdateUnpaidProductsByClient } from "../store/sales/productClientSlice";
 import { useClientsStore } from "./useClientsStore";
+import { id } from "date-fns/locale";
 
 
 
@@ -17,7 +18,7 @@ export const useProductClientStore = () => {
   }
 
   //Limpiar producto activo
-   const startClearActiveProductClient = () => {
+  const startClearActiveProductClient = () => {
     dispatch(clearActiveProductClient());
   };
 
@@ -32,8 +33,8 @@ export const useProductClientStore = () => {
     }
   };
 
-  
- 
+
+
 
   //Lectura de productos por cliente
   const startLoadingProductsByClient = async (idClient) => {
@@ -75,7 +76,7 @@ export const useProductClientStore = () => {
       const normalizedProductClient = normalizeAllTextFields(productClientSave); //  normalizar todos los campos string
       const { data } = await clientsApi.post('/productclient/administration', normalizedProductClient);
       dispatch(onAddNewProductClient(data));
-      
+
     } catch (error) {
       console.log('Error en Front', error);
     }
@@ -103,18 +104,38 @@ export const useProductClientStore = () => {
     }
   }
 
-  //Actualizar suscripción
+  //Actualizar Producto
   const startUpdateProductClient = async (unpaid) => {
     try {
       const p = normalizeAllTextFields(unpaid);
       const { data } = await clientsApi.put(`/productclient/unpaid/${p.idProductClient}`, p);
       const updated = data?.suscription ?? data ?? p;
-      dispatch(onUpdateProductClient(updated));
+      //dispatch(onUpdateProductClient(updated));
       return updated;
     } catch (e) {
       console.error('Error actualizando suscripción:', e);
       throw e;
     }
+  };
+
+
+  //Actualizar suscripción
+  const startPaidTotalProductClient = async (idClient,paymentMethod) => {
+    try {
+
+      console.log(idClient, paymentMethod);
+      // 1) Llamada al backend (espera { paymentMethod } como objeto)
+      await clientsApi.put(`/productclient/totalunpaid/${idClient}`, { paymentMethod });
+
+      // 2) Actualiza SOLO campos en Redux (sin tocar paid ni mover arrays)
+      dispatch(onUpdateUnpaidProductsByClient({
+        idClient,
+        updates: { paymentMethod }
+      }));
+    } catch (e) {
+      console.error('Error liquidando impagados del cliente:', e);
+    };
+
   };
 
   //Obtener producto por fecha CONTABILIDAD
@@ -165,6 +186,7 @@ export const useProductClientStore = () => {
     startLoadingProductsClientPaid,
     startLoadingProductsClientUnpaid,
     startUpdateProductClient,
+    startPaidTotalProductClient,
     startDeleteProductClient,
     startLoadProductsByDate,
     setSelectedDate,

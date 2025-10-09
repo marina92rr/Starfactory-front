@@ -2,14 +2,14 @@ import React from 'react'
 import { useUiStore } from '../../../../hooks/useUiStore'
 import{ useProductClientStore } from '../../../../hooks/useProductClientStore';
 
-export const LiquidateTotalProductClient= () => {
+export const LiquidateTotalProductClientUnpaid= ({productsClientUnpaid}) => {
 
-  const {openProductClientUnpaidModal} = useUiStore();
+  const {openTotalProductClientUnpaidModal} = useUiStore();
   const {setActiveProductClient} = useProductClientStore(); 
 
   const handleClickNew = () => {
-    setActiveProductClient(ac)
-    openProductClientUnpaidModal(); 
+    setActiveProductClient(productsClientUnpaid)
+    openTotalProductClientUnpaidModal(); 
 
   }
 
@@ -18,7 +18,7 @@ export const LiquidateTotalProductClient= () => {
         <button 
           className='btn btn-outline-secondary btn-sm me-2'
           onClick={handleClickNew}>
-             Liquidar total
+             Liquidar
         </button>
     </div>
   )

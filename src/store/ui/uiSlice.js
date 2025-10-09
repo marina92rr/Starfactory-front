@@ -26,8 +26,11 @@ export const uiSlice = createSlice({
     isModalSuscriptionClientOpen: false,
     //ProductClientUnpaid
     isModalProductClientUnpaidOpen: false,
+    isModalTotalProductClientUnpaidOpen: false,
+
     //ProductClient
     isModalProductClientOpen: false,
+
     //ProductClientAdmin
     isModalProductClientAdminOpen: false,
     //USUARIOS
@@ -109,10 +112,16 @@ export const uiSlice = createSlice({
     //Cerrar modal unpaid
     onCloseProductClientUnpaidModal: (state) => { state.isModalProductClientUnpaidOpen = false; },
 
+         //Abrir modal unpaid
+    onOpenTotalProductClientUnpaidModal: (state) => { state.isModalTotalProductClientUnpaidOpen = true; },
+    //Cerrar modal unpaid
+    onCloseTotalProductClientUnpaidModal: (state) => { state.isModalTotalProductClientUnpaidOpen = false; },
+
     //Abrir modal allProductClient
     onOpenProductClientModal: (state) => { state.isModalProductClientOpen = true; },
     //Cerrar modal allProductClient
     onCloseProductClientModal: (state) => { state.isModalProductClientOpen = false; },
+
 
         //Abrir modal allProductClientAdmin
     onOpenProductClientAdminModal: (state) => { state.isModalProductClientAdminOpen = true; },
@@ -180,6 +189,13 @@ export const {
   //*ProductClientUnpaid
   onOpenProductClientUnpaidModal,
   onCloseProductClientUnpaidModal,
+  //*TotalProductClientUnpaid
+  onOpenTotalProductClientUnpaidModal,
+  onCloseTotalProductClientUnpaidModal,
+  //*ProductClient
+  onOpenTotalProductClientModal,
+  onCloseTotalProductClientModal,
+  //*ProductClient
   onOpenProductClientModal,
   onCloseProductClientModal,
   //*ProductClient Admin

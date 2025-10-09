@@ -13,6 +13,8 @@ import { DateLabel } from '../../../hooks/DateLabel'
 import { EditProductClient } from './accounting/EditProductClient'
 import { EditProductClientModal } from './accounting/EditProductClientModal'
 import { DeleteProductClient } from './accounting/DeleteProductClient'
+import { LiquidateTotalProductClientUnpaid } from './sales/LiquidateTotalProductClientUnpaid'
+import { LiquidateTotalProductClientModalUnpaid } from './sales/LiquidateTotalProductClientModalUnpaid'
 
 export const SalesClient = () => {
   const { activeClient, setActiveClient } = useClientsStore()
@@ -42,9 +44,8 @@ export const SalesClient = () => {
   const prevPage = () => setPaidPage(p => Math.max(1, p - 1))                              // –
   const nextPage = () => setPaidPage(p => Math.min(totalPaidPages, p + 1))                 // +
 
-  const liquidateTotal = () =>{
+  const total = productsClientUnpaid.reduce( (sum, item) => sum + (item.price - (item.discount || 0)),0);
 
-  }
 
   return (
     <div>
@@ -57,19 +58,21 @@ export const SalesClient = () => {
           </span>
 
           <div className='ms-auto d-flex align-items-center'>
-            
+
             {productsClientUnpaid.length > 0 && (
-              <h5 className='mb-1 me-3'>
-                Total: {" "}
-                {productsClientUnpaid.reduce(
-                  (sum, item) => sum + (item.price - (item.discount || 0)),
-                  0
-                )}
-                €
-              </h5>
+              <div className='d-flex align-items-center'>
+                <h5 className='mb-1 me-3'>
+                  Total: {" "}
+                  {total}
+                  €
+                </h5>
+                <LiquidateTotalProductClientUnpaid productsClientUnpaid ={productsClientUnpaid}/>
+                <LiquidateTotalProductClientModalUnpaid total ={total} idClient={activeClient?.idClient}/>   
+              </div>
             )}
 
-            
+
+
 
           </div>
         </div>
